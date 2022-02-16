@@ -7,13 +7,10 @@ const passport = require('passport');
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
 
-
 app = express();
 const port = process.env.port || 3095;
 
-
-require("./js/passport_config")(passport);
-
+require("./passport_config")(passport);
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -32,3 +29,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // * --- END BOILERPLATE ----- *
+
+
+app.listen(port, () => {
+  console.log("Hello World 2.0!");
+});
