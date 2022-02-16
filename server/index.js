@@ -30,6 +30,85 @@ app.use(passport.session());
 
 // * --- END BOILERPLATE ----- *
 
+// #old code
+// app.post("/login",
+//     passport.authenticate('local', {
+//         //successRedirect: '/overview', // #update (this is going to need to change. on failure send failed object.)
+//         //failureRedirect: '/login', // don't redirect. will handle failure on client side.
+//         }),
+//         (req, res) => {
+//         //res.redirect("/overview"); // the user is bound to the res at this point??
+//             res.json({
+//                 success: req.user ? true : false,
+//                 message: "login successful"
+//             }); // #updated. this should work.. needs testing
+// );
+
+app.post("/login",
+    passport.authenticate('local', {}),
+    (req, res) => {
+        res.json({success: req.user ? true : false,
+        message: "login successful"
+    });
+    }
+);
+
+app.post("/createAcc", (req, res) => {
+    const pw = req.body.password;
+    const email = req.body.email;
+    const userName = req.body.userName;
+    let sql = "SELECT email FROM users WHERE email=?";
+    mysql.query(sql, [email], (err, result) => {
+        console.log(result);
+        if (err) {
+            console.log(err);
+            return (err);
+        }
+        if (result[0]) {
+            console.log("email already used for another account");
+            //res.redirect('/'); #old code
+            res.json({
+                success: false,
+                message: "email already used for another account."
+            });
+        }
+        else {
+            let insertSql = "INSERT INTO users(email, password, username) VALUES(?,?,?)";
+            bcrypt.genSalt(10, (err, salt) => {
+                if (err) {
+                    return (err);
+                }
+                bcrypt.hash(pw, salt, (err, hash) => {
+                    if (err) {
+                        return (err);
+                    }
+                    mysql.query(insertSql, [email, hash, userName], (error, created) => {
+                        console.log("acount created");
+                        if (error) {
+                            console.log(error);
+                            return (error);
+                        }
+                        console.log(created);
+                        //res.redirect("/login"); #old code
+                        res.json({
+                            success: true,
+                            message: "account successfuly created"
+                        });
+                    });
+                });
+            });
+        }
+    });
+});
+
+app.get("/logout", (req, res) => {
+    req.logout();
+    //res.redirect("/login"); #old code
+    res.json({
+        success: true,
+        message: "user has been logged out."
+    });
+});
 
 app.listen(port, () => {
   console.log("Hello World 2.0!");
