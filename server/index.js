@@ -25,7 +25,7 @@ app.use(session({
         secure: false,
         sameSite: 'strict'}
     })
-    );
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -112,6 +112,18 @@ app.get("/logout", (req, res) => {
     //     message: "user has been logged out."
     // });
 });
+
+app.get("/isAuthenticated", (req, res) => {
+    jsonObj = {
+        authenticated: false,
+        message: "user has not been authenticated."
+    }
+    if (req.isAuthenticated()) { // confirm req.isAutnticated will not return true nomatter what.
+        jsonObj.authenticated = req.user;
+        jsonObj.message = "user is authenticated.";
+    }
+    res.json(jsonObj);
+})
 
 app.listen(port, () => {
   console.log("Hello World 2.0!");
