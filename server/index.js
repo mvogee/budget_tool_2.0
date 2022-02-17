@@ -7,6 +7,7 @@ const passport = require('passport');
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
 
+const utils = require("./utils.js");
 app = express();
 const port = process.env.port || 3095;
 
@@ -30,6 +31,7 @@ app.use(passport.session());
 
 // * --- END BOILERPLATE ----- *
 
+
 // #old code
 // app.post("/login",
 //     passport.authenticate('local', {
@@ -47,9 +49,7 @@ app.use(passport.session());
 app.post("/login",
     passport.authenticate('local', {}),
     (req, res) => {
-        res.json({success: req.user ? true : false,
-        message: "login successful"
-    });
+            utils.jsonResponse(res, req.user ? true : false, "login successful");
     }
 );
 
@@ -67,10 +67,11 @@ app.post("/createAcc", (req, res) => {
         if (result[0]) {
             console.log("email already used for another account");
             //res.redirect('/'); #old code
-            res.json({
-                success: false,
-                message: "email already used for another account."
-            });
+            utils.jsonResponse(res, false, "Email already used for another account.");
+            // res.json({
+            //     success: false,
+            //     message: "email already used for another account."
+            // });
         }
         else {
             let insertSql = "INSERT INTO users(email, password, username) VALUES(?,?,?)";
@@ -90,10 +91,11 @@ app.post("/createAcc", (req, res) => {
                         }
                         console.log(created);
                         //res.redirect("/login"); #old code
-                        res.json({
-                            success: true,
-                            message: "account successfuly created"
-                        });
+                        utils.jsonResponse(res, true, "Account successfuly created");
+                        // res.json({
+                        //     success: true,
+                        //     message: "account successfuly created"
+                        // });
                     });
                 });
             });
@@ -104,10 +106,11 @@ app.post("/createAcc", (req, res) => {
 app.get("/logout", (req, res) => {
     req.logout();
     //res.redirect("/login"); #old code
-    res.json({
-        success: true,
-        message: "user has been logged out."
-    });
+    utils.jsonResponse(res, true, "User has been logged out.")
+    // res.json({
+    //     success: true,
+    //     message: "user has been logged out."
+    // });
 });
 
 app.listen(port, () => {
