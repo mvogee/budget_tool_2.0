@@ -113,7 +113,7 @@ app.get("/logout", (req, res) => {
     // });
 });
 
-app.get("/isAuthenticated", (req, res) => {
+app.get("/authenticate", (req, res) => {
     jsonObj = {
         authenticated: false,
         message: "user has not been authenticated."
@@ -124,6 +124,84 @@ app.get("/isAuthenticated", (req, res) => {
     }
     res.json(jsonObj);
 })
+
+
+// -- INCOME ROUTES -- //
+app.route("/income")
+.get((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "SELECT * FROM projectedIncome WHERE userId=?;";
+        mysql.query(sql, req.user.id, (err, result) => {
+            if (err) {
+                return (console.log(err));
+            }
+            jsonObj = { // change ejs object to a json response object
+                incomes: result,
+                userName: req.user.username
+            };
+            utils.jsonResponse(res, true, "Successfully retrieved projected income data. access from response.data", jsonObj)
+        });
+    }
+    else {
+        utils.jsonResponse(res, false, "Authentication failed on /income route. Log in and try again.");
+    }
+})
+.post((req, res) => {
+    if (req.isAuthenticated()) {
+        console.log("adding item to projectedIncome");
+        let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, retirement, hoursPerWeek, userId) VALUES(?,?,?,?,?,?);";
+        mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, (req.body.taxRate / 100), (req.body.retirement / 100), req.body.hoursPerWeek, req.user.id],
+            (err, result) => {
+                if (err) {
+                    console.log(err);
+                    utils.jsonResponse(res, false, err);
+                }
+                else {
+                    utils.jsonResponse(res, true, result);
+                }
+        });
+    }
+    else {
+        utils.jsonResponse(res, false, "Authentication failed on /income route. Log in and try again.");
+    }
+})
+.delete((req, res) => {
+    if (req.isAuthenticated()) {
+        console.log("deleting income item");
+        let sql = "DELETE FROM projectedIncome WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.deleteIncome, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, result);
+            }
+        });
+    }
+    else {
+        utils.jsonResponse(res, false, "Authentication failed on /income route. Log in and try again.");
+    }
+})
+.patch((req, res) => {
+    if (req.isAuthenticated()) {
+        console.log("updating income item");
+        let sql = "UPDATE projectedIncome SET incomeName=?, hourlyRate=?, taxRate=?, retirement=?, hoursPerWeek=? WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, (req.body.taxRate / 100), (req.body.retirement / 100), req.body.hoursPerWeek, req.body.itmId, req.user.id],
+            (err, result) => {
+                if (err) {
+                    console.log(err);
+                    utils.jsonResponse(res, false, err);
+                }
+                else {
+                    utils.jsonResponse(res, true, result);
+                }
+            });
+    }
+    else {
+        utils.jsonResponse(res, false, "Authentication failed on /income route. Log in and try again.");
+    }
+});
 
 app.listen(port, () => {
   console.log("Hello World 2.0!");

@@ -6,7 +6,7 @@
 * @param {obj} obj - OPTIONAL. information object to be sent back to the user.
 **/
 // move to utilities
-function jsonResponse(res, success, message, obj = null) {
+function jsonResponse(res, success, message, data = null) {
     res.json({
         success: success,
         message: message,
