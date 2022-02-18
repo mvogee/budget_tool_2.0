@@ -2,11 +2,10 @@
 /**
 * @param {object} res - the express response object
 * @param {boolean} success - successful
-* @param {message} message - success message to be sent back to the client
+* @param {string} message - success message to be sent back to the client
 * @param {obj} obj - OPTIONAL. information object to be sent back to the user.
 **/
-// move to utilities
-function jsonResponse(res, success, message, obj = null) {
+function jsonResponse(res, success, message, data = null) {
     res.json({
         success: success,
         message: message,
@@ -14,7 +13,15 @@ function jsonResponse(res, success, message, obj = null) {
     });
 }
 
+function jsonFailedAuthResponse(res, route) {
+    res.json({
+        success: false,
+        message: "Authentication failed on route /" + route + ". Please log in and try again.",
+        obj: null
+    })
+}
 
 module.exports = {
-    jsonResponse: jsonResponse
+    jsonResponse: jsonResponse,
+    jsonFailedAuthresponse: jsonFailedAuthResponse
 }
