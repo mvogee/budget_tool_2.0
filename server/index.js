@@ -114,15 +114,12 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/authenticate", (req, res) => {
-    jsonObj = {
-        authenticated: false,
-        message: "user has not been authenticated."
-    }
     if (req.isAuthenticated()) { // confirm req.isAutnticated will not return true nomatter what.
-        jsonObj.authenticated = req.user;
-        jsonObj.message = "user is authenticated.";
+        utils.jsonResponse(res, true, "user is authenticated.", req.user);
     }
-    res.json(jsonObj);
+    else {
+        utils.jsonFailedAuthResponse(res, "authenticate");
+    }
 })
 
 
@@ -143,7 +140,7 @@ app.route("/income")
         });
     }
     else {
-        utils.jsonResponse(res, false, "Authentication failed on /income route. Log in and try again.");
+        utils.jsonFailedAuthResponse(res, "income");
     }
 })
 .post((req, res) => {
@@ -162,7 +159,7 @@ app.route("/income")
         });
     }
     else {
-        utils.jsonResponse(res, false, "Authentication failed on /income route. Log in and try again.");
+        utils.jsonFailedAuthResponse(res, "income");
     }
 })
 .delete((req, res) => {
@@ -180,7 +177,7 @@ app.route("/income")
         });
     }
     else {
-        utils.jsonResponse(res, false, "Authentication failed on /income route. Log in and try again.");
+        utils.jsonFailedAuthResponse(res, "income");
     }
 })
 .patch((req, res) => {
@@ -199,9 +196,67 @@ app.route("/income")
             });
     }
     else {
-        utils.jsonResponse(res, false, "Authentication failed on /income route. Log in and try again.");
+        utils.jsonFailedAuthResponse(res, "income");
     }
 });
+
+// ! thisMonth routes
+// TODO:
+// - Break the different queries into their own routes
+app.get("/'monthIncome", (req, res) => {
+    if (req.isAuthenticated()) {
+        // Return monthIncome where depositeDate >= ? AND depositDate <= ? AND userId=?;
+
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthIncome");
+    }
+});
+
+app.route("/thisMonth/:month?")
+.get((req, res) => {
+    if (req.isAuthenticated()) {
+        let dt = new Date();
+        if (req.params.month) {
+            dt = new Date(req.params.month + "-02");
+        }
+
+        let monthStart = utils.getMonthStart(dt);
+        let monthEnd = utils.getMonthEnd(dt);
+        let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ? AND userId=?;";
+        sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ? AND userId=?;";
+        sql += "SELECT * FROM budgets WHERE userId=?;";
+        mysql.query(sql,[monthStart, monthEnd, req.user.id, monthStart, monthEnd, req.user.id, req.user.id], (err, result) => {
+            if (err) {
+                return (console.log(err));
+            }
+            result[0].forEach(item => {
+                item.inDescription = cipher.decryptString(item.inDescription, process.env.KEY);
+                item.amount = cipher.decryptString(item.amount, process.env.KEY);
+            });
+            result[1].forEach(item => {
+                item.itmDescription = cipher.decryptString(item.itmDescription, process.env.KEY);
+                item.amount = cipher.decryptString(item.amount, process.env.KEY);
+            });
+            let ejsObj = {
+                today: new Date(),
+                deposits: result[0],
+                purchases: result[1],
+                budgets: result[2],
+                month: utils.getMonthName(dt),
+                date: utils.getStandardDateFormat(dt),
+                getCategoryName: utils.getCategoryName,
+                formatDate: utils.getStandardDateFormat,
+                userName: req.user.username
+            }
+            res.render("thisMonth", ejsObj);
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
+});
+
 
 app.listen(port, () => {
   console.log("Hello World 2.0!");
