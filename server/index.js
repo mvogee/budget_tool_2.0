@@ -6,8 +6,10 @@ const cookieParser = require("cookie-parser");
 const passport = require('passport');
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
+const mysql = require("./db_config.js").pool;
 
 const utils = require("./utils.js");
+const cipher = require("./cipher.js");
 app = express();
 const port = process.env.port || 3095;
 
@@ -130,13 +132,10 @@ app.route("/income")
         let sql = "SELECT * FROM projectedIncome WHERE userId=?;";
         mysql.query(sql, req.user.id, (err, result) => {
             if (err) {
-                return (console.log(err));
+                console.log(err);
+                utils.jsonResponse(res, false, err);
             }
-            jsonObj = { // change ejs object to a json response object
-                incomes: result,
-                userName: req.user.username
-            };
-            utils.jsonResponse(res, true, "Successfully retrieved projected income data. access from response.data", jsonObj)
+            utils.jsonResponse(res, true, "Successfully retrieved projected income data.", result);
         });
     }
     else {
@@ -201,59 +200,78 @@ app.route("/income")
 });
 
 // ! thisMonth routes
-// TODO:
-// - Break the different queries into their own routes
-app.get("/'monthIncome", (req, res) => {
-    if (req.isAuthenticated()) {
-        // Return monthIncome where depositeDate >= ? AND depositDate <= ? AND userId=?;
 
+app.get("/'monthIncome/:month?", (req, res) => {
+    if (req.isAuthenticated()) {
+        dt = new Date();
+        if (req.params.month) {
+            dt = new Date(req.params.month + "-02");
+        }
+        let monthStart = utils.getMonthStart(dt);
+        let monthEnd = utils.getMonthEnd(dt);
+        let sql = "SELECT * FROM monthIncome WHERE depositDate >=? AND depositDate <=? AND userId=?;";
+        mysql.query(sql, [monthStart, monthEnd, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                jsonResponse(res, false, err);
+            }
+            else {
+                result.forEach(item => {
+                    item.inDescription = cipher.decryptString(item.inDescription, process.env.KEY);
+                    item.amount = cipher.decryptString(item.amount, process.env.KEY);
+                });
+                utils.jsonResponse(res, true, "monthIncome data retrieved.", result);
+            }
+        });
     }
     else {
         utils.jsonFailedAuthResponse(res, "monthIncome");
     }
 });
 
-app.route("/thisMonth/:month?")
-.get((req, res) => {
-    if (req.isAuthenticated()) {
-        let dt = new Date();
+app.get("/monthSpending/:month?", (req, res) => {
+    if (req.isAutnticated()) {
+        dt = new Date();
         if (req.params.month) {
             dt = new Date(req.params.month + "-02");
         }
-
         let monthStart = utils.getMonthStart(dt);
         let monthEnd = utils.getMonthEnd(dt);
-        let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ? AND userId=?;";
-        sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ? AND userId=?;";
-        sql += "SELECT * FROM budgets WHERE userId=?;";
-        mysql.query(sql,[monthStart, monthEnd, req.user.id, monthStart, monthEnd, req.user.id, req.user.id], (err, result) => {
+        let sql = "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ? AND userId=?;";
+        mysql.query(sql, [monthStart, monthEnd, req.user.id], (err, result) => {
             if (err) {
-                return (console.log(err));
+                console.log(err);
+                utils.jsonResponse(res, false, err);
             }
-            result[0].forEach(item => {
-                item.inDescription = cipher.decryptString(item.inDescription, process.env.KEY);
-                item.amount = cipher.decryptString(item.amount, process.env.KEY);
-            });
-            result[1].forEach(item => {
-                item.itmDescription = cipher.decryptString(item.itmDescription, process.env.KEY);
-                item.amount = cipher.decryptString(item.amount, process.env.KEY);
-            });
-            let ejsObj = {
-                today: new Date(),
-                deposits: result[0],
-                purchases: result[1],
-                budgets: result[2],
-                month: utils.getMonthName(dt),
-                date: utils.getStandardDateFormat(dt),
-                getCategoryName: utils.getCategoryName,
-                formatDate: utils.getStandardDateFormat,
-                userName: req.user.username
+            else {
+                result.foreach(item => {
+                    item.itmDescription = cipher.decryptString(item.itmDescription, process.env.KEY);
+                    item.amount = cipher.decryptString(item.amount, process.env.KEY);
+                });
+                utils.jsonResponse(res, true, "MonthSpending data retrieved.", result);
             }
-            res.render("thisMonth", ejsObj);
         });
     }
     else {
-        res.redirect("/login");
+        utils.jsonFailedAuthResponse(res, "monthSpending");
+    }
+});
+
+app.get("/budgets", (req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "SELECT * FROM budgets WHERE userId=?;";
+        mysql.query(sql, req.user.id, (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "budgets data retrieved.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "budgets");
     }
 });
 
