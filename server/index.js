@@ -153,7 +153,7 @@ app.route("/income")
                     utils.jsonResponse(res, false, err);
                 }
                 else {
-                    utils.jsonResponse(res, true, result);
+                    utils.jsonResponse(res, true, "Added item to projectedIncome", result);
                 }
         });
     }
@@ -171,7 +171,7 @@ app.route("/income")
                 utils.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, result);
+                utils.jsonResponse(res, true, "Deleted item from projectedIncome", result);
             }
         });
     }
@@ -190,7 +190,7 @@ app.route("/income")
                     utils.jsonResponse(res, false, err);
                 }
                 else {
-                    utils.jsonResponse(res, true, result);
+                    utils.jsonResponse(res, true, "updated Item in projectedIncome", result);
                 }
             });
     }
@@ -200,8 +200,8 @@ app.route("/income")
 });
 
 // ! thisMonth routes
-
-app.get("/'monthIncome/:month?", (req, res) => {
+app.route("/monthIncome/:month?")
+.get((req, res) => {
     if (req.isAuthenticated()) {
         dt = new Date();
         if (req.params.month) {
@@ -221,6 +221,61 @@ app.get("/'monthIncome/:month?", (req, res) => {
                     item.amount = cipher.decryptString(item.amount, process.env.KEY);
                 });
                 utils.jsonResponse(res, true, "monthIncome data retrieved.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthIncome");
+    }
+})
+.post((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate, userId) VALUES(?, ?, ?, ?);";
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.date, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Added item to monthIncome.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthIncome");
+    }
+})
+.patch((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "UPDATE monthIncome SET inDescription=?, amount=?, depositDate=? WHERE id=? AND userId=?;";
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.date, req.body.itmId, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Updated item in monthIncome.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthIncome");
+    }
+})
+.delete((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "DELETE FROM monthIncome WHERE id=? AND userId=?";
+        mysql.query(sql, [req.body.deleteIncomeItm, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Deleted item in monthIncome.", result);
             }
         });
     }
@@ -268,7 +323,7 @@ app.route("/monthSpending/:month?")
                 utils.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "Successfully added item to monthSpending database", result);
+                utils.jsonResponse(res, true, "Added item to monthSpending.", result);
             }
         });
     }
