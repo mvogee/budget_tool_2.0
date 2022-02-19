@@ -9,6 +9,7 @@ const bcrypt = require("bcryptjs");
 const mysql = require("./db_config.js").pool;
 
 const utils = require("./utils.js");
+const responses = require("./responses.js");
 const cipher = require("./cipher.js");
 app = express();
 const port = process.env.port || 3095;
@@ -51,7 +52,7 @@ app.use(passport.session());
 app.post("/login",
     passport.authenticate('local', {}),
     (req, res) => {
-            utils.jsonResponse(res, req.user ? true : false, "login successful");
+            responses.jsonResponse(res, req.user ? true : false, "login successful");
     }
 );
 
@@ -69,7 +70,7 @@ app.post("/createAcc", (req, res) => {
         if (result[0]) {
             console.log("email already used for another account");
             //res.redirect('/'); #old code
-            utils.jsonResponse(res, false, "Email already used for another account.");
+            responses.jsonResponse(res, false, "Email already used for another account.");
             // res.json({
             //     success: false,
             //     message: "email already used for another account."
@@ -93,7 +94,7 @@ app.post("/createAcc", (req, res) => {
                         }
                         console.log(created);
                         //res.redirect("/login"); #old code
-                        utils.jsonResponse(res, true, "Account successfuly created");
+                        responses.jsonResponse(res, true, "Account successfuly created");
                         // res.json({
                         //     success: true,
                         //     message: "account successfuly created"
@@ -108,7 +109,7 @@ app.post("/createAcc", (req, res) => {
 app.get("/logout", (req, res) => {
     req.logout();
     //res.redirect("/login"); #old code
-    utils.jsonResponse(res, true, "User has been logged out.")
+    responses.jsonResponse(res, true, "User has been logged out.")
     // res.json({
     //     success: true,
     //     message: "user has been logged out."
@@ -117,10 +118,10 @@ app.get("/logout", (req, res) => {
 
 app.get("/authenticate", (req, res) => {
     if (req.isAuthenticated()) { // confirm req.isAutnticated will not return true nomatter what.
-        utils.jsonResponse(res, true, "user is authenticated.", req.user);
+        responses.jsonResponse(res, true, "user is authenticated.", req.user);
     }
     else {
-        utils.jsonFailedAuthResponse(res, "authenticate");
+        responses.jsonFailedAuthResponse(res, "authenticate");
     }
 })
 
@@ -133,13 +134,13 @@ app.route("/income")
         mysql.query(sql, req.user.id, (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
-            utils.jsonResponse(res, true, "Successfully retrieved projected income data.", result);
+            responses.jsonResponse(res, true, "Successfully retrieved projected income data.", result);
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "income");
+        responses.jsonFailedAuthResponse(res, "income");
     }
 })
 .post((req, res) => {
@@ -150,15 +151,15 @@ app.route("/income")
             (err, result) => {
                 if (err) {
                     console.log(err);
-                    utils.jsonResponse(res, false, err);
+                    responses.jsonResponse(res, false, err);
                 }
                 else {
-                    utils.jsonResponse(res, true, "Added item to projectedIncome", result);
+                    responses.jsonResponse(res, true, "Added item to projectedIncome", result);
                 }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "income");
+        responses.jsonFailedAuthResponse(res, "income");
     }
 })
 .delete((req, res) => {
@@ -168,15 +169,15 @@ app.route("/income")
         mysql.query(sql, [req.body.deleteIncome, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "Deleted item from projectedIncome", result);
+                responses.jsonResponse(res, true, "Deleted item from projectedIncome", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "income");
+        responses.jsonFailedAuthResponse(res, "income");
     }
 })
 .patch((req, res) => {
@@ -187,15 +188,15 @@ app.route("/income")
             (err, result) => {
                 if (err) {
                     console.log(err);
-                    utils.jsonResponse(res, false, err);
+                    responses.jsonResponse(res, false, err);
                 }
                 else {
-                    utils.jsonResponse(res, true, "updated Item in projectedIncome", result);
+                    responses.jsonResponse(res, true, "updated Item in projectedIncome", result);
                 }
             });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "income");
+        responses.jsonFailedAuthResponse(res, "income");
     }
 });
 
@@ -220,12 +221,12 @@ app.route("/monthIncome/:month?")
                     item.inDescription = cipher.decryptString(item.inDescription, process.env.KEY);
                     item.amount = cipher.decryptString(item.amount, process.env.KEY);
                 });
-                utils.jsonResponse(res, true, "monthIncome data retrieved.", result);
+                responses.jsonResponse(res, true, "monthIncome data retrieved.", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "monthIncome");
+        responses.jsonFailedAuthResponse(res, "monthIncome");
     }
 })
 .post((req, res) => {
@@ -236,15 +237,15 @@ app.route("/monthIncome/:month?")
         mysql.query(sql, [itemName, amount, req.body.date, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "Added item to monthIncome.", result);
+                responses.jsonResponse(res, true, "Added item to monthIncome.", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "monthIncome");
+        responses.jsonFailedAuthResponse(res, "monthIncome");
     }
 })
 .patch((req, res) => {
@@ -255,15 +256,15 @@ app.route("/monthIncome/:month?")
         mysql.query(sql, [itemName, amount, req.body.date, req.body.itmId, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "Updated item in monthIncome.", result);
+                responses.jsonResponse(res, true, "Updated item in monthIncome.", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "monthIncome");
+        responses.jsonFailedAuthResponse(res, "monthIncome");
     }
 })
 .delete((req, res) => {
@@ -272,15 +273,15 @@ app.route("/monthIncome/:month?")
         mysql.query(sql, [req.body.deleteIncomeItm, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "Deleted item in monthIncome.", result);
+                responses.jsonResponse(res, true, "Deleted item in monthIncome.", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "monthIncome");
+        responses.jsonFailedAuthResponse(res, "monthIncome");
     }
 });
 
@@ -299,19 +300,19 @@ app.route("/monthSpending/:month?")
         mysql.query(sql, [monthStart, monthEnd, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
                 result.foreach(item => {
                     item.itmDescription = cipher.decryptString(item.itmDescription, process.env.KEY);
                     item.amount = cipher.decryptString(item.amount, process.env.KEY);
                 });
-                utils.jsonResponse(res, true, "MonthSpending data retrieved.", result);
+                responses.jsonResponse(res, true, "MonthSpending data retrieved.", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "monthSpending");
+        responses.jsonFailedAuthResponse(res, "monthSpending");
     }
 })
 .post((req, res) => {
@@ -322,15 +323,15 @@ app.route("/monthSpending/:month?")
         mysql.query(sql, [itemName, amount, req.body.category, req.body.date, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "Added item to monthSpending.", result);
+                responses.jsonResponse(res, true, "Added item to monthSpending.", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "monthSpending");
+        responses.jsonFailedAuthResponse(res, "monthSpending");
     }
 })
 .delete((req, res) => {
@@ -340,16 +341,16 @@ app.route("/monthSpending/:month?")
         mysql.query(sql, [req.body.deleteSpendingItm, req.user.id] ,(err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
                 console.log(result);
-                utils.jsonResponse(res, true, "Deleted item from monthSpending", result);
+                responses.jsonResponse(res, true, "Deleted item from monthSpending", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "monthSpending");
+        responses.jsonFailedAuthResponse(res, "monthSpending");
     }
 })
 .patch((req, res) => {
@@ -360,15 +361,15 @@ app.route("/monthSpending/:month?")
         mysql.query(sql, [itemName, amount, req.body.category ,req.body.date , req.body.itmId, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "Updated item in monthSpending", result);
+                responses.jsonResponse(res, true, "Updated item in monthSpending", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "monthSpending");
+        responses.jsonFailedAuthResponse(res, "monthSpending");
     }
 });
 
@@ -380,15 +381,15 @@ app.route("/budgets")
         mysql.query(sql, req.user.id, (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "budgets data retrieved.", result);
+                responses.jsonResponse(res, true, "budgets data retrieved.", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "budgets");
+        responses.jsonFailedAuthResponse(res, "budgets");
     }
 })
 .post((req, res) => {
@@ -398,15 +399,15 @@ app.route("/budgets")
         mysql.query(sql,[req.body.category, req.body.budgeted, req.user.id] , (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "Added item to budgets.", result);
+                responses.jsonResponse(res, true, "Added item to budgets.", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "budgets");
+        responses.jsonFailedAuthResponse(res, "budgets");
     }
 })
 .patch((req, res) => {
@@ -415,15 +416,15 @@ app.route("/budgets")
         mysql.query(sql, [req.body.category, req.body.budgeted, req.body.itemId, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, false, "Updated budget item.", result);
+                responses.jsonResponse(res, false, "Updated budget item.", result);
             }
         });
     }
     else {
-        utils.jsonFailedAuthResponse(res, "budgets");
+        responses.jsonFailedAuthResponse(res, "budgets");
     }
 })
 .delete((req, res) => {
@@ -433,10 +434,10 @@ app.route("/budgets")
         mysql.query(sql, [req.body.deleteCategory, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
-                utils.jsonResponse(res, false, err);
+                responses.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, "Deleted budget item.", result);
+                responses.jsonResponse(res, true, "Deleted budget item.", result);
             }
         });
     }
