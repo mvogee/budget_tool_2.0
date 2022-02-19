@@ -125,7 +125,7 @@ app.get("/authenticate", (req, res) => {
 })
 
 
-// -- INCOME ROUTES -- //
+// -- Projected INCOME ROUTES -- //
 app.route("/income")
 .get((req, res) => {
     if (req.isAuthenticated()) {
@@ -199,7 +199,7 @@ app.route("/income")
     }
 });
 
-// ! thisMonth routes
+// -- monthIncome Routes --//
 app.route("/monthIncome/:month?")
 .get((req, res) => {
     if (req.isAuthenticated()) {
@@ -284,6 +284,8 @@ app.route("/monthIncome/:month?")
     }
 });
 
+
+// -- monthSpending Routes --//
 app.route("/monthSpending/:month?")
 .get((req, res) => {
     if (req.isAutnticated()) {
@@ -370,7 +372,9 @@ app.route("/monthSpending/:month?")
     }
 });
 
-app.get("/budgets", (req, res) => {
+// -- BUDGETS ROUTES -- //
+app.route("/budgets")
+.get((req, res) => {
     if (req.isAuthenticated()) {
         let sql = "SELECT * FROM budgets WHERE userId=?;";
         mysql.query(sql, req.user.id, (err, result) => {
@@ -385,6 +389,59 @@ app.get("/budgets", (req, res) => {
     }
     else {
         utils.jsonFailedAuthResponse(res, "budgets");
+    }
+})
+.post((req, res) => {
+    if (req.isAuthenticated()) {
+        console.log(req.body.category + " " + req.body.budgeted);
+        let sql = "INSERT INTO budgets(category, budget, userId) VALUES (?, ?, ?);";
+        mysql.query(sql,[req.body.category, req.body.budgeted, req.user.id] , (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Added item to budgets.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "budgets");
+    }
+})
+.patch((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ? AND userId=?;";
+        mysql.query(sql, [req.body.category, req.body.budgeted, req.body.itemId, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, false, "Updated budget item.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "budgets");
+    }
+})
+.delete((req, res) => {
+    if (req.isAuthenticated()) {
+        console.log(req.body.categoryId);
+        let sql = "DELETE FROM budgets WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.deleteCategory, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Deleted budget item.", result);
+            }
+        });
+    }
+    else {
+        jsonFailedAuthResponse(res, "budgets");
     }
 });
 
