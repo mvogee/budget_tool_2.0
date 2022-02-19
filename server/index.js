@@ -125,7 +125,7 @@ app.get("/authenticate", (req, res) => {
 })
 
 
-// -- INCOME ROUTES -- //
+// -- Projected INCOME ROUTES -- //
 app.route("/income")
 .get((req, res) => {
     if (req.isAuthenticated()) {
@@ -153,7 +153,7 @@ app.route("/income")
                     utils.jsonResponse(res, false, err);
                 }
                 else {
-                    utils.jsonResponse(res, true, result);
+                    utils.jsonResponse(res, true, "Added item to projectedIncome", result);
                 }
         });
     }
@@ -171,7 +171,7 @@ app.route("/income")
                 utils.jsonResponse(res, false, err);
             }
             else {
-                utils.jsonResponse(res, true, result);
+                utils.jsonResponse(res, true, "Deleted item from projectedIncome", result);
             }
         });
     }
@@ -190,7 +190,7 @@ app.route("/income")
                     utils.jsonResponse(res, false, err);
                 }
                 else {
-                    utils.jsonResponse(res, true, result);
+                    utils.jsonResponse(res, true, "updated Item in projectedIncome", result);
                 }
             });
     }
@@ -199,9 +199,9 @@ app.route("/income")
     }
 });
 
-// ! thisMonth routes
-
-app.get("/'monthIncome/:month?", (req, res) => {
+// -- monthIncome Routes --//
+app.route("/monthIncome/:month?")
+.get((req, res) => {
     if (req.isAuthenticated()) {
         dt = new Date();
         if (req.params.month) {
@@ -227,9 +227,67 @@ app.get("/'monthIncome/:month?", (req, res) => {
     else {
         utils.jsonFailedAuthResponse(res, "monthIncome");
     }
+})
+.post((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate, userId) VALUES(?, ?, ?, ?);";
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.date, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Added item to monthIncome.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthIncome");
+    }
+})
+.patch((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "UPDATE monthIncome SET inDescription=?, amount=?, depositDate=? WHERE id=? AND userId=?;";
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.date, req.body.itmId, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Updated item in monthIncome.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthIncome");
+    }
+})
+.delete((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "DELETE FROM monthIncome WHERE id=? AND userId=?";
+        mysql.query(sql, [req.body.deleteIncomeItm, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Deleted item in monthIncome.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthIncome");
+    }
 });
 
-app.get("/monthSpending/:month?", (req, res) => {
+
+// -- monthSpending Routes --//
+app.route("/monthSpending/:month?")
+.get((req, res) => {
     if (req.isAutnticated()) {
         dt = new Date();
         if (req.params.month) {
@@ -255,9 +313,68 @@ app.get("/monthSpending/:month?", (req, res) => {
     else {
         utils.jsonFailedAuthResponse(res, "monthSpending");
     }
+})
+.post((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "INSERT INTO monthSpending(itmDescription, amount, category, purchaseDate, userId) VALUES(?, ?, ?, ?, ?);";
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.category, req.body.date, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Added item to monthSpending.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthSpending");
+    }
+})
+.delete((req, res) => {
+    if (req.isAuthenticated()) {
+        console.log("deleting income item");
+        let sql = "DELETE FROM monthSpending WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.deleteSpendingItm, req.user.id] ,(err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                console.log(result);
+                utils.jsonResponse(res, true, "Deleted item from monthSpending", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthSpending");
+    }
+})
+.patch((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "UPDATE monthSpending SET itmDescription=?, amount=?, category=?, purchaseDate=?  WHERE id=? AND userId=?;";
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.category ,req.body.date , req.body.itmId, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Updated item in monthSpending", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "monthSpending");
+    }
 });
 
-app.get("/budgets", (req, res) => {
+// -- BUDGETS ROUTES -- //
+app.route("/budgets")
+.get((req, res) => {
     if (req.isAuthenticated()) {
         let sql = "SELECT * FROM budgets WHERE userId=?;";
         mysql.query(sql, req.user.id, (err, result) => {
@@ -272,6 +389,59 @@ app.get("/budgets", (req, res) => {
     }
     else {
         utils.jsonFailedAuthResponse(res, "budgets");
+    }
+})
+.post((req, res) => {
+    if (req.isAuthenticated()) {
+        console.log(req.body.category + " " + req.body.budgeted);
+        let sql = "INSERT INTO budgets(category, budget, userId) VALUES (?, ?, ?);";
+        mysql.query(sql,[req.body.category, req.body.budgeted, req.user.id] , (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Added item to budgets.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "budgets");
+    }
+})
+.patch((req, res) => {
+    if (req.isAuthenticated()) {
+        let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ? AND userId=?;";
+        mysql.query(sql, [req.body.category, req.body.budgeted, req.body.itemId, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, false, "Updated budget item.", result);
+            }
+        });
+    }
+    else {
+        utils.jsonFailedAuthResponse(res, "budgets");
+    }
+})
+.delete((req, res) => {
+    if (req.isAuthenticated()) {
+        console.log(req.body.categoryId);
+        let sql = "DELETE FROM budgets WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.deleteCategory, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                utils.jsonResponse(res, false, err);
+            }
+            else {
+                utils.jsonResponse(res, true, "Deleted budget item.", result);
+            }
+        });
+    }
+    else {
+        jsonFailedAuthResponse(res, "budgets");
     }
 });
 
