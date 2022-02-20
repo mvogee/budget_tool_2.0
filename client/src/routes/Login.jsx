@@ -1,6 +1,11 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
+/* TODO:
+*   - create state handlers for each input
+*   - on submit button make request to server to authenticate the user.
+*/
+
 function Login(props) {
 
     function submitBtn(event) {
