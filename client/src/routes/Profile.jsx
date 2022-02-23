@@ -1,10 +1,6 @@
 import React from 'react';
 
 /* TODO:
-*   - display username
-*   - display email
-*   - email change form.
-*   - password change form
 *   - State handlers for forms
 *   - Handnler for submit button to update password.
 */
