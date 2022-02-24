@@ -1,4 +1,5 @@
 import React from "react";
+import PopEditIncome from "../components/PopEditIncome.jsx";
 
 /* TODO:
 *   - state handlers for all inputs.

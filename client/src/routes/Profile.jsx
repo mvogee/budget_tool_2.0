@@ -2,7 +2,7 @@ import React from 'react';
 
 /* TODO:
 *   - State handlers for forms
-*   - Handnler for submit button to update password.
+*   - Handler for submit button to update password.
 */
 
 
