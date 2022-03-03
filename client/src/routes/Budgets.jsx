@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import Link from "react-router-dom";
 import PopEditBudgets from "../components/PopEditBudgets.jsx";
 /* TODO:
@@ -15,9 +15,19 @@ import PopEditBudgets from "../components/PopEditBudgets.jsx";
 
 function Budgets(props) {
 
+    const [categoryInput, setCategoryInput] = useState("");
+    const [budgetInput, setBudgetInput] = useState(0);
+
     function submitBtn(event) {
         event.preventDefault();
         alert("submit was pressed");
+    }
+
+    function categoryInputChange(e) {
+        setCategoryInput(e.target.value);
+    }
+    function budgetInputChange(e) {
+        setBudgetInput(e.target.value);
     }
 
     return (
@@ -35,11 +45,11 @@ function Budgets(props) {
             <form className="budget-item-form" name="newBudgetItm">
                 <div className="input_div">
                     <label htmlFor="category">Category</label>
-                    <input type="text" autoComplete="off" name="category" placeholder="Category Name" autofocus required />
+                    <input type="text" autoComplete="off" name="category" placeholder="Category Name" autofocus required value={categoryInput} onChange={categoryInputChange}/>
                 </div>
                 <div className="input_div">
                     <label htmlFor="budgeted">Budget</label>
-                    <input type="number" step=".01" name="budgeted" placeholder="100.00" required />
+                    <input type="number" step=".01" name="budgeted" placeholder="100.00" required value={budgetInput} onChange={budgetInputChange}/>
                 </div>
                 <button type="submit" onClick={submitBtn}>Save</button>
             </form>
