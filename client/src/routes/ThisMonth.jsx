@@ -1,4 +1,6 @@
-import React from "react";
+import { React, useState} from "react";
+import SpendingItemForm from "../components/SpendingItemForm";
+import SpendingItemDisplay from "../components/SpendingItemDisplay";
 
 /* TODO:
 *   - create month picker component
@@ -8,17 +10,25 @@ import React from "react";
 *   - handle states for all above components and manage state functions.
 */
 
+function getMonthName(date) {
+
+}
+
+// need a utility to get me the standard date format, month name, and the 
 function ThisMonth(props) {
+
+  const [month, setMonth] = useState(new Date());
+
     return (
         <div className="thisMonth">
-            <h1>ThisMonth</h1>
+            <h1>{getMonthName(month)}</h1>
 
             {/* create month picker component. /changeMonth form*/}
                 <div className="form_div">
                   <form method="POST">
                     <div className="input_div">
                       <label htmlFor="changeMonthInput">Month</label>
-                      <input id="changeMonthInput" type="month" name="month" onChange={/* create funtion */ console.log("change")} />
+                      <input id="changeMonthInput" type="month" name="month" onChange={/* create funtion */ console.log("change")} value={month}/>
                     </div>
                   </form>
                 </div>
@@ -36,11 +46,13 @@ function ThisMonth(props) {
 
                 <div className="spending">
                     <h3>Spending</h3>
+                    < SpendingItemForm /> {/* props: spending items list state handler */}
                     {/* isnert spending item form component */}
                     <div className="form_div">
 
                     </div>
                     <div className="spending-display" >
+                    < SpendingItemDisplay />
                         {/* isnert spending item display component */}
                     </div>
                 </div>
