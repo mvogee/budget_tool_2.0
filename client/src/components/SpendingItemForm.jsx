@@ -15,9 +15,9 @@ function SpendingItemForm(props) {
     return(
         <div className="SpendingItemForm">
             <form id="spendingItem" className="SpendingForm">
-                <div clasNames="input_div">
+                <div className="input_div">
                     <label htmlFor="itemName">Description</label>
-                    <input type="text" name="itemName" placeholder="name" required autofocus />
+                    <input type="text" name="itemName" placeholder="name" required autoFocus />
                 </div>
                 <div className="input_div">
                     <label htmlFor="amount">Amount</label>

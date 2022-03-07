@@ -15,7 +15,7 @@ function SpendingItemDisplay(props) {
         console.log(event.target.itmId);
     }
 
-    function spendingItem(item) {
+    function spendingLineItem(item) {
             <tr>
                 <td className="spendingDescription">{item.itmDescription}</td>
                 <td className="spendingAmount">${ item.amount }</td>
@@ -54,7 +54,7 @@ function SpendingItemDisplay(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.spendItems ? props.spendItems.forEach(spendingItem) : null}
+                    {props.spendItems ? props.spendItems.forEach(spendingLineItem) : null}
                 </tbody>
             </table>
         </div>

@@ -26,5 +26,5 @@ function jsonFailedAuthResponse(res, route) {
 
 module.exports = {
     jsonResponse: jsonResponse,
-    jsonFailedAuthresponse: jsonFailedAuthResponse
+    jsonFailedAuthResponse: jsonFailedAuthResponse
 }
