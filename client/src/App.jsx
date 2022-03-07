@@ -14,6 +14,8 @@ import GuestNav from './components/GuestNav.jsx';
 import Nav from './components/Nav.jsx';
 import Footer from './components/Footer.jsx';
 
+import checkAuth from "./checkAuth.js";
+
 import {Routes, Route} from "react-router-dom"; // check if you even need this if its going to be in Nav.jsx
 
 function App() {
@@ -28,16 +30,16 @@ function App() {
     {putNav()}
     
       <Routes>
-          <Route path="/overview" element={<Overview />} />
-          <Route path="/income" element={<Income />} />
-          <Route path="/budgets" element={<Budgets />} />
-          <Route path="/thisMonth" element={<ThisMonth />} />
-          <Route path="/landingPage" element={<LandingPage />} />
-          <Route path="/login" element={<Login setUser={setUser}/>} />
-          <Route path="/createAcc" element={<CreateAcc />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/overview" element={<Overview user={user} setUser={setUser} />} />
+          <Route path="/income" element={<Income user={user} setUser={setUser} />} />
+          <Route path="/budgets" element={<Budgets user={user} setUser={setUser} />} />
+          <Route path="/thisMonth" element={<ThisMonth user={user} setUser={setUser} />} />
+          <Route path="/landingPage" element={<LandingPage user={user} setUser={setUser} />} />
+          <Route path="/login" element={<Login user={user} setUser={setUser} />} />
+          <Route path="/createAcc" element={<CreateAcc user={user} setUser={setUser} />} />
+          <Route path="/profile" element={<Profile user={user} setUser={setUser} />} />
       </Routes>
-
+  
       <Footer />
     </div>
   );
