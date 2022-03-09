@@ -57,6 +57,7 @@ app.post("/login",
 );
 
 app.post("/createAcc", (req, res) => {
+    console.log("createAcc");
     const pw = req.body.password;
     const email = req.body.email;
     const userName = req.body.userName;
@@ -87,7 +88,7 @@ app.post("/createAcc", (req, res) => {
                         return (err);
                     }
                     mysql.query(insertSql, [email, hash, userName], (error, created) => {
-                        console.log("acount created");
+                        console.log("account created");
                         if (error) {
                             console.log(error);
                             return (error);

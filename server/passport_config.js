@@ -7,9 +7,9 @@ module.exports = function(passport) {
 
     passport.serializeUser(function(user, done) {
         done(null, user.id);
-      });
+    });
 
-      passport.deserializeUser(function(id, done) {
+    passport.deserializeUser(function(id, done) {
         mysql.query("SELECT * FROM users WHERE id=?;",[id], (err, user) => {
             done(err, user[0]);
         });
@@ -17,10 +17,10 @@ module.exports = function(passport) {
 
 passport.use(new LocalStrategy(
     {
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback : true
-  },
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback : true
+    },
     function (req, email, password, done) {
         let sql = "SELECT * FROM users WHERE email=?;";
         mysql.query(sql, [email], (err, user) => {
