@@ -8,7 +8,7 @@ function jsonResponse(res, success, message, data = null) {
     res.json({
         success: success,
         message: message,
-        obj: obj
+        obj: data
     });
 }
 
