@@ -52,7 +52,7 @@ app.use(passport.session());
 app.post("/login",
     passport.authenticate('local', {}),
     (req, res) => {
-            responses.jsonResponse(res, req.user ? true : false, "login successful");
+            responses.jsonResponse(res, req.user ? true : false, "login successful", req.user ? req.user : null);
     }
 );
 
