@@ -1,5 +1,6 @@
 import { React, useState } from "react";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 /* TODO:
 *   - create state handlers for each input field.
@@ -10,7 +11,8 @@ function CreateAcc(props) {
     const [email, setEmail] = useState("");
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPw, setConfirmPw] = useState(""); 
+    const [confirmPw, setConfirmPw] = useState("");
+    const navigate = useNavigate();
     
     async function createAccRequest() {
         let data = {
@@ -34,6 +36,14 @@ function CreateAcc(props) {
         };
         const response = await fetch(url, opts);
         const resData = await response.json();
+        if (await resData.success) {
+            // if successful go ahead and make login request to server
+            // for now just redirect user to the login page.
+            navigate("/login");
+        }
+        else {
+            // if failed to create account display message to user.
+        }
         console.log(resData);
         // if logged in go ahead and set user to returned user.
         // if failed display message

@@ -22,7 +22,7 @@ function App() {
     const [user, setUser] = useState(null); { /* server will always check req auth on requests. only used to determine display items */}
 
     function putNav() {
-        return (user ? <Nav userName={user.userName} /> : <GuestNav /> );
+        return (user ? <Nav userName={user.userName} setUser={setUser}/> : <GuestNav /> );
     }
 
   return (
