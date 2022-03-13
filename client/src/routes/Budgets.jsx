@@ -45,7 +45,7 @@ function Budgets(props) {
             <form className="budget-item-form" name="newBudgetItm">
                 <div className="input_div">
                     <label htmlFor="category">Category</label>
-                    <input type="text" autoComplete="off" name="category" placeholder="Category Name" autofocus required value={categoryInput} onChange={categoryInputChange}/>
+                    <input type="text" autoComplete="off" name="category" placeholder="Category Name" autoFocus required value={categoryInput} onChange={categoryInputChange}/>
                 </div>
                 <div className="input_div">
                     <label htmlFor="budgeted">Budget</label>
