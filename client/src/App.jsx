@@ -1,5 +1,5 @@
 import './App.css';
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 
 import Budgets from './routes/Budgets.jsx';
 import CreateAcc from './routes/CreateAcc.jsx';
@@ -20,6 +20,8 @@ import {Routes, Route} from "react-router-dom"; // check if you even need this i
 
 function App() {
     const [user, setUser] = useState(null); { /* server will always check req auth on requests. only used to determine display items */}
+
+    useEffect(() => {checkAuth(setUser)}, []);
 
     function putNav() {
         return (user ? <Nav userName={user.userName} setUser={setUser}/> : <GuestNav /> );
