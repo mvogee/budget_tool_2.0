@@ -19,10 +19,12 @@ async function checkAuth(setUser) {
     if (data.success) {
         console.log("user authenticated success");
         setUser(data.obj);
+        return (true);
     }
     else {
         console.log("user authentication failed");
         setUser(null);
+        return (false);
     }
 }
 

@@ -1,6 +1,8 @@
-import { React, useState } from "react";
-import Link from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import PopEditBudgets from "../components/PopEditBudgets.jsx";
+import BudgetsDisplay from "../components/BudgetsDisplay.jsx";
+import checkAuth from "../checkAuth.js";
 /* TODO:
 *   - state hanlders for new budget items fields
 *   - button hanldler to hanle sumitting new budget items.
@@ -17,10 +19,26 @@ function Budgets(props) {
 
     const [categoryInput, setCategoryInput] = useState("");
     const [budgetInput, setBudgetInput] = useState(0);
+    const [budgetList, setBudgetList] = useState(null);
+
+    let navigate = useNavigate();
+    useEffect(() => {
+        const authenticate = async () => {
+            let auth = await checkAuth(props.setUser);
+            console.log(auth);
+            if (!auth) {
+                navigate("/login");
+            }
+        }
+        authenticate();
+    }, []);
 
     function submitBtn(event) {
         event.preventDefault();
-        alert("submit was pressed");
+        let newBudgetItem = {id: 1, category: categoryInput, budget: budgetInput };
+        console.log(newBudgetItem);
+        setBudgetList(budgetList ? budgetList.concat(newBudgetItem) : [newBudgetItem]);
+        // send to the server here.
     }
 
     function categoryInputChange(e) {
@@ -54,6 +72,7 @@ function Budgets(props) {
                 <button type="submit" onClick={submitBtn}>Save</button>
             </form>
             </div>
+                < BudgetsDisplay budgets={budgetList} />
                 {/* insert funciton to display the current budgets table. includes buttons to edit and delete the row. popup edit field */}
         </div>
     );
