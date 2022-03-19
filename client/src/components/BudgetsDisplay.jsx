@@ -1,11 +1,9 @@
-import { React, useEffect} from "react";
+import { React } from "react";
 
 function BudgetsDisplay(props) {
 
-    useEffect(() => {console.log(props.budgets)}, []);
 
     function budgetItems(item) {
-        console.log(item);
         return (
             <tr key={item.id} className="itemRow">
                 <td>{item.category}</td>
@@ -17,7 +15,7 @@ function BudgetsDisplay(props) {
                 >edit</button>
                 </td>
                 <td>
-                    <button className="deleteBtn" type="button" itmId={item.id} >Delete</button>
+                    <button className="deleteBtn" type="button" itmid={item.id} >Delete</button>
                 </td>
             </tr>
         );
