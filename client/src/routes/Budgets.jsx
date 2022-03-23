@@ -56,7 +56,7 @@ function Budgets(props) {
             credentials: 'same-origin', // include, *same-origin, omit
             headers: {
                 'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer',
@@ -73,13 +73,12 @@ function Budgets(props) {
         const authenticate = async () => {
             let auth = await checkAuth(props.setUser);
             console.log(auth);
-            if (!auth) {
-                navigate("/login");
-            }
-            else {
+            if (auth) {
                 getData();
             }
-            
+            else {
+                navigate("/login");
+            }
         }
         authenticate();
     }, []);
