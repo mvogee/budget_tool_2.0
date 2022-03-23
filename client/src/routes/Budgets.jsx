@@ -79,7 +79,6 @@ function Budgets(props) {
             else {
                 navigate("/login");
             }
-            
         }
         authenticate();
     }, []);

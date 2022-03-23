@@ -46,6 +46,35 @@ function Income(props) {
         
     }
 
+    async function sendData() {
+        let data = {incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: taxRate, retirement: retirement };
+        let url = "/income"
+        let opts = {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data) // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        };
+
+        const response = await fetch(url, opts);
+        const reData = await response.json();
+        setListData(reData.obj.insertId);
+        console.log(reData);
+    }
+
+    function setListData(id) {
+        let newIncomeItem = {id: id, incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: taxRate, retirement: retirement };
+        console.log(newIncomeItem);
+        setIncomeList(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
+    }
+
     useEffect(() => {
         const authenticate = async () => {
             let auth = await checkAuth(props.setUser);
@@ -56,14 +85,13 @@ function Income(props) {
             else {
                 navigate("/login");
             }
-            
         }
         authenticate();
     }, []);
 
     function submitBtn(event) {
         event.preventDefault();
-        alert("submit button was pressed");
+        sendData()
     }
 
     return (
