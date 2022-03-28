@@ -1,6 +1,7 @@
 import { React, useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import PopEditIncome from "../components/PopEditIncome.jsx";
+import IncomeDisplay from "../components/IncomeDisplay.jsx";
 import checkAuth from "../checkAuth";
 /* TODO:
 *   - state handlers for all inputs.
@@ -126,6 +127,9 @@ function Income(props) {
                     </div>
                     <button type="submit" onClick={submitBtn}>Add</button>
                 </form>
+            </div>
+            <div className="Display">
+                < IncomeDisplay incomeList={incomeList}/>
             </div>
         </div>
     );
