@@ -6,11 +6,12 @@ import {React, useState} from "react";
 * props needs to receive the state handler for spending items.
 */
 function SpendingItemForm(props) {
-
+    let day = new Date().getDate();
+    day = day < 10 ? "0" + day.toString() : day.toString();
     const [name, setName] = useState("");
     const [amount, setAmount] = useState(0);
     const [category, setCategory] = useState("None");
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(props.yearMonth + "-" + day);
 
     function submitBtn(event) {
         event.preventDefault();
