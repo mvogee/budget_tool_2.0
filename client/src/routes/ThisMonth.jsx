@@ -111,7 +111,7 @@ function ThisMonth(props) {
     const authenticate = async () => {
         let auth = await checkAuth(props.setUser);
         if (auth) {
-          // get purchases
+          getPurchaseData();
           getDepositData();
           getBudgetData();
         }
@@ -119,6 +119,7 @@ function ThisMonth(props) {
           navigate("/login");
         }
     }
+    authenticate();
   }, []);
 
   function changeMonth(event) {
