@@ -290,7 +290,7 @@ app.route("/monthIncome/:month?")
 // -- monthSpending Routes --//
 app.route("/monthSpending/:month?")
 .get((req, res) => {
-    if (req.isAutnticated()) {
+    if (req.isAuthenticated()) {
         dt = new Date();
         if (req.params.month) {
             dt = new Date(req.params.month + "-02");
@@ -304,7 +304,7 @@ app.route("/monthSpending/:month?")
                 responses.jsonResponse(res, false, err);
             }
             else {
-                result.foreach(item => {
+                result.forEach(item => {
                     item.itmDescription = cipher.decryptString(item.itmDescription, process.env.KEY);
                     item.amount = cipher.decryptString(item.amount, process.env.KEY);
                 });
@@ -449,5 +449,5 @@ app.route("/budgets")
 
 
 app.listen(port, () => {
-  console.log("Hello World 2.0!");
+    console.log("Hello World 2.0!");
 });

@@ -1,10 +1,11 @@
 import {React, useState} from "react"
 
 function DepositForm(props) {
-
+    let day = new Date().getDate();
+    day = day < 10 ? "0" + day.toString() : day.toString();
     const [name, setName] = useState("");
     const [amount, setAmount] = useState(0);
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(props.yearMonth + "-" + day);
 
     function submitBtn(event) {
         event.preventDefault();

@@ -1,5 +1,5 @@
 import { React, useState, useEffect} from "react";
-import {Navigate, useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import SpendingItemForm from "../components/SpendingItemForm";
 import SpendingItemDisplay from "../components/SpendingItemDisplay";
 import DepositForm from "../components/DepositForm";
@@ -27,53 +27,117 @@ function getMonthName(date) {
 */
 function getDateVal(date) {
   let year = date.getFullYear().toString();
-  console.log(year);
   let month = (date.getMonth() + 1).toString();
-  console.log(month);
   return (year + "-" + (date.getMonth() + 1 < 10 ? "0" + month : month));
 }
 
 // need a utility to get me the standard date format, month name, and the 
 function ThisMonth(props) {
 
-  const [month, setMonth] = useState(getDateVal(new Date())); // in the onChange for this it needs to retreive the list data again.
+  const [yearMonth, setYearMonth] = useState(getDateVal(new Date())); // in the onChange for this it needs to retreive the list data again.
   const [budgetList, setBudgetList] = useState(null); // used for displaying budget progress.
-  const [purchaseList, setpurchaseList] = useState(null); // when retrieved from server use month as search filter.
+  const [purchaseList, setPurchaseList] = useState(null); // when retrieved from server use month as search filter.
   const [depositList, setDepositList] = useState(null); // when retrieving data use month as search filter. 
 
   const navigate = useNavigate();
   
+  async function getPurchaseData() {
+    let url = "/monthSpending/" + yearMonth;
+    let opts = {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer',
+    // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    };
+    const response = await fetch(url, opts);
+    const reData = await response.json();
+    console.log(reData);
+    if (reData.success) {
+        setPurchaseList(reData.obj);
+    }
+}
+
+  async function getDepositData() {
+    let url = "/monthIncome/" + yearMonth;
+    let opts = {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer',
+    // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    };
+    const response = await fetch(url, opts);
+    const reData = await response.json();
+    console.log(reData);
+    if (reData.success) {
+        setDepositList(reData.obj);
+    }
+}
+
+  async function getBudgetData() {
+    let url = "/budgets"
+    let opts = {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer',
+    // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    };
+    const response = await fetch(url, opts);
+    const reData = await response.json();
+    console.log(reData);
+    if (reData.success) {
+        setBudgetList(reData.obj);
+    }
+}
   // if month changes we need to retrieve data again
   useEffect(() => {
     const authenticate = async () => {
         let auth = await checkAuth(props.setUser);
         if (auth) {
-          // get purchases
-          // get deposits
-          // get budgets
+          getPurchaseData();
+          getDepositData();
+          getBudgetData();
         }
         else {
           navigate("/login");
         }
     }
+    authenticate();
   }, []);
 
   function changeMonth(event) {
     console.log("monthChange", event.target.value);
 
-    setMonth("" + event.target.value);
+    setYearMonth("" + event.target.value);
   }
 
     return (
         <div className="thisMonth">
-            <h1>{getMonthName(month)}</h1>
+            <h1>{getMonthName(yearMonth)}</h1>
 
             {/* create month picker component. /changeMonth form*/}
                 <div className="form_div">
                   <form method="POST">
                     <div className="input_div">
                       <label htmlFor="changeMonthInput">Month</label>
-                      <input id="changeMonthInput" type="month" name="month" onChange={changeMonth} value={month}/>
+                      <input id="changeMonthInput" type="month" name="month" onChange={changeMonth} value={yearMonth}/>
                     </div>
                   </form>
                 </div>
@@ -91,7 +155,7 @@ function ThisMonth(props) {
 
                 <div className="spending">
                     <h3>Spending</h3>
-                    < SpendingItemForm /> {/* props: spending items list state handler */}
+                    < SpendingItemForm yearMonth={yearMonth}/> {/* props: spending items list state handler */}
                     {/* isnert spending item form component */}
                     <div className="form_div">
 
@@ -107,7 +171,7 @@ function ThisMonth(props) {
                   <h3>Deposits</h3>
                   <div className="form_div">
                       {/* Insert desposit item form component */}
-                      <DepositForm />
+                      <DepositForm yearMonth={yearMonth}/>
                   </div>
                   <div className="deposite-display" >
                       {/* Insert desposit item display component */}
