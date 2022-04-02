@@ -1,6 +1,11 @@
 import {React, useState} from "react";
 
 
+function selectOptions(item) {
+    return (
+        <option key={item.id} value={item.id} >{item.category}</option>
+    );
+}
 /*
 * props needs to receive a category list, 
 * props needs to receive the state handler for spending items.
@@ -46,7 +51,8 @@ function SpendingItemForm(props) {
                 <div className="input_div">
                     <label htmlFor="category">Category</label>
                     <select name="category" value={category} onChange={categoryChange}>
-                        <option value="0">un-categorized</option>
+                        <option value="0" key="0">un-categorized</option>
+                        {props.budgets ? props.budgets.map(selectOptions) : null}
                         {/* Insert budget category options <option value="element.id">category name</option><*/}
                     </select>
                 </div>
