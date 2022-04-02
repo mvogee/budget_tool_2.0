@@ -155,13 +155,13 @@ function ThisMonth(props) {
 
                 <div className="spending">
                     <h3>Spending</h3>
-                    <SpendingItemForm yearMonth={yearMonth} budgets={budgetList}/> {/* props: spending items list state handler */}
+                    <SpendingItemForm yearMonth={yearMonth} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList}/> {/* props: spending items list state handler */}
                     {/* isnert spending item form component */}
                     <div className="form_div">
 
                     </div>
                     <div className="spending-display" >
-                    <SpendingItemDisplay />
+                    <SpendingItemDisplay purchaseList={purchaseList}/>
                         {/* isnert spending item display component */}
                     </div>
                 </div>

@@ -16,29 +16,20 @@ function SpendingItemDisplay(props) {
     }
 
     function spendingLineItem(item) {
-            <tr>
+        return(
+            <tr key={item.id}>
                 <td className="spendingDescription">{item.itmDescription}</td>
                 <td className="spendingAmount">${ item.amount }</td>
-                <td className="spendingCategory">{item.category}</td> {/*! make function that will get the category name.*/}
-                <td className="spendingDate">{item.purchaseDate }</td> {/* make function to format date */}
+                <td className="spendingCategory">{item.category}</td>
+                <td className="spendingDate">{item.purchaseDate }</td>
                 <td>
-                    <button className="editButton editBtnSpend" onClick={editButtonClick}
-                    itmId = { item.id }
-                    name = { item.itmDescription}
-                    purchaseAmount = {item.amount}
-                    categoryId = {item.category}
-                    purchaseDate = {item.purchaseDate}
-                    >edit
-                    </button>
+                    <button className="editButton editBtnSpend" onClick={editButtonClick} itmid={ item.id } name = { item.itmDescription} purchaseamount={item.amount} categoryid={item.category} purchasedate={item.purchaseDate}>Edit</button>
                 </td>
                 <td>
-                    <button className="deleteBtn" onClick={deleteItem}
-                        itemId = {item.id}
-                        name = {item.itmDescription}
-                        >Delete
-                    </button>
+                    <button className="deleteBtn" onClick={deleteItem} itmid = {item.id} name = {item.itmDescription}>Delete</button>
                 </td>
             </tr>
+        );
     }
 
     return (
@@ -51,10 +42,12 @@ function SpendingItemDisplay(props) {
                         <td>Amount</td>
                         <td>Category</td>
                         <td>Date</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
-                    {props.spendItems ? props.spendItems.forEach(spendingLineItem) : null}
+                    {props.purchaseList ? props.purchaseList.map(spendingLineItem) : null}
                 </tbody>
             </table>
         </div>
