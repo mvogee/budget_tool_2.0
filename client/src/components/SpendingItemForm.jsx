@@ -1,21 +1,59 @@
 import {React, useState} from "react";
 
 
+function selectOptions(item) {
+    return (
+        <option key={item.id} value={item.id} >{item.category}</option>
+    );
+}
 /*
 * props needs to receive a category list, 
 * props needs to receive the state handler for spending items.
 */
+
 function SpendingItemForm(props) {
     let day = new Date().getDate();
-    day = day < 10 ? "0" + day.toString() : day.toString();
+    day = props.yearMonth + "-" + (day < 10 ? "0" + day.toString() : day.toString());
     const [name, setName] = useState("");
     const [amount, setAmount] = useState(0);
-    const [category, setCategory] = useState("None");
-    const [date, setDate] = useState(props.yearMonth + "-" + day);
+    const [category, setCategory] = useState(0);
+    const [date, setDate] = useState(day);
+
+    function setListData(id) {
+        let newSpendItem = {id: id, itmDescription: name, amount: amount, category: category, purchaseDate: date};
+        props.setPurchaseList(props.purchaseList ? props.purchaseList.concat(newSpendItem) : [newSpendItem]);
+    }
+
+    async function sendData() {
+        let data = {itemName: name, amount: amount, category: category, date: date};
+        let url = "/monthSpending"
+        let opts = {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data) // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        };
+
+        const response = await fetch(url, opts);
+        const reData = await response.json();
+        setListData(reData.obj.insertId);
+        console.log(reData);
+    }
 
     function submitBtn(event) {
         event.preventDefault();
-        alert("submit button pressed");
+        setName("");
+        setAmount(0);
+        setCategory(0);
+        setDate(day);
+        sendData();
     }
     
     function nameChange(event) {
@@ -46,7 +84,8 @@ function SpendingItemForm(props) {
                 <div className="input_div">
                     <label htmlFor="category">Category</label>
                     <select name="category" value={category} onChange={categoryChange}>
-                        <option value="0">un-categorized</option>
+                        <option value="0" key="0">un-categorized</option>
+                        {props.budgets ? props.budgets.map(selectOptions) : null}
                         {/* Insert budget category options <option value="element.id">category name</option><*/}
                     </select>
                 </div>
