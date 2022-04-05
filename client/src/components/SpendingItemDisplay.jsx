@@ -28,13 +28,22 @@ function SpendingItemDisplay(props) {
         return (categoryName);
     }
 
+    function getStandardDateFormat(date) {
+        date = new Date(date);
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let fullDate = (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day) + "/" + year;
+        return(fullDate)
+    }
+
     function spendingLineItem(item) {
         return(
             <tr key={item.id}>
                 <td className="spendingDescription">{item.itmDescription}</td>
                 <td className="spendingAmount">${ parseFloat(item.amount).toFixed(2) }</td>
                 <td className="spendingCategory">{ getCategoryName(item.category) }</td>
-                <td className="spendingDate">{ item.purchaseDate }</td>
+                <td className="spendingDate">{ getStandardDateFormat(item.purchaseDate) }</td>
                 <td>
                     <button className="editButton editBtnSpend" onClick={editButtonClick} itmid={ item.id } name = { item.itmDescription} purchaseamount={item.amount} categoryid={item.category} purchasedate={item.purchaseDate}>Edit</button>
                 </td>

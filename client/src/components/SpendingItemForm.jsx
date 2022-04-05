@@ -20,7 +20,7 @@ function SpendingItemForm(props) {
     const [date, setDate] = useState(day);
 
     function setListData(id) {
-        let newSpendItem = {id: id, itmDescription: name, amount: amount, category: category, purchaseDate: date};
+        let newSpendItem = {id: id, itmDescription: name, amount: amount, category: parseInt(category), purchaseDate: date};
         props.setPurchaseList(props.purchaseList ? props.purchaseList.concat(newSpendItem) : [newSpendItem]);
     }
 
