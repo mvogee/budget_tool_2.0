@@ -15,13 +15,26 @@ function SpendingItemDisplay(props) {
         console.log(event.target.itmId);
     }
 
+    function getCategoryName(catId) {
+        let categoryName = "un-categorized";
+        if (catId !== 0 && props.budgets) {
+            for (let i = 0; i < props.budgets.length; i++) {
+                if (props.budgets[i].id === catId) {
+                    categoryName = props.budgets[i].category;
+                    break;
+                }
+            }
+        }
+        return (categoryName);
+    }
+
     function spendingLineItem(item) {
         return(
             <tr key={item.id}>
                 <td className="spendingDescription">{item.itmDescription}</td>
                 <td className="spendingAmount">${ parseFloat(item.amount).toFixed(2) }</td>
-                <td className="spendingCategory">{item.category}</td>
-                <td className="spendingDate">{item.purchaseDate }</td>
+                <td className="spendingCategory">{ getCategoryName(item.category) }</td>
+                <td className="spendingDate">{ item.purchaseDate }</td>
                 <td>
                     <button className="editButton editBtnSpend" onClick={editButtonClick} itmid={ item.id } name = { item.itmDescription} purchaseamount={item.amount} categoryid={item.category} purchasedate={item.purchaseDate}>Edit</button>
                 </td>
