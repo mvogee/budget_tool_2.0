@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import { React } from "react";
 
 /*
 * Props: spending item list, budget categorys
@@ -19,7 +19,7 @@ function SpendingItemDisplay(props) {
         return(
             <tr key={item.id}>
                 <td className="spendingDescription">{item.itmDescription}</td>
-                <td className="spendingAmount">${ item.amount }</td>
+                <td className="spendingAmount">${ parseFloat(item.amount).toFixed(2) }</td>
                 <td className="spendingCategory">{item.category}</td>
                 <td className="spendingDate">{item.purchaseDate }</td>
                 <td>
