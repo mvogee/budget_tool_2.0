@@ -161,7 +161,7 @@ function ThisMonth(props) {
 
                     </div>
                     <div className="spending-display" >
-                    <SpendingItemDisplay purchaseList={purchaseList}/>
+                    <SpendingItemDisplay purchaseList={purchaseList} budgets={budgetList}/>
                         {/* isnert spending item display component */}
                     </div>
                 </div>
