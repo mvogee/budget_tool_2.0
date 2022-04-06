@@ -19,6 +19,13 @@ function SpendingItemForm(props) {
     const [category, setCategory] = useState(0);
     const [date, setDate] = useState(day);
 
+    function clearForm() {
+        setName("");
+        setAmount(0);
+        setCategory(0);
+        setDate(day);
+    }
+
     function setListData(id) {
         let newSpendItem = {id: id, itmDescription: name, amount: amount, category: parseInt(category), purchaseDate: date};
         props.setPurchaseList(props.purchaseList ? props.purchaseList.concat(newSpendItem) : [newSpendItem]);
@@ -26,7 +33,7 @@ function SpendingItemForm(props) {
 
     async function sendData() {
         let data = {itemName: name, amount: amount, category: category, date: date};
-        let url = "/monthSpending"
+        let url = "/monthSpending";
         let opts = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -49,11 +56,8 @@ function SpendingItemForm(props) {
 
     function submitBtn(event) {
         event.preventDefault();
-        setName("");
-        setAmount(0);
-        setCategory(0);
-        setDate(day);
         sendData();
+        clearForm();
     }
     
     function nameChange(event) {

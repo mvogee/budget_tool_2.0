@@ -171,11 +171,11 @@ function ThisMonth(props) {
                   <h3>Deposits</h3>
                   <div className="form_div">
                       {/* Insert desposit item form component */}
-                      <DepositForm yearMonth={yearMonth}/>
+                      <DepositForm yearMonth={yearMonth} depositList={depositList} setDepositList={setDepositList}/>
                   </div>
                   <div className="deposite-display" >
                       {/* Insert desposit item display component */}
-                      <DepositsDisplay />
+                      <DepositsDisplay depositList={depositList}/>
                   </div>
                 </div>
 
