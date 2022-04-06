@@ -38,6 +38,9 @@ function ThisMonth(props) {
   const [budgetList, setBudgetList] = useState(null); // used for displaying budget progress.
   const [purchaseList, setPurchaseList] = useState(null); // when retrieved from server use month as search filter.
   const [depositList, setDepositList] = useState(null); // when retrieving data use month as search filter. 
+  const [totalSpending, setTotalSpending] = useState(0);
+  const [totalIncome, setTotalIncome] = useState(0);
+
 
   const navigate = useNavigate();
   
@@ -60,6 +63,9 @@ function ThisMonth(props) {
     console.log(reData);
     if (reData.success) {
         setPurchaseList(reData.obj);
+        let total = 0;
+        reData.obj.forEach((item) => {total += parseFloat(item.amount)});
+        setTotalSpending(total.toFixed(2));
     }
 }
 
@@ -82,6 +88,9 @@ function ThisMonth(props) {
     console.log(reData);
     if (reData.success) {
         setDepositList(reData.obj);
+        let total = 0;
+        reData.obj.forEach((item) => {total += parseFloat(item.amount)});
+        setTotalIncome(total.toFixed(2));
     }
 }
 
@@ -106,14 +115,15 @@ function ThisMonth(props) {
         setBudgetList(reData.obj);
     }
 }
+
   // if month changes we need to retrieve data again
   useEffect(() => {
     const authenticate = async () => {
         let auth = await checkAuth(props.setUser);
         if (auth) {
-          getPurchaseData();
-          getDepositData();
-          getBudgetData();
+          await getPurchaseData();
+          await getDepositData();
+          await getBudgetData();
         }
         else {
           navigate("/login");
@@ -145,9 +155,9 @@ function ThisMonth(props) {
                 <hr />
 
                 <div className="top-stats">
-                  <p>Total spending: $<span className="monthTotal" id="totalSpending">00.00</span></p>
-                  <p>Total income: $<span className="monthTotal" id="totalIncome">00.00</span></p>
-                  <p>Savings: $<span className="monthTotal" id="totalSavings">00.00</span></p>
+                  <p>Total spending: $<span className="monthTotal" id="totalSpending">{totalSpending}</span></p>
+                  <p>Total income: $<span className="monthTotal" id="totalIncome">{totalIncome}</span></p>
+                  <p>Savings: $<span className="monthTotal" id="totalSavings">{(totalIncome - totalSpending).toFixed(2)}</span></p>
                 </div>
 
                 <hr />
