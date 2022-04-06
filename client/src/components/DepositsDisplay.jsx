@@ -1,4 +1,4 @@
-import {React, useState} from "react"
+import {React} from "react"
 
 function DepositsDisplay(props) {
 
@@ -12,18 +12,27 @@ function DepositsDisplay(props) {
         console.log(event.itemAmount);
     }
 
+    function getStandardDateFormat(date) {
+        date = new Date(date);
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let fullDate = (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day) + "/" + year;
+        return(fullDate)
+    }
+
     function depositLineItem(item) {
         return (
-            <tr>
+            <tr key={item.id}>
                 <td className="depositDescription">{item.inDescription}</td>
-                <td className="depositAmount">{item.amount}</td>
-                <td className="depositDate">{item.date}</td>
+                <td className="depositAmount">${parseFloat(item.amount).toFixed(2)}</td>
+                <td className="depositDate">{getStandardDateFormat(item.depositDate)}</td>
                 <td className="editNode">
                     <button className="editButton"
-                        itemId={item.id}
-                        itemName={item.inDescription}
-                        itemAmount={item.amount}
-                        itemDate={item.date}
+                        id={item.id}
+                        itemname={item.inDescription}
+                        itemamount={item.amount}
+                        itemdate={item.depositDate}
                         onClick={editBtn}
                         type="button"
                         >Edit
@@ -31,8 +40,8 @@ function DepositsDisplay(props) {
                 </td>
                 <td>
                     <button className="deleteButton"
-                        itemId={item.id}
-                        itemName={item.inDescription}
+                        id={item.id}
+                        itemname={item.inDescription}
                         onClick={deleteBtn}
                         type="button"
                         >Delete
@@ -54,7 +63,7 @@ function DepositsDisplay(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.deposits ? props.deposits.forEach(depositLineItem) : null}
+                    {props.depositList ? props.depositList.map(depositLineItem) : null}
                 </tbody>
             </table>
         </div>
