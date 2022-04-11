@@ -19,9 +19,26 @@ function DepositForm(props) {
         clearForm();
     }
 
+    function checkDateMatch(date) {
+        let itemMonth = new Date(date).getMonth() + 1;
+        let itemYear = new Date(date).getFullYear();
+        let userYear = parseInt(props.yearMonth.slice(0,4));
+        let userMonth = parseInt(props.yearMonth.slice(5));
+        if (itemYear === userYear && itemMonth === userMonth) {
+            return (true);
+        }
+        else {
+            return (false);
+        }
+    }
+
     function setListData(id) {
-        let newDepositItem = {id: id, inDescription: name, amount: amount, depositDate: date};
-        props.setDepositList(props.depositList ? props.depositList.concat(newDepositItem) : [newDepositItem]);
+        let newDepositItem = {id: id, inDescription: name, amount: amount, depositDate: date + ":10:00"};
+        console.log(new Date(date + ":10:00"));
+        if (checkDateMatch(date)) {
+            props.setDepositList(props.depositList ? props.depositList.concat(newDepositItem) : [newDepositItem]);
+            props.setTotalIncome(parseFloat(props.totalIncome) + parseFloat(amount));
+        }
     }
 
     async function sendData() {

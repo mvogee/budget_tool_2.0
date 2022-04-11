@@ -26,9 +26,26 @@ function SpendingItemForm(props) {
         setDate(day);
     }
 
+    function checkDateMatch(date) {
+        let itemMonth = new Date(date).getMonth() + 1;
+        let itemYear = new Date(date).getFullYear();
+        let userYear = parseInt(props.yearMonth.slice(0,4));
+        let userMonth = parseInt(props.yearMonth.slice(5));
+        if (itemYear === userYear && itemMonth === userMonth) {
+            return (true);
+        }
+        else {
+            return (false);
+        }
+    }
+
     function setListData(id) {
-        let newSpendItem = {id: id, itmDescription: name, amount: amount, category: parseInt(category), purchaseDate: date};
-        props.setPurchaseList(props.purchaseList ? props.purchaseList.concat(newSpendItem) : [newSpendItem]);
+        let newSpendItem = {id: id, itmDescription: name, amount: amount, category: parseInt(category), purchaseDate: date + ":10:00"};
+        if (checkDateMatch(date)) {
+            props.setPurchaseList(props.purchaseList ? props.purchaseList.concat(newSpendItem) : [newSpendItem]);
+            props.setTotalSpending(parseFloat(props.totalSpending) + parseFloat(amount));
+        }
+        
     }
 
     async function sendData() {
