@@ -136,6 +136,7 @@ function ThisMonth(props) {
     console.log("monthChange", event.target.value);
 
     setYearMonth("" + event.target.value);
+    // get new data from server for selected month. repopulate states with retrieved data.
   }
 
     return (
@@ -165,7 +166,7 @@ function ThisMonth(props) {
 
                 <div className="spending">
                     <h3>Spending</h3>
-                    <SpendingItemForm yearMonth={yearMonth} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList}/> {/* props: spending items list state handler */}
+                    <SpendingItemForm yearMonth={yearMonth} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/> {/* props: spending items list state handler */}
                     {/* isnert spending item form component */}
                     <div className="form_div">
 
@@ -181,7 +182,7 @@ function ThisMonth(props) {
                   <h3>Deposits</h3>
                   <div className="form_div">
                       {/* Insert desposit item form component */}
-                      <DepositForm yearMonth={yearMonth} depositList={depositList} setDepositList={setDepositList}/>
+                      <DepositForm yearMonth={yearMonth} depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
                   </div>
                   <div className="deposite-display" >
                       {/* Insert desposit item display component */}

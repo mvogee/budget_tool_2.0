@@ -28,7 +28,9 @@ function SpendingItemForm(props) {
 
     function setListData(id) {
         let newSpendItem = {id: id, itmDescription: name, amount: amount, category: parseInt(category), purchaseDate: date};
+        // need to add check here to make sure we are in the correct selected month.
         props.setPurchaseList(props.purchaseList ? props.purchaseList.concat(newSpendItem) : [newSpendItem]);
+        props.setTotalSpending(parseFloat(props.totalSpending) + parseFloat(amount));
     }
 
     async function sendData() {

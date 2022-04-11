@@ -21,7 +21,9 @@ function DepositForm(props) {
 
     function setListData(id) {
         let newDepositItem = {id: id, inDescription: name, amount: amount, depositDate: date};
+        // check for date matching before adding to deposit list for the current view
         props.setDepositList(props.depositList ? props.depositList.concat(newDepositItem) : [newDepositItem]);
+        props.setTotalIncome(parseFloat(props.totalIncome) + parseFloat(amount));
     }
 
     async function sendData() {
