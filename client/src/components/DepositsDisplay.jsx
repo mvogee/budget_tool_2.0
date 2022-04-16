@@ -2,9 +2,38 @@ import {React} from "react"
 
 function DepositsDisplay(props) {
 
-    function deleteBtn(event) {
-        console.log("delete button was pressed");
-        console.log(event.itemName);
+    async function deleteRequest(itemId) {
+        let data = {deleteIncomeItm: itemId};
+        let url = "/monthIncome";
+        let opts = {
+            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        };
+        const response = await fetch(url, opts);
+        const reData = await response.json();
+        console.log(reData);
+        if (reData.success) {
+            console.log("item was deleted");
+        }
+    }
+
+    function deleteItem(event) {
+        if (window.confirm("Are you sure you want to delete " + event.target.dataset.name) === true) {
+            deleteRequest(event.target.dataset.id);
+            props.setTotalIncome(props.totalIncome - event.target.dataset.amount);
+            let newDepositList = props.depositList;
+            newDepositList.splice(event.target.dataset.idx, 1);
+            props.setDepositList(newDepositList);
+        }
     }
 
     function editBtn(event) {
@@ -21,7 +50,7 @@ function DepositsDisplay(props) {
         return(fullDate)
     }
 
-    function depositLineItem(item) {
+    function depositLineItem(item, idx) {
         return (
             <tr key={item.id}>
                 <td className="depositDescription">{item.inDescription}</td>
@@ -29,10 +58,10 @@ function DepositsDisplay(props) {
                 <td className="depositDate">{getStandardDateFormat(item.depositDate)}</td>
                 <td className="editNode">
                     <button className="editButton"
-                        id={item.id}
-                        itemname={item.inDescription}
-                        itemamount={item.amount}
-                        itemdate={item.depositDate}
+                        data-id={item.id}
+                        data-name={item.inDescription}
+                        data-amount={item.amount}
+                        data-date={item.depositDate}
                         onClick={editBtn}
                         type="button"
                         >Edit
@@ -40,9 +69,11 @@ function DepositsDisplay(props) {
                 </td>
                 <td>
                     <button className="deleteButton"
-                        id={item.id}
-                        itemname={item.inDescription}
-                        onClick={deleteBtn}
+                        data-id={item.id}
+                        data-name={item.inDescription}
+                        data-amount={item.amount}
+                        data-idx={idx}
+                        onClick={deleteItem}
                         type="button"
                         >Delete
                     </button>
