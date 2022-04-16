@@ -33,22 +33,13 @@ function SpendingItemDisplay(props) {
     }
 
     function deleteItem(event) {
-        /*
-        * Confirm user wants to delete item before deleting.
-        * Delete item from the database via DELETE request to /thisMonth. DONE
-        * Delete the item from the spendingList state object.
-        * Subtract the items total from the spendingTotal state.
-        */
-        //deleteRequest(event.target.dataset.id);
-        props.setTotalSpending(props.totalSpending - event.target.dataset.amount);
-        let newPurchaseList = props.purchaseList;
-        newPurchaseList.splice(event.target.dataset.idx, 1);
-        props.setPurchaseList(newPurchaseList);
-        console.log("delete button was pressed");
-        console.log(event.target.dataset);
-        console.log(event.target.dataset.id, event.target.dataset.name);
-        console.log(event.target.dataset.amount, event.target.dataset.idx);
-        
+        if (window.confirm("Are you sure you want to delete " + event.target.dataset.name) === true) {
+            deleteRequest(event.target.dataset.id);
+            props.setTotalSpending(props.totalSpending - event.target.dataset.amount);
+            let newPurchaseList = props.purchaseList;
+            newPurchaseList.splice(event.target.dataset.idx, 1);
+            props.setPurchaseList(newPurchaseList);
+        }
     }
 
     function editButtonClick(event) {

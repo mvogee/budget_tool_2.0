@@ -186,7 +186,7 @@ function ThisMonth(props) {
                   </div>
                   <div className="deposite-display" >
                       {/* Insert desposit item display component */}
-                      <DepositsDisplay depositList={depositList}/>
+                      <DepositsDisplay depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
                   </div>
                 </div>
 
