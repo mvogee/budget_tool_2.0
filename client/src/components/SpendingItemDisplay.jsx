@@ -4,10 +4,46 @@ import { React } from "react";
 * Props: spending item list, budget categorys
 */
 
+
+
 function SpendingItemDisplay(props) {
+    
+    async function deleteRequest(itemId) {
+        let data = {deleteSpendingItm: itemId};
+        let url = "/monthSpending";
+        let opts = {
+            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        };
+        const response = await fetch(url, opts);
+        const reData = await response.json();
+        console.log(reData);
+        if (reData.success) {
+            console.log("item was deleted");
+        }
+    }
 
     function deleteItem(event) {
+        /*
+        * Confirm user wants to delete item before deleting.
+        * Delete item from the database via DELETE request to /thisMonth.
+        * Delete the item from the spendingList state object.
+        * Subtract the items total from the spendingTotal state.
+        */
+        deleteRequest(event.target.id);
         console.log("delete button was pressed");
+        console.log(event.target);
+        console.log(event.target.id, event.target.name);
+        
     }
 
     function editButtonClick(event) {
@@ -45,10 +81,10 @@ function SpendingItemDisplay(props) {
                 <td className="spendingCategory">{ getCategoryName(item.category) }</td>
                 <td className="spendingDate">{ getStandardDateFormat(item.purchaseDate) }</td>
                 <td>
-                    <button className="editButton editBtnSpend" onClick={editButtonClick} itmid={ item.id } name = { item.itmDescription} purchaseamount={item.amount} categoryid={item.category} purchasedate={item.purchaseDate}>Edit</button>
+                    <button className="editButton editBtnSpend" onClick={editButtonClick} id={item.id} name={ item.itmDescription} purchaseamount={item.amount} categoryid={item.category} purchasedate={item.purchaseDate}>Edit</button>
                 </td>
                 <td>
-                    <button className="deleteBtn" onClick={deleteItem} itmid = {item.id} name = {item.itmDescription}>Delete</button>
+                    <button className="deleteBtn" onClick={deleteItem} id={item.id} name={item.itmDescription}>Delete</button>
                 </td>
             </tr>
         );
