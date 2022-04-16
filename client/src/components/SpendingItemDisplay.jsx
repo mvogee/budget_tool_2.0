@@ -4,10 +4,51 @@ import { React } from "react";
 * Props: spending item list, budget categorys
 */
 
+
+
 function SpendingItemDisplay(props) {
+    
+    async function deleteRequest(itemId) {
+        let data = {deleteSpendingItm: itemId};
+        let url = "/monthSpending";
+        let opts = {
+            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        };
+        const response = await fetch(url, opts);
+        const reData = await response.json();
+        console.log(reData);
+        if (reData.success) {
+            console.log("item was deleted");
+        }
+    }
 
     function deleteItem(event) {
+        /*
+        * Confirm user wants to delete item before deleting.
+        * Delete item from the database via DELETE request to /thisMonth. DONE
+        * Delete the item from the spendingList state object.
+        * Subtract the items total from the spendingTotal state.
+        */
+        //deleteRequest(event.target.dataset.id);
+        props.setTotalSpending(props.totalSpending - event.target.dataset.amount);
+        let newPurchaseList = props.purchaseList;
+        newPurchaseList.splice(event.target.dataset.idx, 1);
+        props.setPurchaseList(newPurchaseList);
         console.log("delete button was pressed");
+        console.log(event.target.dataset);
+        console.log(event.target.dataset.id, event.target.dataset.name);
+        console.log(event.target.dataset.amount, event.target.dataset.idx);
+        
     }
 
     function editButtonClick(event) {
@@ -37,7 +78,7 @@ function SpendingItemDisplay(props) {
         return(fullDate)
     }
 
-    function spendingLineItem(item) {
+    function spendingLineItem(item, idx) {
         return(
             <tr key={item.id}>
                 <td className="spendingDescription">{item.itmDescription}</td>
@@ -45,10 +86,10 @@ function SpendingItemDisplay(props) {
                 <td className="spendingCategory">{ getCategoryName(item.category) }</td>
                 <td className="spendingDate">{ getStandardDateFormat(item.purchaseDate) }</td>
                 <td>
-                    <button className="editButton editBtnSpend" onClick={editButtonClick} itmid={ item.id } name = { item.itmDescription} purchaseamount={item.amount} categoryid={item.category} purchasedate={item.purchaseDate}>Edit</button>
+                    <button className="editButton editBtnSpend" onClick={editButtonClick} id={item.id} name={ item.itmDescription} purchaseamount={item.amount} categoryid={item.category} purchasedate={item.purchaseDate}>Edit</button>
                 </td>
                 <td>
-                    <button className="deleteBtn" onClick={deleteItem} itmid = {item.id} name = {item.itmDescription}>Delete</button>
+                    <button className="deleteBtn" onClick={deleteItem} data-id={item.id} data-name={item.itmDescription} data-amount={item.amount} data-idx={idx}>Delete</button>
                 </td>
             </tr>
         );

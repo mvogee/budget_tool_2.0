@@ -337,7 +337,7 @@ app.route("/monthSpending/:month?")
 })
 .delete((req, res) => {
     if (req.isAuthenticated()) {
-        console.log("deleting income item");
+        console.log("deleting spending item");
         let sql = "DELETE FROM monthSpending WHERE id=? AND userId=?;";
         mysql.query(sql, [req.body.deleteSpendingItm, req.user.id] ,(err, result) => {
             if (err) {
