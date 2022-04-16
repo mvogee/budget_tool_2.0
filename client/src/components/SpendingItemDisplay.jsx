@@ -35,14 +35,19 @@ function SpendingItemDisplay(props) {
     function deleteItem(event) {
         /*
         * Confirm user wants to delete item before deleting.
-        * Delete item from the database via DELETE request to /thisMonth.
+        * Delete item from the database via DELETE request to /thisMonth. DONE
         * Delete the item from the spendingList state object.
         * Subtract the items total from the spendingTotal state.
         */
-        deleteRequest(event.target.id);
+        //deleteRequest(event.target.dataset.id);
+        props.setTotalSpending(props.totalSpending - event.target.dataset.amount);
+        let newPurchaseList = props.purchaseList;
+        newPurchaseList.splice(event.target.dataset.idx, 1);
+        props.setPurchaseList(newPurchaseList);
         console.log("delete button was pressed");
-        console.log(event.target);
-        console.log(event.target.id, event.target.name);
+        console.log(event.target.dataset);
+        console.log(event.target.dataset.id, event.target.dataset.name);
+        console.log(event.target.dataset.amount, event.target.dataset.idx);
         
     }
 
@@ -73,7 +78,7 @@ function SpendingItemDisplay(props) {
         return(fullDate)
     }
 
-    function spendingLineItem(item) {
+    function spendingLineItem(item, idx) {
         return(
             <tr key={item.id}>
                 <td className="spendingDescription">{item.itmDescription}</td>
@@ -84,7 +89,7 @@ function SpendingItemDisplay(props) {
                     <button className="editButton editBtnSpend" onClick={editButtonClick} id={item.id} name={ item.itmDescription} purchaseamount={item.amount} categoryid={item.category} purchasedate={item.purchaseDate}>Edit</button>
                 </td>
                 <td>
-                    <button className="deleteBtn" onClick={deleteItem} id={item.id} name={item.itmDescription}>Delete</button>
+                    <button className="deleteBtn" onClick={deleteItem} data-id={item.id} data-name={item.itmDescription} data-amount={item.amount} data-idx={idx}>Delete</button>
                 </td>
             </tr>
         );

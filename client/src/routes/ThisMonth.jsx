@@ -156,8 +156,8 @@ function ThisMonth(props) {
                 <hr />
 
                 <div className="top-stats">
-                  <p>Total spending: $<span className="monthTotal" id="totalSpending">{totalSpending}</span></p>
-                  <p>Total income: $<span className="monthTotal" id="totalIncome">{totalIncome}</span></p>
+                  <p>Total spending: $<span className="monthTotal" id="totalSpending">{parseFloat(totalSpending).toFixed(2)}</span></p>
+                  <p>Total income: $<span className="monthTotal" id="totalIncome">{parseFloat(totalIncome).toFixed(2)}</span></p>
                   <p>Savings: $<span className="monthTotal" id="totalSavings">{(totalIncome - totalSpending).toFixed(2)}</span></p>
                 </div>
 
@@ -172,7 +172,7 @@ function ThisMonth(props) {
 
                     </div>
                     <div className="spending-display" >
-                    <SpendingItemDisplay purchaseList={purchaseList} budgets={budgetList}/>
+                    <SpendingItemDisplay purchaseList={purchaseList} setPurchaseList={setPurchaseList} budgets={budgetList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
                         {/* isnert spending item display component */}
                     </div>
                 </div>
