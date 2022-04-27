@@ -5,13 +5,7 @@ import SpendingItemDisplay from "../components/SpendingItemDisplay";
 import DepositForm from "../components/DepositForm";
 import DepositsDisplay from "../components/DepositsDisplay";
 import checkAuth from "../checkAuth";
-/* TODO:
-*   - create month picker component
-*   - create components for spending form and income form
-*   - create components for displaying income and spending
-*   - create component for displaying budgets and current statuses
-*   - handle states for all above components and manage state functions.
-*/
+
 /**
   * 
   * @param {String} date // in format yyyy-mm
@@ -165,29 +159,16 @@ function ThisMonth(props) {
 
 
                 <div className="spending">
-                    <h3>Spending</h3>
-                    <SpendingItemForm yearMonth={yearMonth} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/> {/* props: spending items list state handler */}
-                    {/* isnert spending item form component */}
-                    <div className="form_div">
-
-                    </div>
-                    <div className="spending-display" >
-                    <SpendingItemDisplay purchaseList={purchaseList} setPurchaseList={setPurchaseList} budgets={budgetList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
-                        {/* isnert spending item display component */}
-                    </div>
+                  <h3>Spending</h3>
+                  <SpendingItemForm yearMonth={yearMonth} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
+                  <SpendingItemDisplay purchaseList={purchaseList} setPurchaseList={setPurchaseList} budgets={budgetList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
                 </div>
                   <hr />
 
                 <div className="deposit">
                   <h3>Deposits</h3>
-                  <div className="form_div">
-                      {/* Insert desposit item form component */}
-                      <DepositForm yearMonth={yearMonth} depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
-                  </div>
-                  <div className="deposite-display" >
-                      {/* Insert desposit item display component */}
-                      <DepositsDisplay depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
-                  </div>
+                  <DepositForm yearMonth={yearMonth} depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
+                  <DepositsDisplay depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
                 </div>
 
                   <hr />
