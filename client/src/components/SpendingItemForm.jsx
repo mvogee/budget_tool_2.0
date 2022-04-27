@@ -107,7 +107,6 @@ function SpendingItemForm(props) {
                     <select name="category" value={category} onChange={categoryChange}>
                         <option value="0" key="0">un-categorized</option>
                         {props.budgets ? props.budgets.map(selectOptions) : null}
-                        {/* Insert budget category options <option value="element.id">category name</option><*/}
                     </select>
                 </div>
                 <div className="input_div">

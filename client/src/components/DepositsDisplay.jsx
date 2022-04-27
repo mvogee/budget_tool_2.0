@@ -1,4 +1,5 @@
 import {React} from "react"
+import {getStandardDateFormat} from "./utils.js";
 
 function DepositsDisplay(props) {
 
@@ -39,15 +40,6 @@ function DepositsDisplay(props) {
     function editBtn(event) {
         console.log("edit button was pressed");
         console.log(event.itemAmount);
-    }
-
-    function getStandardDateFormat(date) {
-        date = new Date(date);
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        let fullDate = (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day) + "/" + year;
-        return(fullDate)
     }
 
     function depositLineItem(item, idx) {

@@ -1,5 +1,6 @@
-import { React } from "react";
-
+import { React, useState } from "react";
+import PopEditSpending from "./PopEditSpending";
+import {getCategoryName, getStandardDateFormat} from "./utils.js";
 /*
 * Props: spending item list, budget categorys
 */
@@ -7,7 +8,11 @@ import { React } from "react";
 
 
 function SpendingItemDisplay(props) {
-    
+    const [nameEdit, setNameEdit] = useState("");
+    const [amountEdit, setAmountEdit] = useState(0);
+    const [categoryEdit, setCategoryEdit] = useState(0);
+    const [dateEdit, setDateEdit] = useState("");
+
     async function deleteRequest(itemId) {
         let data = {deleteSpendingItm: itemId};
         let url = "/monthSpending";
@@ -43,30 +48,19 @@ function SpendingItemDisplay(props) {
     }
 
     function editButtonClick(event) {
-        console.log("edit button pressed");
-        console.log(event.target.itmId);
-    }
-
-    function getCategoryName(catId) {
-        let categoryName = "un-categorized";
-        if (catId !== 0 && props.budgets) {
-            for (let i = 0; i < props.budgets.length; i++) {
-                if (props.budgets[i].id === catId) {
-                    categoryName = props.budgets[i].category;
-                    break;
-                }
-            }
-        }
-        return (categoryName);
-    }
-
-    function getStandardDateFormat(date) {
-        date = new Date(date);
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
+        let date = new Date(event.target.dataset.date);
         let year = date.getFullYear();
-        let fullDate = (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day) + "/" + year;
-        return(fullDate)
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        console.log(event.target.dataset.date);
+        console.log(event.target.dataset.id);
+        setNameEdit(event.target.dataset.name);
+        setAmountEdit(event.target.dataset.amount);
+        setCategoryEdit(event.target.dataset.catid);
+        setDateEdit("" + year + "-" + (month < 10 ? "0" + month.toString() : month.toString()) + "-" + (day < 10 ? "0" + day.toString() : day.toString()));
+        // this needs to set all of the props for the edit button 
+        // set the edit form inputs to the given data
+        // set a boolean that will display the edit form.
     }
 
     function spendingLineItem(item, idx) {
@@ -74,10 +68,10 @@ function SpendingItemDisplay(props) {
             <tr key={item.id}>
                 <td className="spendingDescription">{item.itmDescription}</td>
                 <td className="spendingAmount">${ parseFloat(item.amount).toFixed(2) }</td>
-                <td className="spendingCategory">{ getCategoryName(item.category) }</td>
+                <td className="spendingCategory">{ getCategoryName(item.category, props.budgets) }</td>
                 <td className="spendingDate">{ getStandardDateFormat(item.purchaseDate) }</td>
                 <td>
-                    <button className="editButton editBtnSpend" onClick={editButtonClick} id={item.id} name={ item.itmDescription} purchaseamount={item.amount} categoryid={item.category} purchasedate={item.purchaseDate}>Edit</button>
+                    <button className="editButton editBtnSpend" onClick={editButtonClick} data-id={item.id} data-name={ item.itmDescription} data-amount={item.amount} data-catid={item.category} data-date={item.purchaseDate} data-idx={idx}>Edit</button>
                 </td>
                 <td>
                     <button className="deleteBtn" onClick={deleteItem} data-id={item.id} data-name={item.itmDescription} data-amount={item.amount} data-idx={idx}>Delete</button>
@@ -88,6 +82,7 @@ function SpendingItemDisplay(props) {
 
     return (
         <div className="spendingItemDisplay">
+            <PopEditSpending budgets={props.budgets} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} categoryEdit={categoryEdit} setCategoryEdit={setCategoryEdit} dateEdit={dateEdit} setDateEdit={setDateEdit}/>
             <p>Spending</p>
             <table>
                 <thead>
