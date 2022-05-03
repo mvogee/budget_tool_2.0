@@ -47,7 +47,7 @@ function PopEditSpending(props) {
                     <label htmlFor="date">Date</label>
                     <input type="date" name="date" value={props.dateEdit} min="2010-01-01" onChange={dateChange}/> { /*max should be today */}
                 </div>
-                <button type="submit" name="button" onClick={submitBtn}>add</button>
+                <button type="submit" name="button" onClick={submitBtn}>Save</button>
                 <button type="button" name="cancelBtn" onClick={cancelBtn}>Cancel</button>
             </form>
         </div>
