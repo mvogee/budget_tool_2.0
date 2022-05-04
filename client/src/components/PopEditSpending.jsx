@@ -2,11 +2,27 @@ import { React, useState} from "react";
 import {getCategoryName} from "./utils.js";
 function PopEditSpending(props) {
 
+    function updateLocalItem() {
+        console.log("updating local purchaseList");
+        props.setTotalSpending(parseFloat(props.totalSpending) + (parseFloat(props.amountEdit) - parseFloat(props.purchaseList[props.idxEdit].amount)));
+        let newItem = {id: props.purchaseList[props.idxEdit].id, userId: props.purchaseList[props.idxEdit].userId, itmDescription: props.nameEdit, amount: props.amountEdit, category: parseInt(props.categoryEdit), purchaseDate: props.dateEdit + "T07:00:00.000Z"};
+        let purchaseListCopy = Array.from(props.purchaseList);
+        purchaseListCopy[props.idxEdit] = newItem;
+        props.setPurchaseList(purchaseListCopy);
+    }
+    function updateServer() {
+        console.log("Updating the server");
+    }
     function submitBtn(event) {
-
+        event.preventDefault();
+        // update the existing purchaselist at index with updated information.
+        updateLocalItem();
+        updateServer();
+        // send updated item to server via PATCH request to be updated on back end at /monthSpending
     }
     function cancelBtn(event) {
-
+        // reset the edit fields
+        // close the edit window (change showEdit bool to false)
     }
     function selectOptions(item) {
         return (
@@ -47,7 +63,7 @@ function PopEditSpending(props) {
                     <label htmlFor="date">Date</label>
                     <input type="date" name="date" value={props.dateEdit} min="2010-01-01" onChange={dateChange}/> { /*max should be today */}
                 </div>
-                <button type="submit" name="button" onClick={submitBtn}>add</button>
+                <button type="submit" name="button" onClick={submitBtn}>Save</button>
                 <button type="button" name="cancelBtn" onClick={cancelBtn}>Cancel</button>
             </form>
         </div>

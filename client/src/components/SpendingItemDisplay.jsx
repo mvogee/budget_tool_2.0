@@ -12,6 +12,7 @@ function SpendingItemDisplay(props) {
     const [amountEdit, setAmountEdit] = useState(0);
     const [categoryEdit, setCategoryEdit] = useState(0);
     const [dateEdit, setDateEdit] = useState("");
+    const [idxEdit, setIdxEdit] = useState(0);
 
     async function deleteRequest(itemId) {
         let data = {deleteSpendingItm: itemId};
@@ -54,6 +55,7 @@ function SpendingItemDisplay(props) {
         let day = date.getDate();
         console.log(event.target.dataset.date);
         console.log(event.target.dataset.id);
+        setIdxEdit(event.target.dataset.idx);
         setNameEdit(event.target.dataset.name);
         setAmountEdit(event.target.dataset.amount);
         setCategoryEdit(event.target.dataset.catid);
@@ -82,7 +84,7 @@ function SpendingItemDisplay(props) {
 
     return (
         <div className="spendingItemDisplay">
-            <PopEditSpending budgets={props.budgets} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} categoryEdit={categoryEdit} setCategoryEdit={setCategoryEdit} dateEdit={dateEdit} setDateEdit={setDateEdit}/>
+            <PopEditSpending budgets={props.budgets} purchaseList={props.purchaseList} setPurchaseList={props.setPurchaseList} totalSpending={props.totalSpending} setTotalSpending={props.setTotalSpending} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} categoryEdit={categoryEdit} setCategoryEdit={setCategoryEdit} dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}/>
             <p>Spending</p>
             <table>
                 <thead>
