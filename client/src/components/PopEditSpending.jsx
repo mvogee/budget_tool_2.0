@@ -34,13 +34,15 @@ function PopEditSpending(props) {
     }
     function submitBtn(event) {
         event.preventDefault();
-        // update the existing purchaselist at index with updated information.
         updateLocalItem();
         updateServer();
-        // send updated item to server via PATCH request to be updated on back end at /monthSpending
     }
     function cancelBtn(event) {
-        // reset the edit fields
+        event.preventDefault();
+        props.setNameEdit("");
+        props.setAmountEdit("");
+        props.setCategoryEdit(0);
+        props.setDateEdit("");
         // close the edit window (change showEdit bool to false)
     }
     function selectOptions(item) {
