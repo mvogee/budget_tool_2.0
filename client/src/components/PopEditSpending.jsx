@@ -10,6 +10,7 @@ function PopEditSpending(props) {
         purchaseListCopy[props.idxEdit] = newItem;
         props.setPurchaseList(purchaseListCopy);
     }
+    
     async function updateServer() {
         let data = {itemName: props.nameEdit, amount: props.amountEdit, category: props.categoryEdit, date: props.dateEdit, itmId: props.purchaseList[props.idxEdit].id}
         console.log("Updating the server");

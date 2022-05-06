@@ -1,7 +1,13 @@
-import {React} from "react"
-import {getStandardDateFormat} from "./utils.js";
+import {React, useState} from "react"
+import {getStandardDateFormat, getDateEdit} from "./utils.js";
+import PopEditDeposit from "./PopEditDeposit";
 
 function DepositsDisplay(props) {
+
+    const [nameEdit, setNameEdit] = useState("");
+    const [amountEdit, setAmountEdit] = useState(0);
+    const [dateEdit, setDateEdit] = useState("");
+    const [idxEdit, setIdxEdit] = useState("");
 
     async function deleteRequest(itemId) {
         let data = {deleteIncomeItm: itemId};
@@ -38,8 +44,10 @@ function DepositsDisplay(props) {
     }
 
     function editBtn(event) {
-        console.log("edit button was pressed");
-        console.log(event.itemAmount);
+        setNameEdit(event.target.dataset.name);
+        setAmountEdit(event.target.dataset.amount);
+        setDateEdit(getDateEdit(event.target.dataset.date));
+        setIdxEdit(event.target.dataset.idx);
     }
 
     function depositLineItem(item, idx) {
@@ -54,6 +62,7 @@ function DepositsDisplay(props) {
                         data-name={item.inDescription}
                         data-amount={item.amount}
                         data-date={item.depositDate}
+                        data-idx={idx}
                         onClick={editBtn}
                         type="button"
                         >Edit
@@ -73,9 +82,10 @@ function DepositsDisplay(props) {
             </tr>
         );
     }
-
+    // will still need to give popEdit the deposits total to update when updating a deposit
     return (
         <div className="depositDisplay">
+        <PopEditDeposit depositList={props.depositList} setDepositList={props.setDepositList} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}/>
             <p>Deposits</p>
             <table>
                 <thead>
