@@ -85,7 +85,7 @@ function DepositsDisplay(props) {
     // will still need to give popEdit the deposits total to update when updating a deposit
     return (
         <div className="depositDisplay">
-        <PopEditDeposit depositList={props.depositList} setDepositList={props.setDepositList} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}/>
+        <PopEditDeposit depositList={props.depositList} setDepositList={props.setDepositList} totalIncome={props.totalIncome} setTotalIncome={props.setTotalIncome} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}/>
             <p>Deposits</p>
             <table>
                 <thead>

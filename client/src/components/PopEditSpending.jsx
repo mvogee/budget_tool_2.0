@@ -10,7 +10,7 @@ function PopEditSpending(props) {
         purchaseListCopy[props.idxEdit] = newItem;
         props.setPurchaseList(purchaseListCopy);
     }
-    
+
     async function updateServer() {
         let data = {itemName: props.nameEdit, amount: props.amountEdit, category: props.categoryEdit, date: props.dateEdit, itmId: props.purchaseList[props.idxEdit].id}
         console.log("Updating the server");
@@ -32,14 +32,14 @@ function PopEditSpending(props) {
         const response = await fetch(url, opts);
         const reData = await response.json();
         console.log(reData);
+        closePopup();
     }
     function submitBtn(event) {
         event.preventDefault();
         updateLocalItem();
         updateServer();
     }
-    function cancelBtn(event) {
-        event.preventDefault();
+    function closePopup() {
         props.setNameEdit("");
         props.setAmountEdit("");
         props.setCategoryEdit(0);
@@ -86,7 +86,7 @@ function PopEditSpending(props) {
                     <input type="date" name="date" value={props.dateEdit} min="2010-01-01" onChange={dateChange}/> { /*max should be today */}
                 </div>
                 <button type="submit" name="button" onClick={submitBtn}>Save</button>
-                <button type="button" name="cancelBtn" onClick={cancelBtn}>Cancel</button>
+                <button type="button" name="cancelBtn" onClick={closePopup}>Cancel</button>
             </form>
         </div>
     );
