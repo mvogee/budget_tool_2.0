@@ -38,7 +38,8 @@ function ThisMonth(props) {
 
   const navigate = useNavigate();
   
-  async function getPurchaseData() {
+  async function getPurchaseData(yearMonth) {
+    console.log("requesting purchaseData");
     let url = "/monthSpending/" + yearMonth;
     let opts = {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -63,7 +64,8 @@ function ThisMonth(props) {
     }
 }
 
-  async function getDepositData() {
+  async function getDepositData(yearMonth) {
+    console.log("requesting Deposit data");
     let url = "/monthIncome/" + yearMonth;
     let opts = {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -115,8 +117,8 @@ function ThisMonth(props) {
     const authenticate = async () => {
         let auth = await checkAuth(props.setUser);
         if (auth) {
-          await getPurchaseData();
-          await getDepositData();
+          await getPurchaseData(yearMonth);
+          await getDepositData(yearMonth);
           await getBudgetData();
         }
         else {
@@ -126,11 +128,11 @@ function ThisMonth(props) {
     authenticate();
   }, []);
 
-  function changeMonth(event) {
-    console.log("monthChange", event.target.value);
 
+  function changeMonth(event) {
     setYearMonth("" + event.target.value);
-    // get new data from server for selected month. repopulate states with retrieved data.
+    getPurchaseData(event.target.value);
+    getDepositData(event.target.value);
   }
 
     return (

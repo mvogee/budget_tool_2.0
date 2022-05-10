@@ -31,3 +31,18 @@ export function getStandardDateFormat(date) {
     let fullDate = (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day) + "/" + year;
     return(fullDate)
 }
+
+
+/**
+ * This function is used by PopEdit components when initial date is set.
+ * @param {editDate} Date gotten from element.
+ * @returns {String} Date in standard format as a string.  
+ */
+export function getDateEdit(editDate) {
+    let date = new Date(editDate);
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let fullDate = ("" + year + "-" + (month < 10 ? "0" + month.toString() : month.toString()) + "-" + (day < 10 ? "0" + day.toString() : day.toString()));
+    return (fullDate);
+}

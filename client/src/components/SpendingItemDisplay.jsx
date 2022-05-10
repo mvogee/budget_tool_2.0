@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import PopEditSpending from "./PopEditSpending";
-import {getCategoryName, getStandardDateFormat} from "./utils.js";
+import {getCategoryName, getStandardDateFormat, getDateEdit} from "./utils.js";
 /*
 * Props: spending item list, budget categorys
 */
@@ -49,17 +49,11 @@ function SpendingItemDisplay(props) {
     }
 
     function editButtonClick(event) {
-        let date = new Date(event.target.dataset.date);
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
-        console.log(event.target.dataset.date);
-        console.log(event.target.dataset.id);
         setIdxEdit(event.target.dataset.idx);
         setNameEdit(event.target.dataset.name);
         setAmountEdit(event.target.dataset.amount);
         setCategoryEdit(event.target.dataset.catid);
-        setDateEdit("" + year + "-" + (month < 10 ? "0" + month.toString() : month.toString()) + "-" + (day < 10 ? "0" + day.toString() : day.toString()));
+        setDateEdit(getDateEdit(event.target.dataset.date));
         // this needs to set all of the props for the edit button 
         // set the edit form inputs to the given data
         // set a boolean that will display the edit form.
