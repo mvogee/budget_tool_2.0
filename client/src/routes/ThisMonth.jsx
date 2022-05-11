@@ -4,6 +4,7 @@ import SpendingItemForm from "../components/SpendingItemForm";
 import SpendingItemDisplay from "../components/SpendingItemDisplay";
 import DepositForm from "../components/DepositForm";
 import DepositsDisplay from "../components/DepositsDisplay";
+import BudgetProgress from "../components/BudgetProgress";
 import checkAuth from "../checkAuth";
 
 /**
@@ -34,10 +35,20 @@ function ThisMonth(props) {
   const [depositList, setDepositList] = useState(null); // when retrieving data use month as search filter. 
   const [totalSpending, setTotalSpending] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
+  const [categorySpendingMap, setCategorySpendingMap] = useState(new Map());
 
 
   const navigate = useNavigate();
-  
+
+  function addToCategoryMap(item) {
+    if (categorySpendingMap.has(item.category)) {
+      setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, categorySpendingMap.get(item.category) + item.amount)));
+    }
+    else {
+      setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, item.amount)));
+    }
+  }
+
   async function getPurchaseData(yearMonth) {
     console.log("requesting purchaseData");
     let url = "/monthSpending/" + yearMonth;
@@ -59,7 +70,10 @@ function ThisMonth(props) {
     if (reData.success) {
         setPurchaseList(reData.obj);
         let total = 0;
-        reData.obj.forEach((item) => {total += parseFloat(item.amount)});
+        reData.obj.forEach((item) => {
+          total += parseFloat(item.amount);
+          addToCategoryMap(item);
+        });
         setTotalSpending(total.toFixed(2));
     }
 }
@@ -162,8 +176,8 @@ function ThisMonth(props) {
 
                 <div className="spending">
                   <h3>Spending</h3>
-                  <SpendingItemForm yearMonth={yearMonth} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
-                  <SpendingItemDisplay purchaseList={purchaseList} setPurchaseList={setPurchaseList} budgets={budgetList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
+                  <SpendingItemForm yearMonth={yearMonth} categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
+                  <SpendingItemDisplay categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} purchaseList={purchaseList} setPurchaseList={setPurchaseList} budgets={budgetList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
                 </div>
                   <hr />
 
@@ -178,6 +192,7 @@ function ThisMonth(props) {
                 <div className="budgetProgress">
                     {/* insert budget progress component */}
                     <h3>Budgets</h3>
+                    <BudgetProgress budgetList={budgetList} categorySpendingMap={categorySpendingMap}/>
                 </div>
 
         </div>

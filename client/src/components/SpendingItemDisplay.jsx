@@ -45,6 +45,7 @@ function SpendingItemDisplay(props) {
             let newPurchaseList = props.purchaseList;
             newPurchaseList.splice(event.target.dataset.idx, 1);
             props.setPurchaseList(newPurchaseList);
+            props.setCategorySpendingMap(new Map(props.categorySpendingMap.set(parseInt(event.target.dataset.category), parseFloat(props.categorySpendingMap.get(parseInt(event.target.dataset.category))) - parseFloat(event.target.dataset.amount))));
         }
     }
 
@@ -70,7 +71,7 @@ function SpendingItemDisplay(props) {
                     <button className="editButton editBtnSpend" onClick={editButtonClick} data-id={item.id} data-name={ item.itmDescription} data-amount={item.amount} data-catid={item.category} data-date={item.purchaseDate} data-idx={idx}>Edit</button>
                 </td>
                 <td>
-                    <button className="deleteBtn" onClick={deleteItem} data-id={item.id} data-name={item.itmDescription} data-amount={item.amount} data-idx={idx}>Delete</button>
+                    <button className="deleteBtn" onClick={deleteItem} data-id={item.id} data-name={item.itmDescription} data-amount={item.amount} data-category={item.category} data-idx={idx}>Delete</button>
                 </td>
             </tr>
         );
@@ -78,7 +79,7 @@ function SpendingItemDisplay(props) {
 
     return (
         <div className="spendingItemDisplay">
-            <PopEditSpending budgets={props.budgets} purchaseList={props.purchaseList} setPurchaseList={props.setPurchaseList} totalSpending={props.totalSpending} setTotalSpending={props.setTotalSpending} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} categoryEdit={categoryEdit} setCategoryEdit={setCategoryEdit} dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}/>
+            <PopEditSpending budgets={props.budgets} categorySpendingMap={props.categorySpendingMap} setCategorySpendingMap={props.setCategorySpendingMap} purchaseList={props.purchaseList} setPurchaseList={props.setPurchaseList} totalSpending={props.totalSpending} setTotalSpending={props.setTotalSpending} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} categoryEdit={categoryEdit} setCategoryEdit={setCategoryEdit} dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}/>
             <p>Spending</p>
             <table>
                 <thead>
