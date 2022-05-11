@@ -8,7 +8,7 @@ function BudgetProgress(props) {
                 <td>{item.category}</td>
                 <td>{item.budget}</td>
                 <td>{props.categorySpendingMap.get(item.id)}</td>
-                <td>{item.budget - props.categorySpendingMap.get(item.id)}</td>
+                <td>{(item.budget - props.categorySpendingMap.get(item.id)).toFixed(2)}</td>
             </tr>
         );
     }

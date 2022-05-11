@@ -44,6 +44,7 @@ function SpendingItemForm(props) {
         if (checkDateMatch(date)) {
             props.setPurchaseList(props.purchaseList ? props.purchaseList.concat(newSpendItem) : [newSpendItem]);
             props.setTotalSpending(parseFloat(props.totalSpending) + parseFloat(amount));
+            props.setCategorySpendingMap(new Map(props.categorySpendingMap.set(newSpendItem.category, parseFloat(props.categorySpendingMap.get(newSpendItem.category)) + parseFloat(newSpendItem.amount))));
         }
         
     }

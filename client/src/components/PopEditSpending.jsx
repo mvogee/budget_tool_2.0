@@ -9,6 +9,7 @@ function PopEditSpending(props) {
         let purchaseListCopy = Array.from(props.purchaseList);
         purchaseListCopy[props.idxEdit] = newItem;
         props.setPurchaseList(purchaseListCopy);
+        props.setCategorySpendingMap(new Map(props.categorySpendingMap.set(newItem.category, parseFloat(props.categorySpendingMap.get(newItem.category)) + (parseFloat(props.amountEdit) - parseFloat(props.purchaseList[props.idxEdit].amount)))));
     }
 
     async function updateServer() {
