@@ -151,6 +151,9 @@ function ThisMonth(props) {
 
     return (
         <div className="thisMonth">
+        <a href="#spendingDiv">Spending</a>
+        <a href="#depositDiv">Deposits</a>
+        <a href="#budgetProgressDiv">Budget status</a>
             <h1>{getMonthName(yearMonth)}</h1>
 
             {/* create month picker component. /changeMonth form*/}
@@ -174,14 +177,14 @@ function ThisMonth(props) {
                 <hr />
 
 
-                <div className="spending">
+                <div id="spendingDiv" className="spending">
                   <h3>Spending</h3>
                   <SpendingItemForm yearMonth={yearMonth} categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
                   <SpendingItemDisplay categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} purchaseList={purchaseList} setPurchaseList={setPurchaseList} budgets={budgetList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
                 </div>
                   <hr />
 
-                <div className="deposit">
+                <div id="depositDiv" className="deposit">
                   <h3>Deposits</h3>
                   <DepositForm yearMonth={yearMonth} depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
                   <DepositsDisplay depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
@@ -189,7 +192,7 @@ function ThisMonth(props) {
 
                   <hr />
 
-                <div className="budgetProgress">
+                <div id="budgetProgressDiv" className="budgetProgress">
                     {/* insert budget progress component */}
                     <h3>Budgets</h3>
                     <BudgetProgress budgetList={budgetList} categorySpendingMap={categorySpendingMap}/>
