@@ -6,6 +6,7 @@ import DepositForm from "../components/DepositForm";
 import DepositsDisplay from "../components/DepositsDisplay";
 import BudgetProgress from "../components/BudgetProgress";
 import checkAuth from "../checkAuth";
+import { getDateYearMonth } from "../components/utils";
 
 /**
   * 
@@ -16,20 +17,10 @@ function getMonthName(date) {
   return (months[parseInt(date.substring(5)) - 1]);
 }
 
-/**
-  * 
-  * @param {Date} date 
-*/
-function getDateVal(date) {
-  let year = date.getFullYear().toString();
-  let month = (date.getMonth() + 1).toString();
-  return (year + "-" + (date.getMonth() + 1 < 10 ? "0" + month : month));
-}
-
 // need a utility to get me the standard date format, month name, and the 
 function ThisMonth(props) {
 
-  const [yearMonth, setYearMonth] = useState(getDateVal(new Date())); // in the onChange for this it needs to retreive the list data again.
+  const [yearMonth, setYearMonth] = useState(getDateYearMonth(new Date())); // in the onChange for this it needs to retreive the list data again.
   const [budgetList, setBudgetList] = useState(null); // used for displaying budget progress.
   const [purchaseList, setPurchaseList] = useState(null); // when retrieved from server use month as search filter.
   const [depositList, setDepositList] = useState(null); // when retrieving data use month as search filter. 
@@ -151,6 +142,9 @@ function ThisMonth(props) {
 
     return (
         <div className="thisMonth">
+        <a href="#spendingDiv">Spending</a>
+        <a href="#depositDiv">Deposits</a>
+        <a href="#budgetProgressDiv">Budget status</a>
             <h1>{getMonthName(yearMonth)}</h1>
 
             {/* create month picker component. /changeMonth form*/}
@@ -174,14 +168,14 @@ function ThisMonth(props) {
                 <hr />
 
 
-                <div className="spending">
+                <div id="spendingDiv" className="spending">
                   <h3>Spending</h3>
                   <SpendingItemForm yearMonth={yearMonth} categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
                   <SpendingItemDisplay categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} purchaseList={purchaseList} setPurchaseList={setPurchaseList} budgets={budgetList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
                 </div>
                   <hr />
 
-                <div className="deposit">
+                <div id="depositDiv" className="deposit">
                   <h3>Deposits</h3>
                   <DepositForm yearMonth={yearMonth} depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
                   <DepositsDisplay depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
@@ -189,7 +183,7 @@ function ThisMonth(props) {
 
                   <hr />
 
-                <div className="budgetProgress">
+                <div id="budgetProgressDiv" className="budgetProgress">
                     {/* insert budget progress component */}
                     <h3>Budgets</h3>
                     <BudgetProgress budgetList={budgetList} categorySpendingMap={categorySpendingMap}/>
