@@ -46,3 +46,14 @@ export function getDateEdit(editDate) {
     let fullDate = ("" + year + "-" + (month < 10 ? "0" + month.toString() : month.toString()) + "-" + (day < 10 ? "0" + day.toString() : day.toString()));
     return (fullDate);
 }
+
+/**
+  * 
+  * @param {Date} date 
+  * @return {String} Date string in format yyyy-mm
+*/
+export function getDateYearMonth(date) {
+    let year = date.getFullYear().toString();
+    let month = (date.getMonth() + 1).toString();
+    return (year + "-" + (date.getMonth() + 1 < 10 ? "0" + month : month));
+}
