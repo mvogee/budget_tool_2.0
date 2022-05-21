@@ -15,28 +15,25 @@ function Overview(props) {
     * - yearSpending
     * - yearIncome
     */
-    const [monthSpendingList, setMonthSpendingList] = useState();
-    const [monthDepositList, setMonthDepositList] = useState();
-    const [budget, setBudget] = useState();
-    const [categorySpendingMap, setCategorySpendingMap] = useState(new Map());
-    const [yearSpendingListMap, setYearSpendingListMap] = useState(new Map());
-    const [yearDepositListMap, setYearDepositListMap] = useState(new Map());
-    
+   // ? do these need to be stateful objects or can they be something else since they will not be changed after load??
+
+    const [, setCategorySpendingMap] = useState(new Map());
+    const [totalSpending, setTotalSpending] = useState(0);
+    const [totalIncome, setTotalIncome] = useState(0);
+    const [criticalBudgetItems, setCriticalBudgetItems] = useState();
+
     useEffect(() => {
-        getData();
-        monthSpendingList.forEach(addToCategoryMap);
+        getInitialData();
     }, []);
 
-    function addToCategoryMap(item) {
-        if (categorySpendingMap.has(item.category)) {
-            setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, categorySpendingMap.get(item.category) + item.amount)));
-        }
-        else {
-            setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, item.amount)));
-        }
+    function getListTotal(list) {
+        let total = 0;
+        list ? list.forEach((item) => {total += parseFloat(item.amount)}) : total = 0;
+        return (total);
     }
 
     async function getPastYearSpendingData() {
+        let dataListMap = new Map();
         let months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
         let year = new Date().getFullYear();
         let month = new Date().getMonth();
@@ -47,11 +44,14 @@ function Overview(props) {
             }
             let yearMonth = "" + year + "-" + months[month];
             let newPurchaseData = await getPurchaseData(yearMonth);
-            setYearSpendingListMap(new Map(yearSpendingListMap.set(month + 1 + "-1-" + year, newPurchaseData)));
+            dataListMap.set(month + 1 + "-1-" + year, newPurchaseData);
+           // setYearSpendingListMap(new Map(yearSpendingListMap.set(month + 1 + "-1-" + year, newPurchaseData)));
             month--;
         }
+        return (dataListMap);
     }
     async function getPastYearDepositData() {
+        let dataListMap = new Map();
         let months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
         let year = new Date().getFullYear();
         let month = new Date().getMonth();
@@ -62,33 +62,87 @@ function Overview(props) {
             }
             let yearMonth = "" + year + "-" + months[month];
             let newDepositData = await getDepositData(yearMonth);
-            setYearDepositListMap(new Map(yearDepositListMap.set(month + 1 + "-1-" + year, newDepositData)));
+            dataListMap.set(month + 1 + "-1-" + year, newDepositData);
+            //setYearDepositListMap(new Map(yearDepositListMap.set(month + 1 + "-1-" + year, newDepositData)));
             month--;
         }
+        return (dataListMap);
     }
 
-    async function getData() {
-        let yearMonth = getDateYearMonth(new Date());
-        setBudget(await getBudgetData());
-        setMonthSpendingList(await getPurchaseData(yearMonth));
-        setMonthDepositList(await getDepositData(yearMonth));
-        getPastYearSpendingData();
-        getPastYearDepositData();
+    function getCriticalBudgetItems(budgets, spendingList) {
+        let critBudgetItems = [];
+        if (budgets) {
+            budgets.forEach((item) => {
+                if (parseFloat(item.budget) - parseFloat(spendingList.get(item.id)) < parseFloat(item.budget * 0.1)) {
+                    critBudgetItems.push({id: item.id, categoryName: item.category, budget: parseFloat(item.budget), spent: spendingList.get(item.id)})
+                }
+            });
+        }
+        return (critBudgetItems);
+    }
+    function getCategorySpendMap(purchaseData) {
+        let catSpendMap = new Map();
+        if (purchaseData) {
+            purchaseData.forEach((item) => {
+                if (catSpendMap.has(item.category)) {
+                    catSpendMap.set(item.category, parseFloat(catSpendMap.get(item.category)) + parseFloat(item.amount))
+                }
+                else {
+                    catSpendMap.set(item.category, parseFloat(item.amount));
+                }
+            });
+        }
+        return (catSpendMap);
+    }
+    async function getMonthData(yearMonth = (new Date())) {
+        let purchaseData = await getPurchaseData(yearMonth);
+        let depositData = await getDepositData(yearMonth);
+
+        setTotalSpending(getListTotal(purchaseData));
+        setTotalIncome(getListTotal(depositData));
+        let budgets = await getBudgetData();
+        let categorySpendingMap = getCategorySpendMap(purchaseData);
+        let criticalBudgetItems = getCriticalBudgetItems(budgets, categorySpendingMap);
+        setCriticalBudgetItems(criticalBudgetItems);
+        // get critical budget items
+        // do the month to month graphs
+    }
+
+    async function getInitialData() {
+        //let yearMonth = getDateYearMonth(new Date());
+        getMonthData();
+
+
+        let pastYearSpending = await getPastYearSpendingData();
+        let pastYearDeposits = await getPastYearDepositData();
+        
     };
+
+    function critBudgetItemDisplay(item) {
+        return(
+            <p key={item.id}>{item.categoryName}: ${item.budget - item.spent}</p>
+        );
+    }
+
     return (
         <div className="overview">
             <h1>Overview</h1>
             <div className="stat monthTotals">
                 <hr />
                 <h2>This Month</h2>
-                {/* Insert function to display total spending, total income, and total savings for the month.*/}
+                <ul>
+                    <li>Spending: ${totalSpending}</li>
+                    <li>Income: ${totalIncome}</li>
+                    <li>Savings: ${totalIncome - totalSpending}</li>
+                </ul>
+                {/* Insert function to display total spending, total income, and total savings for the month. */}
             </div>
 
             <hr />
             { /* any budget items this month that are %10 or less until out or over budget */ }
             <div className="watch criticalBudgetItems">
                 <h2>Critical budget items</h2>
-                    {/* Insert function to display critical budget items. */}
+                    {criticalBudgetItems ? criticalBudgetItems.map(critBudgetItemDisplay) : <p>No critical budget items!</p>}
             </div>
 
             <hr />
