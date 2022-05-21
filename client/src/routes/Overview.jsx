@@ -1,6 +1,7 @@
 import {React, useState, useEffect} from "react";
 import {getBudgetData, getPurchaseData, getDepositData} from "../components/overviewServerRequests";
 import {getDateYearMonth} from "../components/utils";
+import MonthToMonthGraph from "../components/MonthToMonthGraph";
 /* TODO:
 *  - state functions handlers for all the displays
 *   - retriev all needed data from database.
@@ -154,18 +155,15 @@ function Overview(props) {
                     <li>Income: ${totalIncome.toFixed(2)}</li>
                     <li>Savings: ${(totalIncome - totalSpending).toFixed(2)}</li>
                 </ul>
-                {/* Insert function to display total spending, total income, and total savings for the month. */}
             </div>
 
             <hr />
-            { /* any budget items this month that are %10 or less until out or over budget */ }
             <div className="watch criticalBudgetItems">
                 <h2>Critical budget items</h2>
                     {criticalBudgetItems ? criticalBudgetItems.map(critBudgetItemDisplay) : <p>No critical budget items!</p>}
             </div>
 
             <hr />
-            { /* stats: years total +- */ }
             <div className="stat yearSavings">
                 <h2>Past 12 Months</h2>
                 <p>${twelveMonthSaving.toFixed(2)}</p>
@@ -173,7 +171,7 @@ function Overview(props) {
             <hr />
             <div className="stats graph">
                 <h2>Month to month graph</h2>
-                { /* Insert graph to display month to month income and losses */}
+                <MonthToMonthGraph yearIncomeMap={yearIncomeMap} yearSpendingMap={yearSpendingMap}/>
             </div>
 
             <hr />
