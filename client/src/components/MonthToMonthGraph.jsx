@@ -35,6 +35,9 @@ import {
     }
 
     function parseSavings(monthSavings, monthSpendings) {
+        if (!monthSavings || !monthSpendings) {
+            return null;
+        }
         let dataArray = [];
         for (let i = 0; i < 12; i++) {
             dataArray.push(monthSavings[i] - monthSpendings[i]);
@@ -53,7 +56,6 @@ import {
             labels.push(months[date]);
             date++;
         }
-        console.log(labels);
         return (labels);
     }
 // props: yearSpendingMap, yearIncomeMap
@@ -72,6 +74,16 @@ function MonthToMonthGraph(props) {
                 text: 'Chart.js Line Chart',
             },
         },
+        scales: {
+            y: {
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, ticks) {
+                        return '$' + value;
+                    }
+                }
+            }
+        }
     };
     const labels = getLabels();
     const data = {

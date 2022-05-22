@@ -2,6 +2,7 @@ import {React, useState, useEffect} from "react";
 import {getBudgetData, getPurchaseData, getDepositData} from "../components/overviewServerRequests";
 import {getDateYearMonth} from "../components/utils";
 import MonthToMonthGraph from "../components/MonthToMonthGraph";
+import SpendingPieChart from "../components/SpendingPieChart";
 /* TODO:
 *  - state functions handlers for all the displays
 *   - retriev all needed data from database.
@@ -15,6 +16,8 @@ function Overview(props) {
     const [twelveMonthSaving, setTwelveMonthSaving] = useState(0);
     const [yearIncomeMap, setYearIncomeMap] = useState();
     const [yearSpendingMap, setYearSpendingMap] = useState();
+    const [catSpendMap, setCatSpendMap] = useState();
+    const [budgets, setBudgets] = useState();
 
     useEffect(() => {
         getInitialData();
@@ -118,9 +121,11 @@ function Overview(props) {
         setTotalSpending(getListTotal(purchaseData));
         setTotalIncome(getListTotal(depositData));
         let budgets = await getBudgetData();
+        setBudgets(budgets);
         let categorySpendingMap = getCategorySpendMap(purchaseData);
         let criticalBudgetItems = getCriticalBudgetItems(budgets, categorySpendingMap);
         setCriticalBudgetItems(criticalBudgetItems);
+        setCatSpendMap(categorySpendingMap);
         // get critical budget items
         // do the month to month graphs
     }
@@ -178,7 +183,7 @@ function Overview(props) {
 
             <div className="stat pieChart">
                 <h2>Spending this month</h2>
-                { /* Insert pieChart for monthly expenses */}
+                <SpendingPieChart catSpendMap={catSpendMap} budgets={budgets}/>
             </div>
         </div>
     );
