@@ -7,7 +7,6 @@ function parseDataSet(budgets, categoryMap, colorSet) {
     if (!categoryMap || !budgets) {
         return (null);
     }
-    console.log(budgets);
     let labels = [];
     let data = [];
     let backgroundColor = [];
