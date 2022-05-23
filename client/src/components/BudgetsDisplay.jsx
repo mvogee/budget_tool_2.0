@@ -30,16 +30,10 @@ function BudgetsDisplay(props) {
         if (window.confirm("are you sure you want to delete " + event.target.dataset.category + "?") === true) {
             deleteRequest(event.target.dataset.id);
             let newBudgetList = props.budgets;
-            console.log(newBudgetList);
             newBudgetList.splice(event.target.dataset.idx, 1);
             props.setBudgetList(newBudgetList);
             props.setTotalBudgeted(props.totalBudgeted - event.target.dataset.amount);
         }
-        // will also need to remove event.data.amount from props.setTotalBudgeted;
-        // delete form local copy
-        // make server request to delete item.
-
-
     }
     function editBtn(event) {
         console.log("editBtn");
