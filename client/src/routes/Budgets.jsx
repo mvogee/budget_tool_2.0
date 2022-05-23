@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import PopEditBudgets from "../components/PopEditBudgets.jsx";
 import BudgetsDisplay from "../components/BudgetsDisplay.jsx";
 import checkAuth from "../checkAuth.js";
 
@@ -36,6 +35,9 @@ function Budgets(props) {
         return (total);
     }
 
+    function leftover(budgeted, income) {
+        return (income - budgeted);
+    }
     async function getProjectedIncomeData() {
         let url = "/income"
         let opts = {
@@ -147,11 +149,10 @@ function Budgets(props) {
             <hr />
             <div className="top-stats">
                 <p>Total budgeted: ${getTotalBudgeted(budgetList)}</p>
-                <p>Projected Income: ${projectedIncome}</p> {/* insert projected income */}
-                <p>left: ${projectedIncome - totalBudgeted}</p> {/* insert projected income - total budgeted */}
+                <p>Projected Income: ${projectedIncome}</p>
+                <p>left: ${projectedIncome - (totalBudgeted)}</p>
             </div>
             <hr />
-                {/*  edit field popup */}
             <div className="form_div">
             <form className="budget-item-form" name="newBudgetItm">
                 <div className="input_div">
