@@ -20,6 +20,7 @@ function Budgets(props) {
     const [categoryInput, setCategoryInput] = useState("");
     const [budgetInput, setBudgetInput] = useState(0);
     const [budgetList, setBudgetList] = useState(null);
+    const [totalBudgeted, setTotalBudgeted] = useState(500);
 
     let navigate = useNavigate();
 
@@ -107,7 +108,7 @@ function Budgets(props) {
             <h1>Budgets</h1>
             <hr />
             <div className="top-stats">
-                <p>Total budgeted:  </p> {/* insert total budgetd */}
+                <p>Total budgeted: ${totalBudgeted}</p>
                 <p>Projected Income:  </p> {/* insert projected income */}
                 <p>left:   </p> {/* insert projected income - total budgeted */}
             </div>
@@ -126,7 +127,7 @@ function Budgets(props) {
                 <button type="submit" onClick={submitBtn}>Save</button>
             </form>
             </div>
-                < BudgetsDisplay budgets={budgetList} />
+                <BudgetsDisplay budgets={budgetList} setBudgetList={setBudgetList} totalBudgeted={totalBudgeted} setTotalBudgeted={setTotalBudgeted}/>
         </div>
     );
 }

@@ -2,20 +2,58 @@ import { React } from "react";
 
 function BudgetsDisplay(props) {
 
+    async function deleteRequest(itemId) {
+        let data = {categoryId: itemId};
+        let url = "/budgets";
+        let opts = {
+            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        };
+        const response = await fetch(url, opts);
+        const reData = await response.json();
+        console.log(reData);
+        if (reData.success) {
+            console.log("item was deleted");
+        }
+    }
 
-    function budgetItems(item) {
+    function deleteItem(event) {
+        if (window.confirm("are you sure you want to delete " + event.target.dataset.category + "?") === true) {
+            deleteRequest(event.target.dataset.id);
+            let newBudgetList = props.budgets;
+            console.log(newBudgetList);
+            newBudgetList.splice(event.target.dataset.idx, 1);
+            props.setBudgetList(newBudgetList);
+            props.setTotalBudgeted(props.totalBudgeted - event.target.dataset.amount);
+        }
+        // will also need to remove event.data.amount from props.setTotalBudgeted;
+        // delete form local copy
+        // make server request to delete item.
+
+
+    }
+    function editBtn(event) {
+        console.log("editBtn");
+    }
+    function budgetItems(item, idx) {
         return (
             <tr key={item.id} className="itemRow">
                 <td>{item.category}</td>
                 <td>{item.budget}</td>
-                <td><button className="editButton editButtonBudgets" type="button"
-                    id={item.id}
-                    category={item.category}
-                    budget={item.budget}
-                >edit</button>
+                <td>
+                <button className="editButton editButtonBudgets" onClick={editBtn} data-id={item.id} data-category={item.category} data-budget={item.budget}>Edit</button>
                 </td>
                 <td>
-                    <button className="deleteBtn" type="button" itmid={item.id} >Delete</button>
+                    <button className="deleteBtn" onClick={deleteItem} data-id={item.id} data-category={item.category} data-amount={item.budget} data-idx={idx}>Delete</button>
                 </td>
             </tr>
         );
