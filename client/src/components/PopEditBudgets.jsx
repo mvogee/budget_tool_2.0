@@ -2,16 +2,32 @@ import React from "react";
 
 function PopEditBudgets(props) {
     
-    function submitBtn(event) {
-        event.preventDefault();
-        alert("submit button was pressed");
-        // send the updated fields to server and close popup.
-    }
-
-    function cancelBtn(event) {
+    function resetInputs() {
         props.setEditCategoryInput("");
         props.setEditBudgetInput(0);
         props.setIdxEdit(null);
+    }
+    function updateLocalData() {
+        props.setTotalBudgeted((prevVal) => {
+            return (prevVal - parseFloat(props.budgetList[props.idxEdit].budget) + parseFloat(props.editBudgetInput));
+        });
+        props.setBudgetList((prevVal) => {
+            let newList = Array.from(prevVal);
+            newList[props.idxEdit].category = props.editCategoryInput;
+            newList[props.idxEdit].budget = parseFloat(props.editBudgetInput);
+            return (newList);
+        });
+    }
+    function submitBtn(event) {
+        event.preventDefault();
+        // update the local budgetsList at idx
+        updateLocalData();
+        // update remote at id
+        
+    }
+
+    function cancelBtn(event) {
+        resetInputs();
         // close the popup
     }
 
@@ -29,7 +45,7 @@ function PopEditBudgets(props) {
             <form className="popEditForm">
                 <div className="input_div">
                     <label htmlFor="category">Category</label>
-                    <input type="text" autoComplete="off" name="category" onChange={updateCatInput} value={props.editCategoryInput} autofocus required/>
+                    <input type="text" autoComplete="off" name="category" onChange={updateCatInput} value={props.editCategoryInput} autoFocus required/>
                 </div>
                 <div className="input_div">
                     <label htmlFor="budgeted">Budget</label>

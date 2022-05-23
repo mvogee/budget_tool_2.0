@@ -62,7 +62,7 @@ function BudgetsDisplay(props) {
 
     return (
         <div className="budgetsDisplay">
-        <PopEditBudgets budgetList={props.budgetList} setBudgetList={props.setBudgetList} setTotalBudgeted={props.setTotalBudgeted} editBudgetInput={editBudgetInput} setEditBudgetInput={setEditBudgetInput} editCategoryInput={editCategoryInput} setEditCategoryInput={setEditCategoryInput} idxEdit={idxEdit} setIdxEdit={setIdxEdit}/>
+        <PopEditBudgets budgetList={props.budgets} setBudgetList={props.setBudgetList} setTotalBudgeted={props.setTotalBudgeted} editBudgetInput={editBudgetInput} setEditBudgetInput={setEditBudgetInput} editCategoryInput={editCategoryInput} setEditCategoryInput={setEditCategoryInput} idxEdit={idxEdit} setIdxEdit={setIdxEdit}/>
             <table className="budgets-table">
                 <thead>
                         <tr>
