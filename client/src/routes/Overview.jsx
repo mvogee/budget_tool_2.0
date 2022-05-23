@@ -1,12 +1,7 @@
 import {React, useState, useEffect} from "react";
 import {getBudgetData, getPurchaseData, getDepositData} from "../components/overviewServerRequests";
-import {getDateYearMonth} from "../components/utils";
 import MonthToMonthGraph from "../components/MonthToMonthGraph";
 import SpendingPieChart from "../components/SpendingPieChart";
-/* TODO:
-*  - state functions handlers for all the displays
-*   - retriev all needed data from database.
-*/
 
 function Overview(props) {
 
@@ -42,7 +37,6 @@ function Overview(props) {
             let yearMonth = "" + year + "-" + months[month];
             let newPurchaseData = await getPurchaseData(yearMonth);
             dataListMap.set(month + 1 + "-1-" + year, newPurchaseData);
-           // setYearSpendingListMap(new Map(yearSpendingListMap.set(month + 1 + "-1-" + year, newPurchaseData)));
             month--;
         }
         return (dataListMap);
@@ -61,7 +55,6 @@ function Overview(props) {
             let yearMonth = "" + year + "-" + months[month];
             let newDepositData = await getDepositData(yearMonth);
             dataListMap.set(month + 1 + "-1-" + year, newDepositData);
-            //setYearDepositListMap(new Map(yearDepositListMap.set(month + 1 + "-1-" + year, newDepositData)));
             month--;
         }
         return (dataListMap);
@@ -126,21 +119,15 @@ function Overview(props) {
         let criticalBudgetItems = getCriticalBudgetItems(budgets, categorySpendingMap);
         setCriticalBudgetItems(criticalBudgetItems);
         setCatSpendMap(categorySpendingMap);
-        // get critical budget items
-        // do the month to month graphs
     }
 
     async function getInitialData() {
-        //let yearMonth = getDateYearMonth(new Date());
         getMonthData();
-
-
         let pastYearSpending = await getPastYearSpendingData();
         let pastYearDeposits = await getPastYearDepositData();
         setTwelveMonthSaving(getTwelveMonthSavings(pastYearSpending, pastYearDeposits));
         setYearIncomeMap(pastYearDeposits);
         setYearSpendingMap(pastYearSpending);
-        
     };
 
     function critBudgetItemDisplay(item) {

@@ -430,9 +430,8 @@ app.route("/budgets")
 })
 .delete((req, res) => {
     if (req.isAuthenticated()) {
-        console.log(req.body.categoryId);
         let sql = "DELETE FROM budgets WHERE id=? AND userId=?;";
-        mysql.query(sql, [req.body.deleteCategory, req.user.id], (err, result) => {
+        mysql.query(sql, [req.body.categoryId, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
                 responses.jsonResponse(res, false, err);
