@@ -420,7 +420,7 @@ app.route("/budgets")
                 responses.jsonResponse(res, false, err);
             }
             else {
-                responses.jsonResponse(res, false, "Updated budget item.", result);
+                responses.jsonResponse(res, true, "Updated budget item.", result);
             }
         });
     }
