@@ -2,7 +2,7 @@ import React from "react";
 
 function PopEditBudgets(props) {
     
-    function resetInputs() {
+    function closePopup() {
         props.setEditCategoryInput("");
         props.setEditBudgetInput(0);
         props.setIdxEdit(null);
@@ -18,16 +18,42 @@ function PopEditBudgets(props) {
             return (newList);
         });
     }
+
+    async function updateServer() {
+        let data = {category: props.editCategoryInput, budgeted: props.editBudgetInput, itemId: props.budgetList[props.idxEdit].id};
+        console.log("Updating the server");
+        let url = "/budgets";
+        let opts = {
+            method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data) // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        };
+
+        const response = await fetch(url, opts);
+        const reData = await response.json();
+        console.log(reData);
+        closePopup();
+    }
+
     function submitBtn(event) {
         event.preventDefault();
         // update the local budgetsList at idx
         updateLocalData();
         // update remote at id
+        updateServer();
         
     }
 
     function cancelBtn(event) {
-        resetInputs();
+        closePopup();
         // close the popup
     }
 
