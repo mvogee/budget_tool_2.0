@@ -1,6 +1,11 @@
-import { React } from "react";
+import { React, useState } from "react";
+import PopEditBudgets from "./PopEditBudgets.jsx";
 
 function BudgetsDisplay(props) {
+
+    const [editBudgetInput, setEditBudgetInput] = useState(0);
+    const [editCategoryInput, setEditCategoryInput] = useState("");
+    const [idxEdit, setIdxEdit] = useState(0);
 
     async function deleteRequest(itemId) {
         let data = {categoryId: itemId};
@@ -36,7 +41,9 @@ function BudgetsDisplay(props) {
         }
     }
     function editBtn(event) {
-        console.log("editBtn");
+        setEditBudgetInput(event.target.dataset.budget);
+        setEditCategoryInput(event.target.dataset.category);
+        setIdxEdit(event.target.dataset.idx);
     }
     function budgetItems(item, idx) {
         return (
@@ -44,7 +51,7 @@ function BudgetsDisplay(props) {
                 <td>{item.category}</td>
                 <td>{item.budget}</td>
                 <td>
-                <button className="editButton editButtonBudgets" onClick={editBtn} data-id={item.id} data-category={item.category} data-budget={item.budget}>Edit</button>
+                <button className="editButton editButtonBudgets" onClick={editBtn} data-id={item.id} data-category={item.category} data-budget={item.budget} data-idx={idx}>Edit</button>
                 </td>
                 <td>
                     <button className="deleteBtn" onClick={deleteItem} data-id={item.id} data-category={item.category} data-amount={item.budget} data-idx={idx}>Delete</button>
@@ -55,6 +62,7 @@ function BudgetsDisplay(props) {
 
     return (
         <div className="budgetsDisplay">
+        <PopEditBudgets budgetList={props.budgetList} setBudgetList={props.setBudgetList} setTotalBudgeted={props.setTotalBudgeted} editBudgetInput={editBudgetInput} setEditBudgetInput={setEditBudgetInput} editCategoryInput={editCategoryInput} setEditCategoryInput={setEditCategoryInput} idxEdit={idxEdit} setIdxEdit={setIdxEdit}/>
             <table className="budgets-table">
                 <thead>
                         <tr>
