@@ -10,7 +10,6 @@ import checkAuth from "../checkAuth";
 *   - display functions for income table.
 */
 
-
 function Income(props) {
     const [incomeList, setIncomeList] = useState();
     const [name, setName] = useState("");
@@ -18,6 +17,8 @@ function Income(props) {
     const [hoursPerWeek, setHoursPerWeek] = useState(40);
     const [taxRate, setTaxRate] = useState(0);
     const [retirement, setRetirement] = useState(0);
+    const [grossIncome, setGrossIncome] = useState(0);
+    const [netIncome, setNetIncome] = useState(0);
     const navigate = useNavigate();
 
     function setInput(e, inputSetter) {
@@ -43,6 +44,7 @@ function Income(props) {
         console.log(reData);
         if (reData.success) {
             setIncomeList(reData.obj);
+            calculateMonthIncome(reData.obj);
         }
         
     }
@@ -74,6 +76,7 @@ function Income(props) {
         let newIncomeItem = {id: id, incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: taxRate, retirement: retirement };
         console.log(newIncomeItem);
         setIncomeList(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
+        calculateMonthIncome(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
     }
 
     useEffect(() => {
@@ -90,6 +93,18 @@ function Income(props) {
         authenticate();
     }, []);
 
+    function calculateMonthIncome(incomesList) {
+        let gross = 0;
+        let net = 0;
+        incomesList.forEach((item) => {
+            let itemGross = ((parseFloat(item.hourlyRate) * parseFloat(item.hoursPerWeek)) * 4);
+            gross += itemGross;
+            net += itemGross - (itemGross * item.taxRate) - (itemGross * item.retirement);
+        });
+        setGrossIncome(gross);
+        setNetIncome(net);
+    }
+
     function submitBtn(event) {
         event.preventDefault();
         sendData()
@@ -99,8 +114,8 @@ function Income(props) {
         <div className="income">
             <h1>Income</h1>
             <div className="top-stats">
-                <p>Gross income: {/* display gross income */} </p>
-                <p>Net income: {/* display net income */} </p>
+                <p>Gross income: {grossIncome} </p>
+                <p>Net income: {netIncome} </p>
             </div>
             <hr />
             <div className="form_div">
