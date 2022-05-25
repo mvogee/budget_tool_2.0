@@ -35,9 +35,6 @@ function Budgets(props) {
         return (total);
     }
 
-    function leftover(budgeted, income) {
-        return (income - budgeted);
-    }
     async function getProjectedIncomeData() {
         let url = "/income"
         let opts = {
@@ -127,7 +124,11 @@ function Budgets(props) {
     function setListData(id) {
         let newBudgetItem = {id: id, category: categoryInput, budget: parseInt(budgetInput) };
         console.log(newBudgetItem);
-        setBudgetList(budgetList ? budgetList.concat(newBudgetItem) : [newBudgetItem]);
+        setBudgetList((prevList) => {
+            let newList = Array.from(prevList ? prevList : []);
+            return (newList ? newList.concat(newBudgetItem) : [newBudgetItem]);
+        });
+        setTotalBudgeted(prevVal => prevVal + newBudgetItem.budget);
     }
 
     function submitBtn(event) {
@@ -150,7 +151,7 @@ function Budgets(props) {
             <div className="top-stats">
                 <p>Total budgeted: ${getTotalBudgeted(budgetList)}</p>
                 <p>Projected Income: ${projectedIncome}</p>
-                <p>left: ${projectedIncome - (totalBudgeted)}</p>
+                <p>left: ${(projectedIncome - totalBudgeted)}</p>
             </div>
             <hr />
             <div className="form_div">

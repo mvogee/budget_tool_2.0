@@ -34,12 +34,18 @@ function BudgetsDisplay(props) {
     function deleteItem(event) {
         if (window.confirm("are you sure you want to delete " + event.target.dataset.category + "?") === true) {
             deleteRequest(event.target.dataset.id);
-            let newBudgetList = props.budgets;
-            newBudgetList.splice(event.target.dataset.idx, 1);
-            props.setBudgetList(newBudgetList);
-            props.setTotalBudgeted(props.totalBudgeted - event.target.dataset.amount);
+            props.setBudgetList((prevList) => {
+                let newBudgetList = Array.from(prevList);
+                newBudgetList.splice(event.target.dataset.idx, 1);
+                return (newBudgetList);
+            });
+            props.setTotalBudgeted((prevVal) => {
+                console.log(prevVal);
+                return (prevVal - event.target.dataset.amount);
+            });
         }
     }
+
     function editBtn(event) {
         setEditBudgetInput(event.target.dataset.budget);
         setEditCategoryInput(event.target.dataset.category);
