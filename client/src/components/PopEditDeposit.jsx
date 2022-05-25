@@ -29,11 +29,16 @@ function PopEditDeposit(props) {
 
     function updateLocalItem() {
         console.log("updating local deposit");
-        props.setTotalIncome((parseFloat(props.totalIncome)) + (parseFloat(props.amountEdit)) - (parseFloat(props.depositList[props.idxEdit].amount)));
+        //props.setTotalIncome((parseFloat(props.totalIncome)) + (parseFloat(props.amountEdit)) - (parseFloat(props.depositList[props.idxEdit].amount)));
+        props.setTotalIncome((prevVal) => {
+            return (parseFloat(prevVal) + parseFloat(props.amountEdit) - (parseFloat(props.depositList[props.idxEdit].amount)));
+        });
         let newItem = {id: props.depositList[props.idxEdit].id, userId: props.depositList[props.idxEdit].userId, inDescription: props.nameEdit, amount: props.amountEdit, depositDate: props.dateEdit + "T07:00:00.000Z"};
-        let depositListCopy = Array.from(props.depositList);
-        depositListCopy[props.idxEdit] = newItem;
-        props.setDepositList(depositListCopy);
+        props.setDepositList((prevList) => {
+            let newDepositList = Array.from(prevList);
+            newDepositList[props.idxEdit] = newItem;
+            return (newDepositList);
+        });
     }
     function submitBtn(event) {
         event.preventDefault();

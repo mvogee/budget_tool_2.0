@@ -41,7 +41,7 @@ function SpendingItemDisplay(props) {
     function deleteItem(event) {
         if (window.confirm("Are you sure you want to delete " + event.target.dataset.name) === true) {
             deleteRequest(event.target.dataset.id);
-            props.setTotalSpending(props.totalSpending - event.target.dataset.amount);
+            props.setTotalSpending((prevVal) => prevVal - event.target.dataset.amount);
             let newPurchaseList = props.purchaseList;
             newPurchaseList.splice(event.target.dataset.idx, 1);
             props.setPurchaseList(newPurchaseList);

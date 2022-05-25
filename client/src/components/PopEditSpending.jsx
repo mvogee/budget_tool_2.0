@@ -4,7 +4,10 @@ function PopEditSpending(props) {
 
     function updateLocalItem() {
         console.log("updating local purchaseList");
-        props.setTotalSpending(parseFloat(props.totalSpending) + (parseFloat(props.amountEdit) - parseFloat(props.purchaseList[props.idxEdit].amount)));
+        //props.setTotalSpending(parseFloat(props.totalSpending) + (parseFloat(props.amountEdit) - parseFloat(props.purchaseList[props.idxEdit].amount)));
+        props.setTotalSpending((prevVal) => {
+            return (parseFloat(prevVal) + (parseFloat(props.amountEdit) - parseFloat(props.purchaseList[props.idxEdit].amount)));
+        });
         let newItem = {id: props.purchaseList[props.idxEdit].id, userId: props.purchaseList[props.idxEdit].userId, itmDescription: props.nameEdit, amount: props.amountEdit, category: parseInt(props.categoryEdit), purchaseDate: props.dateEdit + "T07:00:00.000Z"};
         let purchaseListCopy = Array.from(props.purchaseList);
         purchaseListCopy[props.idxEdit] = newItem;
