@@ -144,7 +144,7 @@ function Income(props) {
                 </form>
             </div>
             <div className="Display">
-                < IncomeDisplay incomeList={incomeList}/>
+                <IncomeDisplay incomeList={incomeList} setIncomeList={setIncomeList} calculateMonthIncome={calculateMonthIncome}/>
             </div>
         </div>
     );
