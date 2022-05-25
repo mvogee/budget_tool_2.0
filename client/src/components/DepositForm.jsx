@@ -36,8 +36,14 @@ function DepositForm(props) {
         let newDepositItem = {id: id, inDescription: name, amount: amount, depositDate: date + ":10:00"};
         console.log(new Date(date + ":10:00"));
         if (checkDateMatch(date)) {
-            props.setDepositList(props.depositList ? props.depositList.concat(newDepositItem) : [newDepositItem]);
-            props.setTotalIncome(parseFloat(props.totalIncome) + parseFloat(amount));
+            props.setDepositList((prevList) => {
+                let newList = prevList ? Array.from(prevList) : [];
+                newList.concat(newDepositItem);
+                return (newList);
+            });
+            props.setTotalIncome((prevVal) => {
+                return (parseFloat(prevVal) + parseFloat(amount));
+            });
         }
     }
 

@@ -73,9 +73,10 @@ function Income(props) {
     }
 
     function setListData(id) {
-        let newIncomeItem = {id: id, incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: taxRate, retirement: retirement };
+        let newIncomeItem = {id: id, incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: (taxRate / 100), retirement: (retirement / 100) };
         console.log(newIncomeItem);
-        setIncomeList(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
+        //setIncomeList(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
+        setIncomeList((prevVal) => {return (prevVal ? prevVal.concat(newIncomeItem) : [newIncomeItem])});
         calculateMonthIncome(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
     }
 
@@ -114,8 +115,8 @@ function Income(props) {
         <div className="income">
             <h1>Income</h1>
             <div className="top-stats">
-                <p>Gross income: {grossIncome} </p>
-                <p>Net income: {netIncome} </p>
+                <p>Gross income: ${grossIncome.toFixed(2)} </p>
+                <p>Net income: ${netIncome.toFixed(2)} </p>
             </div>
             <hr />
             <div className="form_div">
