@@ -73,7 +73,7 @@ function Income(props) {
     }
 
     function setListData(id) {
-        let newIncomeItem = {id: id, incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: taxRate, retirement: retirement };
+        let newIncomeItem = {id: id, incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: (taxRate / 100), retirement: (retirement / 100) };
         console.log(newIncomeItem);
         //setIncomeList(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
         setIncomeList((prevVal) => {return (prevVal ? prevVal.concat(newIncomeItem) : [newIncomeItem])});

@@ -1,6 +1,14 @@
-import React from "react";
+import {React, useState} from "react";
+import PopEditIncome from "./PopEditIncome";
 
 function IncomeDisplay(props) {
+    const [idxEdit, setidxEdit] = useState(0);
+    const [editId, setEditId] = useState(null);
+    const [nameEdit, setNameEdit] = useState("");
+    const [rateEdit, setRateEdit] = useState("");
+    const [hoursEdit, setHoursEdit] = useState(0);
+    const [taxEdit, setTaxEdit] = useState(0);
+    const [retireEdit, setRetireEdit] = useState(0);
 
     async function deleteRequest(itemId) {
         let data = {deleteIncome: itemId};
@@ -38,6 +46,16 @@ function IncomeDisplay(props) {
         }
     }
 
+    function editBtn(event) {
+        setidxEdit(event.target.dataset.idx);
+        setEditId(event.target.dataset.id);
+        setNameEdit(event.target.dataset.incomename);
+        setRateEdit(event.target.dataset.hourlyrate);
+        setHoursEdit(event.target.dataset.hoursperweek);
+        setTaxEdit((event.target.dataset.taxrate) * 100);
+        setRetireEdit((event.target.dataset.retirement) * 100);
+    }
+
     function incomeItem(item, idx) {
         return(
             <tr key={item.id} className="itemRow">
@@ -47,7 +65,7 @@ function IncomeDisplay(props) {
                 <td>{item.taxRate}</td>
                 <td>{item.retirement}</td>
                 <td>
-                    <button type="button" className="editBtn"
+                    <button type="button" className="editBtn" onClick={editBtn}
                         data-id={item.id}
                         data-incomename={item.incomeName}
                         data-hourlyrate={item.hourlyRate}
@@ -72,6 +90,16 @@ function IncomeDisplay(props) {
 
     return (
         <div className="incomeDisplayy">
+        <PopEditIncome
+            incomeList={props.incomeList} setIncomeList={props.setIncomeList}
+            editId={editId} setEditId={setEditId}
+            nameEdit={nameEdit} setNameEdit={setNameEdit}
+            rateEdit={rateEdit} setRateEdit={setRateEdit}
+            hoursEdit={hoursEdit} setHoursEdit={setHoursEdit}
+            taxEdit={taxEdit} setTaxEdit={setTaxEdit}
+            retireEdit={retireEdit} setRetireEdit={setRetireEdit}
+            idxEdit={idxEdit} setidxEdit={setidxEdit}
+        />
             <table className="income-table">
                 <thead>
                     <tr>
