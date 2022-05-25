@@ -99,6 +99,7 @@ function IncomeDisplay(props) {
             taxEdit={taxEdit} setTaxEdit={setTaxEdit}
             retireEdit={retireEdit} setRetireEdit={setRetireEdit}
             idxEdit={idxEdit} setidxEdit={setidxEdit}
+            calculateMonthIncome={props.calculateMonthIncome}
         />
             <table className="income-table">
                 <thead>

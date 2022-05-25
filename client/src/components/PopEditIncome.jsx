@@ -20,7 +20,7 @@ function PopEditIncome(props) {
     }
 
     function updateLocal() {
-        let updatedIncomeItem = {id: props.editId, incomeName: props.nameEdit, hourlyRate: props.hoursEdit, hoursPerWeek: props.hoursEdit, taxRate: (props.taxEdit / 100), retirement: (props.retireEdit / 100) };
+        let updatedIncomeItem = {id: props.editId, incomeName: props.nameEdit, hourlyRate: parseFloat(props.rateEdit), hoursPerWeek: parseFloat(props.hoursEdit), taxRate: (props.taxEdit / 100), retirement: (props.retireEdit / 100) };
         props.setIncomeList((prevState) => {
             let newList = Array.from(prevState);
             newList[props.idxEdit] = updatedIncomeItem;
@@ -29,7 +29,7 @@ function PopEditIncome(props) {
     }
 
     async function updateRemote() {
-        let data = {itmId: props.editId, incomeName: props.nameEdit, hourlyRate: props.hoursEdit, hoursPerWeek: props.hoursEdit, taxRate: props.taxEdit, retirement: props.retireEdit };
+        let data = {itmId: props.editId, incomeName: props.nameEdit, hourlyRate: props.rateEdit, hoursPerWeek: props.hoursEdit, taxRate: props.taxEdit, retirement: props.retireEdit };
         console.log("Updating the server");
         let url = "/income";
         let opts = {
@@ -57,7 +57,7 @@ function PopEditIncome(props) {
         updateLocal();
         // update the remote copy of incomeList
         updateRemote();
-        closePopup();
+        props.calculateMonthIncome(props.incomeList);
     }
 
     function cancelBtn(event) {

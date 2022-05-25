@@ -115,8 +115,8 @@ function Income(props) {
         <div className="income">
             <h1>Income</h1>
             <div className="top-stats">
-                <p>Gross income: {grossIncome} </p>
-                <p>Net income: {netIncome} </p>
+                <p>Gross income: ${grossIncome.toFixed(2)} </p>
+                <p>Net income: ${netIncome.toFixed(2)} </p>
             </div>
             <hr />
             <div className="form_div">
