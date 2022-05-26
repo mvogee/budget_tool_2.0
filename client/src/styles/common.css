@@ -52,6 +52,14 @@ h1 {
     margin: 1rem 0;
 }
 
+h2 {
+    font-size: 1.6rem;
+    margin: 1rem 0;
+}
+p {
+    font-size: 1rem;
+}
+
 form {
     display: block;
     margin-top: 0em;
@@ -64,6 +72,10 @@ form input, form select {
     margin: 0 0.2rem;
     border-color: var(--main-text-white);
     color: var(--main-color);
+}
+
+ul {
+    list-style: none;
 }
 
 .form_div {
@@ -91,7 +103,7 @@ form input, form select {
 }
 
 input, select, textarea, select, textarea:focus, input:focus {
-    color:var(--main-text-white);
+    color:var(--main-color);
 }
 
 .input_div {
@@ -116,6 +128,6 @@ button {
     border: none;
 }
 
-.top-stats p {
+.top-stats, .top-stats p {
     margin: 1rem 0;
 }

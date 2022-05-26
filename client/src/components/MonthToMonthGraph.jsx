@@ -68,19 +68,34 @@ function MonthToMonthGraph(props) {
         plugins: {
             legend: {
                 position: 'top',
+                labels: {
+                    color: '#E5E5E5',
+                }
             },
             title: {
-                display: true,
+                display: false,
                 text: 'Chart.js Line Chart',
             },
         },
         scales: {
             y: {
                 ticks: {
+                    color: '#E5E5E5',
                     // Include a dollar sign in the ticks
                     callback: function(value, index, ticks) {
                         return '$' + value;
                     }
+                },
+                grid: {
+                    color: '#8B8CAC'
+                }
+            },
+            x: {
+                ticks: {
+                    color: '#E5E5E5'
+                },
+                grid: {
+                    color: '#8B8CAC'
                 }
             }
         }
