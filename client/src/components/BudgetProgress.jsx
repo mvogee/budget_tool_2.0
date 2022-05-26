@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from "react";
+import {React} from "react";
 
 function BudgetProgress(props) {
 
@@ -15,7 +15,6 @@ function BudgetProgress(props) {
 
     return (
         <div className="budgetProgress">
-            <p>**** insert budget progress table here ****</p>
             <table>
                 <thead>
                     <tr>

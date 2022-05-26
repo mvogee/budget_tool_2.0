@@ -37,9 +37,6 @@ function DepositsDisplay(props) {
         if (window.confirm("Are you sure you want to delete " + event.target.dataset.name) === true) {
             deleteRequest(event.target.dataset.id);
             props.setTotalIncome(props.totalIncome - event.target.dataset.amount);
-            // let newDepositList = props.depositList;
-            // newDepositList.splice(event.target.dataset.idx, 1);
-            // props.setDepositList(newDepositList);
             props.setDepositList((prevList) => {
                 let newList = Array.from(prevList);
                 newList.splice(event.target.datase.idx, 1);

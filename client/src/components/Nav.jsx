@@ -1,5 +1,6 @@
 import React from "react";
 import {Link, useNavigate} from "react-router-dom";
+import "../styles/nav.css";
 
 function Nav(props) {
     const navigate = useNavigate();
@@ -27,11 +28,23 @@ function Nav(props) {
     }
     return (
         <nav className="main-nav">
-            <Link id="overview" className="nav-item authOnly" to="/overview">Overview</Link>
-            <Link id="budgets" className="nav-item authOnly" to="/budgets">Budgets</Link>
-            <Link id="income" className="nav-item authOnly" to="/income">Your Income</Link>
-            <Link id="thisMonth" className="nav-item authOnly" to="/thisMonth">Tracker</Link>
-            <Link id="profile" className="nav-item nav-secondary authOnly" to="/profile">{props.userName}</Link>
+            <ul>
+                <li>
+                    <Link id="overview" className="nav-item authOnly" to="/overview">Overview</Link>
+                </li>
+                <li>
+                    <Link id="budgets" className="nav-item authOnly" to="/budgets">Budgets</Link>
+                </li>
+                <li>
+                    <Link id="income" className="nav-item authOnly" to="/income">Your Income</Link>
+                </li>
+                <li>
+                    <Link id="thisMonth" className="nav-item authOnly" to="/thisMonth">Tracker</Link>
+                </li>
+                <li>
+                    <Link id="profile" className="nav-item nav-secondary authOnly" to="/profile">{props.userName}</Link>
+                </li>
+            </ul>
             <button id="logout-button" className="nav-secondary" onClick={logoutbtn}>log out</button> {/* all buttons will go to javascript handlers. */}
         </nav>
     );

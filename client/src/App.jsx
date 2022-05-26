@@ -1,4 +1,5 @@
 import './App.css';
+import './styles/common.css';
 import {React, useState, useEffect} from 'react';
 
 import Budgets from './routes/Budgets.jsx';
