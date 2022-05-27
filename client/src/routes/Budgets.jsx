@@ -149,9 +149,9 @@ function Budgets(props) {
             <h1>Budgets</h1>
             <hr />
             <div className="top-stats">
-                <p>Total budgeted: ${totalBudgeted}</p>
-                <p>Projected Income: ${projectedIncome}</p>
-                <p>left: ${(projectedIncome - totalBudgeted)}</p>
+                <p>Total budgeted: ${totalBudgeted.toFixed(2)}</p>
+                <p>Projected Income: ${projectedIncome.toFixed(2)}</p>
+                <p>left: ${(projectedIncome - totalBudgeted).toFixed(2)}</p>
             </div>
             <hr />
             <div className="form_div">

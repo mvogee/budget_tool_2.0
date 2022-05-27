@@ -6,6 +6,7 @@ function PopEditBudgets(props) {
         props.setEditCategoryInput("");
         props.setEditBudgetInput(0);
         props.setIdxEdit(null);
+        props.setDisplayPopup(false);
     }
     function updateLocalData() {
         props.setTotalBudgeted((prevVal) => {
@@ -66,7 +67,7 @@ function PopEditBudgets(props) {
     }
 
     return (
-        <div className="popEdit">
+        <div className= {props.displayPopup ? "popEdit popDisplay" : "popEdit popDisplayNone"}>
             <p>Edit Category</p>
             <form className="popEditForm">
                 <div className="input_div">

@@ -33,13 +33,58 @@ a:link, a:visited a:hover, a:active {
     text-decoration: none;
 }
 
+/* * TABLE STYLES */
+
 table {
-    margin: 0 auto;
+    margin: 1.5rem auto;
 }
 
-table tr:nth-child(even) {
+  /* Default Table Style */
+table {
+    color: var(--main-text-white);
+    background: var(--main-color);
+    border: none;
+    font-size: 1rem;
+    border-collapse: collapse;
+    
+}
+
+table tr:nth-child(even)  {
     background-color: var(--off-main);
 }
+
+table thead th,
+table tfoot th {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--secondary-text);
+    background: var(--main-color);
+}
+table caption {
+    padding:.5rem;
+}
+table th,
+table td {
+    padding: .5rem;
+    border: none;
+    text-align: left;
+}
+
+tr td button {
+    background-color: var(--main-color);
+    font-size: .8rem;
+    padding: 5px 10px;
+    color: var(--main-text-white);
+}
+tr:nth-child(even) td button {
+    background-color: var(--off-main);
+}
+
+::-webkit-datetime-edit-text { color: var(--main-color); }
+::-webkit-datetime-edit-month-field { color: var(--main-color); }
+::-webkit-datetime-edit-day-field { color: var(--main-color); }
+::-webkit-datetime-edit-year-field { color: var(--main-color); }
+::-webkit-inner-spin-button { display: none; }
 
 hr {
     border-color: var(--main-green);
@@ -130,4 +175,8 @@ button {
 
 .top-stats, .top-stats p {
     margin: 1rem 0;
+}
+
+.popDisplayNone {
+    display: none;
 }
