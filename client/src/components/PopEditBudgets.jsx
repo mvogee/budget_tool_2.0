@@ -1,4 +1,5 @@
 import React from "react";
+import '../styles/popup.css';
 
 function PopEditBudgets(props) {
     
@@ -67,20 +68,22 @@ function PopEditBudgets(props) {
     }
 
     return (
-        <div className= {props.displayPopup ? "popEdit popDisplay" : "popEdit popDisplayNone"}>
-            <p>Edit Category</p>
-            <form className="popEditForm">
-                <div className="input_div">
-                    <label htmlFor="category">Category</label>
-                    <input type="text" autoComplete="off" name="category" onChange={updateCatInput} value={props.editCategoryInput} autoFocus required/>
-                </div>
-                <div className="input_div">
-                    <label htmlFor="budgeted">Budget</label>
-                    <input type="number" step=".01" name="budgeted" onChange={updateBudgetInput} value={props.editBudgetInput} required />
-                </div>
-                <button className="submitBtn buttons-secondary" type="submit" onClick={submitBtn}>Save</button>
-                <button className="cancelBtn buttons-secondary" type="reset" onClick={cancelBtn}>Cancel</button>
-            </form>
+        <div className= {props.displayPopup ? "popup-container popDisplay" : "popup-container popDisplayNone"}>
+            <div className="popupEdit">
+                <form className="popEditForm">
+                    <p>Edit Category</p>
+                    <div className="input_div">
+                        <label htmlFor="category">Category</label>
+                        <input type="text" autoComplete="off" name="category" onChange={updateCatInput} value={props.editCategoryInput} autoFocus required/>
+                    </div>
+                    <div className="input_div">
+                        <label htmlFor="budgeted">Budget</label>
+                        <input type="number" step=".01" name="budgeted" onChange={updateBudgetInput} value={props.editBudgetInput} required />
+                    </div>
+                    <button className="submitBtn buttons-secondary" type="submit" onClick={submitBtn}>Save</button>
+                    <button className="cancelBtn buttons-secondary" type="reset" onClick={cancelBtn}>Cancel</button>
+                </form>
+            </div>
         </div>
     );
 }
