@@ -80,11 +80,11 @@ function DepositForm(props) {
         setDate(event.target.value);
     }
     return (
-        <div className="IncomeItemForm">
+        <div className="IncomeItemForm form_div">
             <form className="income-form">
                 <div className="input_div">
                     <label htmlFor="depositItemName">Name</label>
-                    <input id="depositItemName" type="text" value={name} onChange={nameChange}></input>
+                    <input id="depositItemName" type="text" value={name} onChange={nameChange} placeholder="name"></input>
                 </div>
                 <div className="input_div">
                     <label htmlFor="depositItemAmount">Amount</label>

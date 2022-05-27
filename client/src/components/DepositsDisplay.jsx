@@ -8,6 +8,7 @@ function DepositsDisplay(props) {
     const [amountEdit, setAmountEdit] = useState(0);
     const [dateEdit, setDateEdit] = useState("");
     const [idxEdit, setIdxEdit] = useState("");
+    const [displayPopup, setDisplayPopup] = useState(false);
 
     async function deleteRequest(itemId) {
         let data = {deleteIncomeItm: itemId};
@@ -50,6 +51,7 @@ function DepositsDisplay(props) {
         setAmountEdit(event.target.dataset.amount);
         setDateEdit(getDateEdit(event.target.dataset.date));
         setIdxEdit(event.target.dataset.idx);
+        setDisplayPopup(true);
     }
 
     function depositLineItem(item, idx) {
@@ -87,8 +89,14 @@ function DepositsDisplay(props) {
     // will still need to give popEdit the deposits total to update when updating a deposit
     return (
         <div className="depositDisplay">
-        <PopEditDeposit depositList={props.depositList} setDepositList={props.setDepositList} totalIncome={props.totalIncome} setTotalIncome={props.setTotalIncome} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}/>
-            <p>Deposits</p>
+        <PopEditDeposit
+            displayPopup={displayPopup} setDisplayPopup={setDisplayPopup}
+            depositList={props.depositList} setDepositList={props.setDepositList}
+            totalIncome={props.totalIncome} setTotalIncome={props.setTotalIncome}
+            nameEdit={nameEdit} setNameEdit={setNameEdit}
+            amountEdit={amountEdit} setAmountEdit={setAmountEdit}
+            dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}
+        />
             <table>
                 <thead>
                     <tr>

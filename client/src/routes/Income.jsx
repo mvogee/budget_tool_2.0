@@ -123,7 +123,7 @@ function Income(props) {
                 <form name="newIncomeItm" >
                     <div className="input_div">
                         <label htmlFor="incomeName">Income Name</label>
-                        <input name="incomeName" type="text" required autoFocus value={name} onChange={(e) => {setInput(e, setName)}} />
+                        <input name="incomeName" type="text" placeholder="name" required autoFocus value={name} onChange={(e) => {setInput(e, setName)}} />
                     </div>
                     <div className="input_div">
                         <label htmlFor="hourlyRate">Hourly Rate</label>

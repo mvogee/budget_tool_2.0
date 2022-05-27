@@ -101,6 +101,11 @@ h2 {
     font-size: 1.6rem;
     margin: 1rem 0;
 }
+
+h3 {
+    margin: 1rem 0;
+}
+
 p {
     font-size: 1rem;
 }
@@ -154,6 +159,7 @@ input, select, textarea, select, textarea:focus, input:focus {
 .input_div {
     display: inline-block;
     text-align: left;
+    margin: 0 0.2rem;
 }
 
 .input_div label {
@@ -164,7 +170,7 @@ input, select, textarea, select, textarea:focus, input:focus {
 
 .input_div input, .input_div select {
     display: block;
-    width: 100%;
+    /* width: 100%; */
 }
 
 button {
@@ -175,8 +181,4 @@ button {
 
 .top-stats, .top-stats p {
     margin: 1rem 0;
-}
-
-.popDisplayNone {
-    display: none;
 }

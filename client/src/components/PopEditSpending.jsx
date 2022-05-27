@@ -1,5 +1,5 @@
-import { React, useState} from "react";
-import {getCategoryName} from "./utils.js";
+import { React } from "react";
+import "../styles/popup.css";
 function PopEditSpending(props) {
 
     function updateLocalItem() {
@@ -48,7 +48,7 @@ function PopEditSpending(props) {
         props.setAmountEdit("");
         props.setCategoryEdit(0);
         props.setDateEdit("");
-        // close the edit window (change showEdit bool to false)
+        props.setDisplayPopup(false);
     }
     function selectOptions(item) {
         return (
@@ -68,30 +68,32 @@ function PopEditSpending(props) {
         props.setDateEdit(event.target.value);
     }
     return (
-        <div className="editForm">
-            <form id="spendingItem" className="SpendingForm">
-                <div className="input_div">
-                    <label htmlFor="itemName">Description</label>
-                    <input type="text" name="itemName" value={props.nameEdit} onChange={nameChange} required autoFocus />
-                </div>
-                <div className="input_div">
-                    <label htmlFor="amount">Amount</label>
-                    <input type="number" step="0.01" name="amount" value={props.amountEdit} onChange={amountChange}required />
-                </div>
-                <div className="input_div">
-                    <label htmlFor="category">Category</label>
-                    <select name="category" value={props.categoryEdit} onChange={categoryChange}>
-                        <option value="0" key="0">un-categorized</option>
-                        {props.budgets ? props.budgets.map(selectOptions) : null}
-                    </select>
-                </div>
-                <div className="input_div">
-                    <label htmlFor="date">Date</label>
-                    <input type="date" name="date" value={props.dateEdit} min="2010-01-01" onChange={dateChange}/> { /*max should be today */}
-                </div>
-                <button type="submit" name="button" onClick={submitBtn}>Save</button>
-                <button type="button" name="cancelBtn" onClick={closePopup}>Cancel</button>
-            </form>
+        <div className={props.displayPopup ? "popup-container popDisplay" : "popup-container popDisplayNone"}>
+            <div className="popupEdit">
+                <form id="spendingItem" className="SpendingForm popEditForm">
+                    <div className="input_div">
+                        <label htmlFor="itemName">Description</label>
+                        <input type="text" name="itemName" value={props.nameEdit} onChange={nameChange} required autoFocus />
+                    </div>
+                    <div className="input_div">
+                        <label htmlFor="amount">Amount</label>
+                        <input type="number" step="0.01" name="amount" value={props.amountEdit} onChange={amountChange}required />
+                    </div>
+                    <div className="input_div">
+                        <label htmlFor="category">Category</label>
+                        <select name="category" value={props.categoryEdit} onChange={categoryChange}>
+                            <option value="0" key="0">un-categorized</option>
+                            {props.budgets ? props.budgets.map(selectOptions) : null}
+                        </select>
+                    </div>
+                    <div className="input_div">
+                        <label htmlFor="date">Date</label>
+                        <input type="date" name="date" value={props.dateEdit} min="2010-01-01" onChange={dateChange}/> { /*max should be today */}
+                    </div>
+                    <button type="submit" name="button" onClick={submitBtn}>Save</button>
+                    <button type="button" name="cancelBtn" onClick={closePopup}>Cancel</button>
+                </form>
+            </div>
         </div>
     );
 }
