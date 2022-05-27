@@ -1,0 +1,13 @@
+.criticalBudgetItems p, .yearSavings p {
+    margin: 1rem 0;
+}
+
+.monthToMonthGraph canvas{
+    margin: 1em auto;
+    min-width: 90%;
+}
+
+.spendingPieChart canvas {
+    margin: 1em auto;
+    min-width: 80%;
+}

@@ -6,6 +6,7 @@ function BudgetsDisplay(props) {
     const [editBudgetInput, setEditBudgetInput] = useState(0);
     const [editCategoryInput, setEditCategoryInput] = useState("");
     const [idxEdit, setIdxEdit] = useState(0);
+    const [displayPopup, setDisplayPopup] = useState(false);
 
     async function deleteRequest(itemId) {
         let data = {categoryId: itemId};
@@ -47,6 +48,7 @@ function BudgetsDisplay(props) {
     }
 
     function editBtn(event) {
+        setDisplayPopup(true);
         setEditBudgetInput(event.target.dataset.budget);
         setEditCategoryInput(event.target.dataset.category);
         setIdxEdit(event.target.dataset.idx);
@@ -68,7 +70,13 @@ function BudgetsDisplay(props) {
 
     return (
         <div className="budgetsDisplay">
-        <PopEditBudgets budgetList={props.budgets} setBudgetList={props.setBudgetList} setTotalBudgeted={props.setTotalBudgeted} editBudgetInput={editBudgetInput} setEditBudgetInput={setEditBudgetInput} editCategoryInput={editCategoryInput} setEditCategoryInput={setEditCategoryInput} idxEdit={idxEdit} setIdxEdit={setIdxEdit}/>
+        <PopEditBudgets 
+            displayPopup={displayPopup} setDisplayPopup={setDisplayPopup}
+            budgetList={props.budgets} setBudgetList={props.setBudgetList}
+            setTotalBudgeted={props.setTotalBudgeted} editBudgetInput={editBudgetInput}
+            setEditBudgetInput={setEditBudgetInput} editCategoryInput={editCategoryInput}
+            setEditCategoryInput={setEditCategoryInput} idxEdit={idxEdit} setIdxEdit={setIdxEdit}
+        />
             <table className="budgets-table">
                 <thead>
                         <tr>

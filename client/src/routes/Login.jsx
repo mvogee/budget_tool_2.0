@@ -1,14 +1,6 @@
 import {React, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 
-/* TODO:
-*   - create state handlers for each input
-*   - on submit button make request to server to authenticate the user.
-* PROPS:
-* - user: user state
-* - setUser: state setter for user
-*/
-
 function Login(props) {
     const [message, setMessage] = useState("Enter your details below to continue.");
     const [email, setEmail] = useState("");
@@ -45,10 +37,8 @@ function Login(props) {
 
     function submitBtn(event) {
         event.preventDefault();
-        console.log(email, pw);
         attemptLogin();
         alert("submit btn was pressed");
-        // handle logging in. user should be authenticated and redirected to the overview page.
     }
     function emailChange(event) {
         setEmail(event.target.value);

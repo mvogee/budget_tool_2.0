@@ -1,0 +1,40 @@
+nav {
+    margin-bottom: 2rem;
+    background-color: var(--main-text-white);
+    min-height: 48px;
+    display: flex;
+    flex-direction: row;
+}
+
+nav ul {
+    width: 75%;
+    display: flex;
+    list-style: none;
+    align-items: flex-start;
+}
+
+nav ul li, nav ul li a, nav ul li a:visited {
+    color: var(--main-color);
+    font-weight: bold;
+    margin: 0 12px;
+    opacity: 0.8;
+    transition: 0.2s;
+}
+
+nav ul li:hover {
+    opacity: 1;
+}
+
+.login h1 {
+    margin-bottom: 0;
+}
+
+.nav-secondary, .nav-stripped-btn {
+    width: 15%;
+}
+.nav-stripped-btn, .nav-stripped-btn a:visited {
+    color: var(--second-blue);
+}
+.nav-secondary, .nav-secondary a:visited{
+    color: var(--main-color);
+}

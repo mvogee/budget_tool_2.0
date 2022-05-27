@@ -1,0 +1,18 @@
+footer {
+    border-top: 1px solid var(--main-text-white);
+    display: flex;
+    flex-direction: column;
+    color: var(--secondary-text);
+    font-size: .8rem;
+    padding: 1rem;
+}
+
+footer p {
+    margin: .5rem;
+    font-size: .8rem;
+}
+
+footer a:link, footer a:visited{
+    color:var(--second-blue);
+    margin: .1rem;
+}

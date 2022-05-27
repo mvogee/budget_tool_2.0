@@ -2,6 +2,7 @@ import {React, useState, useEffect} from "react";
 import {getBudgetData, getPurchaseData, getDepositData} from "../components/overviewServerRequests";
 import MonthToMonthGraph from "../components/MonthToMonthGraph";
 import SpendingPieChart from "../components/SpendingPieChart";
+import "../styles/overview.css";
 
 function Overview(props) {
 
@@ -142,11 +143,9 @@ function Overview(props) {
             <div className="stat monthTotals">
                 <hr />
                 <h2>This Month</h2>
-                <ul>
-                    <li>Spending: ${totalSpending.toFixed(2)}</li>
-                    <li>Income: ${totalIncome.toFixed(2)}</li>
-                    <li>Savings: ${(totalIncome - totalSpending).toFixed(2)}</li>
-                </ul>
+                <p className="top-stats">Spending: ${totalSpending.toFixed(2)}</p>
+                <p className="top-stats">Income: ${totalIncome.toFixed(2)}</p>
+                <p className="top-stats">Savings: ${(totalIncome - totalSpending).toFixed(2)}</p>
             </div>
 
             <hr />

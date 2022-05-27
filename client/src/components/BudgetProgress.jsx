@@ -1,21 +1,21 @@
-import {React, useState, useEffect} from "react";
+import {React} from "react";
 
 function BudgetProgress(props) {
 
     function tableItem(item) {
+        let spent = props.categorySpendingMap.get(item.id) ? props.categorySpendingMap.get(item.id) : 0;
         return (
             <tr key={item.id}>
                 <td>{item.category}</td>
                 <td>{item.budget}</td>
-                <td>{props.categorySpendingMap.get(item.id)}</td>
-                <td>{(item.budget - props.categorySpendingMap.get(item.id)).toFixed(2)}</td>
+                <td>{spent}</td>
+                <td>{(item.budget - spent).toFixed(2)}</td>
             </tr>
         );
     }
 
     return (
         <div className="budgetProgress">
-            <p>**** insert budget progress table here ****</p>
             <table>
                 <thead>
                     <tr>

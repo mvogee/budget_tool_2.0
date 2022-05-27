@@ -17,7 +17,6 @@ function getMonthName(date) {
   return (months[parseInt(date.substring(5)) - 1]);
 }
 
-// need a utility to get me the standard date format, month name, and the 
 function ThisMonth(props) {
 
   const [yearMonth, setYearMonth] = useState(getDateYearMonth(new Date())); // in the onChange for this it needs to retreive the list data again.
@@ -117,7 +116,6 @@ function ThisMonth(props) {
     }
 }
 
-  // if month changes we need to retrieve data again
   useEffect(() => {
     const authenticate = async () => {
         let auth = await checkAuth(props.setUser);
@@ -146,8 +144,6 @@ function ThisMonth(props) {
         <a href="#depositDiv">Deposits</a>
         <a href="#budgetProgressDiv">Budget status</a>
             <h1>{getMonthName(yearMonth)}</h1>
-
-            {/* create month picker component. /changeMonth form*/}
                 <div className="form_div">
                   <form method="POST">
                     <div className="input_div">
@@ -184,7 +180,6 @@ function ThisMonth(props) {
                   <hr />
 
                 <div id="budgetProgressDiv" className="budgetProgress">
-                    {/* insert budget progress component */}
                     <h3>Budgets</h3>
                     <BudgetProgress budgetList={budgetList} categorySpendingMap={categorySpendingMap}/>
                 </div>

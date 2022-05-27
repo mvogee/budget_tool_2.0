@@ -1,0 +1,182 @@
+:root {
+    --main-color: #242540;
+    --main-color-alpha: #242540c4;
+    --main-blue: #4907D9;
+    --main-text-white: #E5E5E5;
+    --secondary-text: #8B8CAC;
+    --second-blue: #03A7DB;
+    --main-green: #0B8C68;
+    --second-green: #0B8C68;
+    --black: #000;
+    --white: #fff;
+    --off-main: #2a2b4e;
+}
+
+* {
+    text-align: center;
+    margin: auto auto;
+}
+
+body {
+    text-align: center;
+    background-color: var(--main-color);
+    color: var(--main-text-white);
+    font-family: Roboto, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, -apple-system;
+}
+
+a {
+    color: var(--second-blue);
+    text-decoration: none;
+}
+
+a:link, a:visited a:hover, a:active {
+    text-decoration: none;
+}
+
+/* * TABLE STYLES */
+
+table {
+    margin: 1.5rem auto;
+}
+
+  /* Default Table Style */
+table {
+    color: var(--main-text-white);
+    background: var(--main-color);
+    border: none;
+    font-size: 1rem;
+    border-collapse: collapse;
+    
+}
+
+table tr:nth-child(even)  {
+    background-color: var(--off-main);
+}
+
+table thead th,
+table tfoot th {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--secondary-text);
+    background: var(--main-color);
+}
+table caption {
+    padding:.5rem;
+}
+table th,
+table td {
+    padding: .5rem;
+    border: none;
+    text-align: left;
+}
+
+tr td button {
+    background-color: var(--main-color);
+    font-size: .8rem;
+    padding: 5px 10px;
+    color: var(--main-text-white);
+}
+tr:nth-child(even) td button {
+    background-color: var(--off-main);
+}
+
+::-webkit-datetime-edit-text { color: var(--main-color); }
+::-webkit-datetime-edit-month-field { color: var(--main-color); }
+::-webkit-datetime-edit-day-field { color: var(--main-color); }
+::-webkit-datetime-edit-year-field { color: var(--main-color); }
+::-webkit-inner-spin-button { display: none; }
+
+hr {
+    border-color: var(--main-green);
+    border-bottom-width: 2px;
+    max-width: 13rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin: 1rem 0;
+}
+
+h2 {
+    font-size: 1.6rem;
+    margin: 1rem 0;
+}
+p {
+    font-size: 1rem;
+}
+
+form {
+    display: block;
+    margin-top: 0em;
+}
+
+form input, form select {
+    width: 10rem;
+    height: 20px;
+    border-radius: 2px;
+    margin: 0 0.2rem;
+    border-color: var(--main-text-white);
+    color: var(--main-color);
+}
+
+ul {
+    list-style: none;
+}
+
+.form_div {
+    margin-top: 1.5rem;
+}
+
+.form_div form input:focus, .form_div form select:focus{
+    outline: none !important;
+    border: 1px solid var(--second-blue);
+}
+
+.form_div form input, .form_div form select{
+    width: 10rem;
+    height: 20px;
+    border-radius: 2px;
+    margin: 0 .2rem;
+    border-color: var(--main-text-white);
+    color: var(--main-color);
+}
+
+.form_div button {
+    height: 24px;
+    width: 60px;
+    background-color: var(--main-text-white);
+}
+
+input, select, textarea, select, textarea:focus, input:focus {
+    color:var(--main-color);
+}
+
+.input_div {
+    display: inline-block;
+    text-align: left;
+}
+
+.input_div label {
+    padding-left: 2px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.input_div input, .input_div select {
+    display: block;
+    width: 100%;
+}
+
+button {
+    background-color: var(--main-text-white);
+    color: var(--main-color);
+    border: none;
+}
+
+.top-stats, .top-stats p {
+    margin: 1rem 0;
+}
+
+.popDisplayNone {
+    display: none;
+}
