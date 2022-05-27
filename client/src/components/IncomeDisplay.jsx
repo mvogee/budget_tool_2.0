@@ -9,6 +9,7 @@ function IncomeDisplay(props) {
     const [hoursEdit, setHoursEdit] = useState(0);
     const [taxEdit, setTaxEdit] = useState(0);
     const [retireEdit, setRetireEdit] = useState(0);
+    const [displayPopup, setDisplayPopup] = useState(false);
 
     async function deleteRequest(itemId) {
         let data = {deleteIncome: itemId};
@@ -47,6 +48,7 @@ function IncomeDisplay(props) {
     }
 
     function editBtn(event) {
+        setDisplayPopup(true);
         setidxEdit(event.target.dataset.idx);
         setEditId(event.target.dataset.id);
         setNameEdit(event.target.dataset.incomename);
@@ -91,6 +93,7 @@ function IncomeDisplay(props) {
     return (
         <div className="incomeDisplayy">
         <PopEditIncome
+            displayPopup={displayPopup} setDisplayPopup={setDisplayPopup}
             incomeList={props.incomeList} setIncomeList={props.setIncomeList}
             editId={editId} setEditId={setEditId}
             nameEdit={nameEdit} setNameEdit={setNameEdit}

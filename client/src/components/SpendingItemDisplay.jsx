@@ -13,6 +13,7 @@ function SpendingItemDisplay(props) {
     const [categoryEdit, setCategoryEdit] = useState(0);
     const [dateEdit, setDateEdit] = useState("");
     const [idxEdit, setIdxEdit] = useState(0);
+    const [displayPopup, setDisplayPopup] = useState(false);
 
     async function deleteRequest(itemId) {
         let data = {deleteSpendingItm: itemId};
@@ -55,9 +56,7 @@ function SpendingItemDisplay(props) {
         setAmountEdit(event.target.dataset.amount);
         setCategoryEdit(event.target.dataset.catid);
         setDateEdit(getDateEdit(event.target.dataset.date));
-        // this needs to set all of the props for the edit button 
-        // set the edit form inputs to the given data
-        // set a boolean that will display the edit form.
+        setDisplayPopup(true);
     }
 
     function spendingLineItem(item, idx) {
@@ -79,8 +78,16 @@ function SpendingItemDisplay(props) {
 
     return (
         <div className="spendingItemDisplay">
-            <PopEditSpending budgets={props.budgets} categorySpendingMap={props.categorySpendingMap} setCategorySpendingMap={props.setCategorySpendingMap} purchaseList={props.purchaseList} setPurchaseList={props.setPurchaseList} totalSpending={props.totalSpending} setTotalSpending={props.setTotalSpending} nameEdit={nameEdit} setNameEdit={setNameEdit} amountEdit={amountEdit} setAmountEdit={setAmountEdit} categoryEdit={categoryEdit} setCategoryEdit={setCategoryEdit} dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}/>
-            <p>Spending</p>
+            <PopEditSpending 
+                budgets={props.budgets} displayPopup={displayPopup} setDisplayPopup={setDisplayPopup}
+                categorySpendingMap={props.categorySpendingMap} setCategorySpendingMap={props.setCategorySpendingMap}
+                purchaseList={props.purchaseList} setPurchaseList={props.setPurchaseList}
+                totalSpending={props.totalSpending} setTotalSpending={props.setTotalSpending}
+                nameEdit={nameEdit} setNameEdit={setNameEdit}
+                amountEdit={amountEdit} setAmountEdit={setAmountEdit}
+                categoryEdit={categoryEdit} setCategoryEdit={setCategoryEdit}
+                dateEdit={dateEdit} setDateEdit={setDateEdit} idxEdit={idxEdit}
+            />
             <table>
                 <thead>
                     <tr>

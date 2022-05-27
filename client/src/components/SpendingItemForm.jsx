@@ -96,11 +96,11 @@ function SpendingItemForm(props) {
     }
 
     return(
-        <div className="SpendingItemForm">
+        <div className="SpendingItemForm form_div">
             <form id="spendingItem" className="SpendingForm">
                 <div className="input_div">
                     <label htmlFor="itemName">Description</label>
-                    <input type="text" name="itemName" value={name} onChange={nameChange} required autoFocus />
+                    <input type="text" name="itemName" value={name} onChange={nameChange} placeholder="name" required autoFocus />
                 </div>
                 <div className="input_div">
                     <label htmlFor="amount">Amount</label>

@@ -1,6 +1,5 @@
 import {React} from "react";
-
-
+import "../styles/popup.css";
 
 function PopEditDeposit(props) {
     async function updateServer() {
@@ -49,7 +48,7 @@ function PopEditDeposit(props) {
         props.setNameEdit("");
         props.setAmountEdit(0);
         props.setDateEdit("");
-        // needs to set the boolean to close popup.
+        props.setDisplayPopup(false);
     }
     function nameChange(event) {
         props.setNameEdit(event.target.value);
@@ -61,24 +60,26 @@ function PopEditDeposit(props) {
         props.setDateEdit(event.target.value);
     }
     return (
-        <div className="PopEditDeposit">
-        <form className="income-form">
-            <div className="input_div">
-                <label htmlFor="depositItemName">Name</label>
-                <input id="depositItemName" type="text" value={props.nameEdit} onChange={nameChange}></input>
+        <div className={props.displayPopup ? "popup-container popDisplay" : "popup-container popDisplayNone"}>
+            <div className="popupEdit">
+                <form className="income-form popEditForm">
+                    <div className="input_div">
+                        <label htmlFor="depositItemName">Name</label>
+                        <input id="depositItemName" type="text" value={props.nameEdit} onChange={nameChange}></input>
+                    </div>
+                    <div className="input_div">
+                        <label htmlFor="depositItemAmount">Amount</label>
+                        <input id="depositItemAmount" type="number" value={props.amountEdit} onChange={amountChange}></input>
+                    </div>
+                    <div className="input_div">
+                        <label htmlFor="depositItemDate">Date</label>
+                        <input id="depositItemDate" type="date" value={props.dateEdit} onChange={dateChange}></input>
+                    </div>
+                    <button type="submit" onClick={submitBtn}>Save</button>
+                    <button type="button" onClick={closePopup}>Cancel</button>
+                </form>
             </div>
-            <div className="input_div">
-                <label htmlFor="depositItemAmount">Amount</label>
-                <input id="depositItemAmount" type="number" value={props.amountEdit} onChange={amountChange}></input>
-            </div>
-            <div className="input_div">
-                <label htmlFor="depositItemDate">Date</label>
-                <input id="depositItemDate" type="date" value={props.dateEdit} onChange={dateChange}></input>
-            </div>
-            <button type="submit" onClick={submitBtn}>Save</button>
-            <button type="button" onClick={closePopup}>Cancel</button>
-        </form>
-    </div>
+        </div>
     );
 }
 

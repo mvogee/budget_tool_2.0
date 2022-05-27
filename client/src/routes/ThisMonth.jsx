@@ -7,6 +7,7 @@ import DepositsDisplay from "../components/DepositsDisplay";
 import BudgetProgress from "../components/BudgetProgress";
 import checkAuth from "../checkAuth";
 import { getDateYearMonth } from "../components/utils";
+import "../styles/thisMonth.css";
 
 /**
   * 
@@ -140,9 +141,9 @@ function ThisMonth(props) {
 
     return (
         <div className="thisMonth">
-        <a href="#spendingDiv">Spending</a>
-        <a href="#depositDiv">Deposits</a>
-        <a href="#budgetProgressDiv">Budget status</a>
+        <a className="pageNav" href="#spendingDiv">Spending</a>
+        <a className="pageNav" href="#depositDiv">Deposits</a>
+        <a className="pageNav" href="#budgetProgressDiv">Budget status</a>
             <h1>{getMonthName(yearMonth)}</h1>
                 <div className="form_div">
                   <form method="POST">

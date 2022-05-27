@@ -14,5 +14,6 @@ footer p {
 
 footer a:link, footer a:visited{
     color:var(--second-blue);
-    margin: .1rem;
+    margin: .1rem auto;
+    width: fit-content;
 }
