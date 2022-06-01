@@ -1,0 +1,65 @@
+.login, .new-acc{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+.login label, .new-acc label {
+    display: none;
+}
+
+.secondary-text{
+    color: var(--secondary-text);
+}
+
+.login-form, .new-acc-form{
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+    margin-top: 2rem;
+}
+
+.login-form input, .new-acc-form input{
+    width: unset;
+    text-align: left;
+    height: 2rem;
+    color: var(--main-text-white);
+    background-color: var(--main-color);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-width: 2px;
+    border-bottom-color: var(--main-text-white);
+    margin: 1rem 0;
+}
+
+.login-form ::placeholder, .new-acc-form ::placeholder {
+    color: var(--main-text-white);
+    opacity: .8;
+}
+
+.login button, .new-acc button {
+    background-color: var(--main-blue);
+    color: var(--main-text-white);
+    width: 15rem;
+    height: 3rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 2.5rem 0;
+    transition: 0.4s;
+}
+
+.login button:hover, new-acc button:hover{
+    background-color: var(--second-blue);
+}
+
+.create-acc {
+    margin-bottom: 2rem;
+}
+
+a.creat-acc-link {
+    color: var(--second-blue);
+    text-decoration: none;
+}
