@@ -150,6 +150,7 @@ ul {
     height: 24px;
     width: 60px;
     background-color: var(--main-text-white);
+    margin-top: 1rem;
 }
 
 input, select, textarea, select, textarea:focus, input:focus {
@@ -181,4 +182,11 @@ button {
 
 .top-stats, .top-stats p {
     margin: 1rem 0;
+}
+
+@media only screen and (max-width: 540px) {
+    .form_div button {
+        display: block;
+        margin: 1rem auto;
+    }
 }
