@@ -54,15 +54,15 @@ nav ul li:hover {
         width: unset;
     }
 
-    .authOnly ul, .authOnly {
+    .authOnly ul, .guestNav ul, .guestNav, .authOnly {
         flex-direction: column;
         gap: 1rem;
     }
-    .authOnly ul {
+    .authOnly ul, .guestNav ul {
         margin-top: 1rem;
         align-items: center;
     }
-    .authOnly a {
+    .authOnly a, .guestNav a{
         margin-bottom: 1rem;
     }
 }

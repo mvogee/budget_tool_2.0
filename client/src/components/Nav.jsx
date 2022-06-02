@@ -36,10 +36,10 @@ function Nav(props) {
                     <Link id="budgets" className="nav-item authOnly" to="/budgets">Budgets</Link>
                 </li>
                 <li>
-                    <Link id="income" className="nav-item authOnly" to="/income">Your Income</Link>
+                    <Link id="income" className="nav-item authOnly" to="/income">Income</Link>
                 </li>
                 <li>
-                    <Link id="thisMonth" className="nav-item authOnly" to="/thisMonth">Tracker</Link>
+                    <Link id="thisMonth" className="nav-item authOnly" to="/thisMonth">Track</Link>
                 </li>
                 <li>
                     <Link id="profile" className="nav-item nav-secondary authOnly" to="/profile">{props.userName}</Link>

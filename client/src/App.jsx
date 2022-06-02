@@ -17,20 +17,21 @@ import Footer from './components/Footer.jsx';
 
 import checkAuth from "./checkAuth.js";
 
-import {Routes, Route} from "react-router-dom"; // check if you even need this if its going to be in Nav.jsx
+import {Routes, Route} from "react-router-dom";
 
 function App() {
-    const [user, setUser] = useState(null); { /* server will always check req auth on requests. only used to determine display items */}
+    const [user, setUser] = useState(null); 
 
     useEffect(() => {checkAuth(setUser)}, []);
 
-    function putNav() {
-        return (user ? <Nav userName={user.userName} setUser={setUser}/> : <GuestNav /> );
+    function putNav(username) {
+      console.log(username);
+        return (username ? <Nav userName={user.username} setUser={setUser}/> : <GuestNav /> );
     }
 
   return (
     <div className="App">
-    {putNav()}
+    {putNav(user ? user.username : null)}
     
       <Routes>
           <Route path="/overview" element={<Overview user={user} setUser={setUser} />} />

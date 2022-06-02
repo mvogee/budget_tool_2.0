@@ -4,9 +4,11 @@ import {Link} from "react-router-dom";
 function GuestNav(props) {
     return (
         <nav className="main-nav">
-            <Link id="landingPage" className="nav-item" to="/landingPage">Home</Link>
-            <Link id="login" className="nav-item" to="/login">Log In</Link>
-            <Link id="createAcc" className="nav-item" to="/createAcc">Create Account</Link>
+            <ul>
+                <li><Link id="landingPage" className="nav-item guestNav" to="/landingPage">Home</Link></li>
+                <li><Link id="login" className="nav-item guestNav" to="/login">Log In</Link></li>
+                <li><Link id="createAcc" className="nav-item guestNav" to="/createAcc">Create Account</Link></li>
+            </ul>
         </nav>
     );
 }

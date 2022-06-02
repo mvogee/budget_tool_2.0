@@ -28,14 +28,14 @@ passport.use(new LocalStrategy(
                 return done(err)
             };
             if (!user.length) {
-                return (done(null, false, /* insert message here */)); //#problem #update No longer using flash plugin. Return a json object instead with details
+                return (done(null, false, "Failed to log in."));
             }
             bcrypt.compare(password, user[0].password, (err, correctPw) => {
                 if (err) {
                     console.log(err);
                 }
                 if (!correctPw) {
-                    return (done(null, false, /* insert message here for incorrect pw */ )); //#problem #update No longer using flash plugin. Return a json object instead with details.
+                    return (done(null, false, "Incorrect Password" ));
                 }
                 else {
                     console.log("returning " + user[0]);

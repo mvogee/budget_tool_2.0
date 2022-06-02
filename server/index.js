@@ -34,27 +34,14 @@ app.use(passport.session());
 
 // * --- END BOILERPLATE ----- *
 
-
-// #old code
-// app.post("/login",
-//     passport.authenticate('local', {
-//         //successRedirect: '/overview', // #update (this is going to need to change. on failure send failed object.)
-//         //failureRedirect: '/login', // don't redirect. will handle failure on client side.
-//         }),
-//         (req, res) => {
-//         //res.redirect("/overview"); // the user is bound to the res at this point??
-//             res.json({
-//                 success: req.user ? true : false,
-//                 message: "login successful"
-//             }); // #updated. this should work.. needs testing
-// );
-
 app.post("/login",
     passport.authenticate('local', {}),
     (req, res) => {
             responses.jsonResponse(res, req.user ? true : false, "login successful", req.user ? req.user : null);
     }
 );
+
+
 
 app.post("/createAcc", (req, res) => {
     console.log("createAcc");
@@ -69,13 +56,7 @@ app.post("/createAcc", (req, res) => {
             return (err);
         }
         if (result[0]) {
-            console.log("email already used for another account");
-            //res.redirect('/'); #old code
             responses.jsonResponse(res, false, "Email already used for another account.");
-            // res.json({
-            //     success: false,
-            //     message: "email already used for another account."
-            // });
         }
         else {
             let insertSql = "INSERT INTO users(email, password, username) VALUES(?,?,?)";
@@ -94,12 +75,7 @@ app.post("/createAcc", (req, res) => {
                             return (error);
                         }
                         console.log(created);
-                        //res.redirect("/login"); #old code
                         responses.jsonResponse(res, true, "Account successfuly created");
-                        // res.json({
-                        //     success: true,
-                        //     message: "account successfuly created"
-                        // });
                     });
                 });
             });
@@ -109,12 +85,7 @@ app.post("/createAcc", (req, res) => {
 
 app.get("/logout", (req, res) => {
     req.logout();
-    //res.redirect("/login"); #old code
     responses.jsonResponse(res, true, "User has been logged out.")
-    // res.json({
-    //     success: true,
-    //     message: "user has been logged out."
-    // });
 });
 
 app.get("/authenticate", (req, res) => {
