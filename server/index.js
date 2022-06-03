@@ -83,6 +83,57 @@ app.post("/createAcc", (req, res) => {
     });
 });
 
+app.patch("/updatePassword", (req, res) => {
+    if (req.isAuthenticated()) {
+        const newPw = req.body.newPw;
+        const sql = "UPDATE users SET password=? WHERE id=?;";
+        bcrypt.genSalt(10, (err, salt) => {
+            if (err) {
+                console.log(err);
+                return (err);
+            }
+            bcrypt.hash(newPw, salt, (err, hash) => {
+                if (err) {
+                    console.log(err);
+                    return (err);
+                }
+                mysql.query(sql, [hash, req.user.id], (sqlErr, result) => {
+                    if (sqlErr) {
+                        console.log(sqlErr);
+                        responses.jsonResponse(res, false, "something went wrong updating the password");
+                    }
+                    else {
+                        console.log("password has been updated");
+                        responses.jsonResponse(res, true, "Password updated");
+                    }
+                });
+            });
+        });
+    }
+    else {
+        responses.jsonFailedAuthResponse(res, "/updatePassword");
+    }
+});
+app.patch("/updateEmail", (req, res) => {
+    if (req.isAuthenticated()) {
+        const newEmail = req.body.newEmail;
+        const sql = "UPDATE users SET email=? where id=?;";
+        mysql.query(sql, [newEmail, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                responses.jsonResponse(res, false, "something went wrong updating the email");
+            }
+            else {
+                console.log("email has been updated");
+                responses.jsonResponse(res, true, "Email has been updated");
+            }
+        });
+    }
+    else {
+        responses.jsonFailedAuthResponse(res, "/updateEmail");
+    }
+});
+
 app.get("/logout", (req, res) => {
     req.logout();
     responses.jsonResponse(res, true, "User has been logged out.")
