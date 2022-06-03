@@ -8,3 +8,7 @@
 .profile .form_div input {
     text-align: left;
 }
+
+.pwChangeForm {
+    margin-bottom: 2rem;
+}
