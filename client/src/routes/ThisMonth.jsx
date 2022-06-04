@@ -167,15 +167,31 @@ function ThisMonth(props) {
 
                 <div id="spendingDiv" className="spending">
                   <h3>Spending</h3>
-                  <SpendingItemForm yearMonth={yearMonth} categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
-                  <SpendingItemDisplay categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} purchaseList={purchaseList} setPurchaseList={setPurchaseList} budgets={budgetList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
+                  <SpendingItemForm
+                    yearMonth={yearMonth} categorySpendingMap={categorySpendingMap}
+                    setCategorySpendingMap={setCategorySpendingMap} budgets={budgetList}
+                    purchaseList={purchaseList} setPurchaseList={setPurchaseList}
+                    totalSpending={totalSpending} setTotalSpending={setTotalSpending}
+                  />
+                  <SpendingItemDisplay
+                    categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap}
+                    purchaseList={purchaseList} setPurchaseList={setPurchaseList}
+                    budgets={budgetList} totalSpending={totalSpending}
+                    setTotalSpending={setTotalSpending}
+                  />
                 </div>
                   <hr />
 
                 <div id="depositDiv" className="deposit">
                   <h3>Deposits</h3>
-                  <DepositForm yearMonth={yearMonth} depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
-                  <DepositsDisplay depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
+                  <DepositForm yearMonth={yearMonth}
+                    depositList={depositList} setDepositList={setDepositList}
+                    totalIncome={totalIncome} setTotalIncome={setTotalIncome}
+                  />
+                  <DepositsDisplay
+                    depositList={depositList} setDepositList={setDepositList}
+                    totalIncome={totalIncome} setTotalIncome={setTotalIncome}
+                  />
                 </div>
 
                   <hr />

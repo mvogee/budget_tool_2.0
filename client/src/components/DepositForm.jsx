@@ -38,8 +38,7 @@ function DepositForm(props) {
         if (checkDateMatch(date)) {
             props.setDepositList((prevList) => {
                 let newList = prevList ? Array.from(prevList) : [];
-                newList.concat(newDepositItem);
-                return (newList);
+                return (newList.concat(newDepositItem));
             });
             props.setTotalIncome((prevVal) => {
                 return (parseFloat(prevVal) + parseFloat(amount));
