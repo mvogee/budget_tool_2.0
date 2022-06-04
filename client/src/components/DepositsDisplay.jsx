@@ -40,7 +40,7 @@ function DepositsDisplay(props) {
             props.setTotalIncome(props.totalIncome - event.target.dataset.amount);
             props.setDepositList((prevList) => {
                 let newList = Array.from(prevList);
-                newList.splice(event.target.datase.idx, 1);
+                newList.splice(event.target.dataset.idx, 1);
                 return (newList);
             });
         }
