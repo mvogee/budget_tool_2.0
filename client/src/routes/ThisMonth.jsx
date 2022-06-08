@@ -33,16 +33,16 @@ function ThisMonth(props) {
 
   function addToCategoryMap(item) {
     if (categorySpendingMap.has(item.category)) {
-      setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, categorySpendingMap.get(item.category) + item.amount)));
+      setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, categorySpendingMap.get(item.category) + parseFloat(item.amount))));
     }
     else {
-      setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, item.amount)));
+      setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, parseFloat(item.amount))));
     }
   }
 
   async function getPurchaseData(yearMonth) {
     console.log("requesting purchaseData");
-    let url = "/monthSpending/" + yearMonth;
+    let url = "/service/monthSpending/" + yearMonth;
     let opts = {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -71,7 +71,7 @@ function ThisMonth(props) {
 
   async function getDepositData(yearMonth) {
     console.log("requesting Deposit data");
-    let url = "/monthIncome/" + yearMonth;
+    let url = "/service/monthIncome/" + yearMonth;
     let opts = {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -96,7 +96,7 @@ function ThisMonth(props) {
 }
 
   async function getBudgetData() {
-    let url = "/budgets"
+    let url = "/service/budgets"
     let opts = {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -134,6 +134,8 @@ function ThisMonth(props) {
 
 
   function changeMonth(event) {
+    categorySpendingMap.clear(); // this breaks react state 
+    // setCategorySpendingMap(new Map());
     setYearMonth("" + event.target.value);
     getPurchaseData(event.target.value);
     getDepositData(event.target.value);
@@ -167,15 +169,31 @@ function ThisMonth(props) {
 
                 <div id="spendingDiv" className="spending">
                   <h3>Spending</h3>
-                  <SpendingItemForm yearMonth={yearMonth} categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} budgets={budgetList} purchaseList={purchaseList} setPurchaseList={setPurchaseList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
-                  <SpendingItemDisplay categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap} purchaseList={purchaseList} setPurchaseList={setPurchaseList} budgets={budgetList} totalSpending={totalSpending} setTotalSpending={setTotalSpending}/>
+                  <SpendingItemForm
+                    yearMonth={yearMonth} categorySpendingMap={categorySpendingMap}
+                    setCategorySpendingMap={setCategorySpendingMap} budgets={budgetList}
+                    purchaseList={purchaseList} setPurchaseList={setPurchaseList}
+                    totalSpending={totalSpending} setTotalSpending={setTotalSpending}
+                  />
+                  <SpendingItemDisplay
+                    categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap}
+                    purchaseList={purchaseList} setPurchaseList={setPurchaseList}
+                    budgets={budgetList} totalSpending={totalSpending}
+                    setTotalSpending={setTotalSpending}
+                  />
                 </div>
                   <hr />
 
                 <div id="depositDiv" className="deposit">
                   <h3>Deposits</h3>
-                  <DepositForm yearMonth={yearMonth} depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
-                  <DepositsDisplay depositList={depositList} setDepositList={setDepositList} totalIncome={totalIncome} setTotalIncome={setTotalIncome}/>
+                  <DepositForm yearMonth={yearMonth}
+                    depositList={depositList} setDepositList={setDepositList}
+                    totalIncome={totalIncome} setTotalIncome={setTotalIncome}
+                  />
+                  <DepositsDisplay
+                    depositList={depositList} setDepositList={setDepositList}
+                    totalIncome={totalIncome} setTotalIncome={setTotalIncome}
+                  />
                 </div>
 
                   <hr />

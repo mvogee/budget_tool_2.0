@@ -3,12 +3,12 @@ import {React} from "react";
 function BudgetProgress(props) {
 
     function tableItem(item) {
-        let spent = props.categorySpendingMap.get(item.id) ? props.categorySpendingMap.get(item.id) : 0;
+        let spent = props.categorySpendingMap.get(item.id) ? parseFloat(props.categorySpendingMap.get(item.id)) : 0.00;
         return (
             <tr key={item.id}>
                 <td>{item.category}</td>
                 <td>{item.budget}</td>
-                <td>{spent}</td>
+                <td>{spent.toFixed(2)}</td>
                 <td>{(item.budget - spent).toFixed(2)}</td>
             </tr>
         );

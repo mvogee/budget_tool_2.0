@@ -13,7 +13,7 @@
  */
 export const getPurchaseData = async(yearMonth) => {
     console.log("requesting purchaseData");
-    let url = "/monthSpending/" + yearMonth;
+    let url = "/service/monthSpending/" + yearMonth;
     let opts = {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -44,7 +44,7 @@ export const getPurchaseData = async(yearMonth) => {
  */
 export const getDepositData = async (yearMonth) => {
     console.log("requesting depositData");
-    let url = "/monthIncome/" + yearMonth;
+    let url = "/service/monthIncome/" + yearMonth;
     let opts = {
         method: 'GET',
         mode: 'cors',
@@ -69,7 +69,7 @@ export const getDepositData = async (yearMonth) => {
 
 export const getBudgetData = async () => {
     console.log("requesting budget data");
-    let url = "/budgets";
+    let url = "/service/budgets";
     let opts = {
         method: 'GET',
         mode: 'cors',

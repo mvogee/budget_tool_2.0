@@ -34,7 +34,7 @@ app.use(passport.session());
 
 // * --- END BOILERPLATE ----- *
 
-app.post("/login",
+app.post("/service/login",
     passport.authenticate('local', {}),
     (req, res) => {
             responses.jsonResponse(res, req.user ? true : false, "login successful", req.user ? req.user : null);
@@ -43,7 +43,7 @@ app.post("/login",
 
 
 
-app.post("/createAcc", (req, res) => {
+app.post("/service/createAcc", (req, res) => {
     console.log("createAcc");
     const pw = req.body.password;
     const email = req.body.email;
@@ -83,7 +83,7 @@ app.post("/createAcc", (req, res) => {
     });
 });
 
-app.patch("/updatePassword", (req, res) => {
+app.patch("/service/updatePassword", (req, res) => {
     if (req.isAuthenticated()) {
         const newPw = req.body.newPw;
         const sql = "UPDATE users SET password=? WHERE id=?;";
@@ -114,7 +114,7 @@ app.patch("/updatePassword", (req, res) => {
         responses.jsonFailedAuthResponse(res, "/updatePassword");
     }
 });
-app.patch("/updateEmail", (req, res) => {
+app.patch("/service/updateEmail", (req, res) => {
     if (req.isAuthenticated()) {
         const newEmail = req.body.newEmail;
         const sql = "UPDATE users SET email=? where id=?;";
@@ -134,12 +134,12 @@ app.patch("/updateEmail", (req, res) => {
     }
 });
 
-app.get("/logout", (req, res) => {
+app.get("/service/logout", (req, res) => {
     req.logout();
     responses.jsonResponse(res, true, "User has been logged out.")
 });
 
-app.get("/authenticate", (req, res) => {
+app.get("/service/authenticate", (req, res) => {
     if (req.isAuthenticated()) { // confirm req.isAutnticated will not return true nomatter what.
         responses.jsonResponse(res, true, "user is authenticated.", req.user);
     }
@@ -150,7 +150,7 @@ app.get("/authenticate", (req, res) => {
 
 
 // -- Projected INCOME ROUTES -- //
-app.route("/income")
+app.route("/service/income")
 .get((req, res) => {
     if (req.isAuthenticated()) {
         let sql = "SELECT * FROM projectedIncome WHERE userId=?;";
@@ -224,7 +224,7 @@ app.route("/income")
 });
 
 // -- monthIncome Routes --//
-app.route("/monthIncome/:month?")
+app.route("/service/monthIncome/:month?")
 .get((req, res) => {
     if (req.isAuthenticated()) {
         dt = new Date();
@@ -310,7 +310,7 @@ app.route("/monthIncome/:month?")
 
 
 // -- monthSpending Routes --//
-app.route("/monthSpending/:month?")
+app.route("/service/monthSpending/:month?")
 .get((req, res) => {
     if (req.isAuthenticated()) {
         dt = new Date();
@@ -397,7 +397,7 @@ app.route("/monthSpending/:month?")
 });
 
 // -- BUDGETS ROUTES -- //
-app.route("/budgets")
+app.route("/service/budgets")
 .get((req, res) => {
     if (req.isAuthenticated()) {
         let sql = "SELECT * FROM budgets WHERE userId=?;";

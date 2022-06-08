@@ -18,7 +18,7 @@ function PopEditSpending(props) {
     async function updateServer() {
         let data = {itemName: props.nameEdit, amount: props.amountEdit, category: props.categoryEdit, date: props.dateEdit, itmId: props.purchaseList[props.idxEdit].id}
         console.log("Updating the server");
-        let url = "/monthSpending";
+        let url = "/service/monthSpending";
         let opts = {
             method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

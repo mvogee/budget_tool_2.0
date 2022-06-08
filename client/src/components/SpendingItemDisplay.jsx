@@ -17,7 +17,7 @@ function SpendingItemDisplay(props) {
 
     async function deleteRequest(itemId) {
         let data = {deleteSpendingItm: itemId};
-        let url = "/monthSpending";
+        let url = "/service/monthSpending";
         let opts = {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

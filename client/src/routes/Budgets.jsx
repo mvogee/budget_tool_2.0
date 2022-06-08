@@ -36,7 +36,7 @@ function Budgets(props) {
     }
 
     async function getProjectedIncomeData() {
-        let url = "/income"
+        let url = "/service/income"
         let opts = {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -58,7 +58,7 @@ function Budgets(props) {
     }
 
     async function getData() {
-        let url = "/budgets"
+        let url = "/service/budgets"
         let opts = {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -85,7 +85,7 @@ function Budgets(props) {
     }
     async function sendData() {
         let data = {category: categoryInput, budgeted: parseInt(budgetInput)};
-        let url = "/budgets"
+        let url = "/service/budgets"
         let opts = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

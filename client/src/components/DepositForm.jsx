@@ -38,8 +38,7 @@ function DepositForm(props) {
         if (checkDateMatch(date)) {
             props.setDepositList((prevList) => {
                 let newList = prevList ? Array.from(prevList) : [];
-                newList.concat(newDepositItem);
-                return (newList);
+                return (newList.concat(newDepositItem));
             });
             props.setTotalIncome((prevVal) => {
                 return (parseFloat(prevVal) + parseFloat(amount));
@@ -49,7 +48,7 @@ function DepositForm(props) {
 
     async function sendData() {
         let data = {itemName: name, amount: amount, date: date};
-        let url = "/monthIncome";
+        let url = "/service/monthIncome";
         let opts = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

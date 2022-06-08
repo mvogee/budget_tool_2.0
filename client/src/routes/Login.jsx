@@ -10,7 +10,7 @@ function Login(props) {
     
     async function attemptLogin() {
         let data = {email: email, password: pw};
-        let url = "/login"
+        let url = "/service/login"
         let opts = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

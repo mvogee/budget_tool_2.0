@@ -24,7 +24,7 @@ function PopEditBudgets(props) {
     async function updateServer() {
         let data = {category: props.editCategoryInput, budgeted: props.editBudgetInput, itemId: props.budgetList[props.idxEdit].id};
         console.log("Updating the server");
-        let url = "/budgets";
+        let url = "/service/budgets";
         let opts = {
             method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

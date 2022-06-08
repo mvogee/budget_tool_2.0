@@ -12,7 +12,7 @@ function DepositsDisplay(props) {
 
     async function deleteRequest(itemId) {
         let data = {deleteIncomeItm: itemId};
-        let url = "/monthIncome";
+        let url = "/service/monthIncome";
         let opts = {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -40,7 +40,7 @@ function DepositsDisplay(props) {
             props.setTotalIncome(props.totalIncome - event.target.dataset.amount);
             props.setDepositList((prevList) => {
                 let newList = Array.from(prevList);
-                newList.splice(event.target.datase.idx, 1);
+                newList.splice(event.target.dataset.idx, 1);
                 return (newList);
             });
         }

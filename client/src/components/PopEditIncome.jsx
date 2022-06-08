@@ -26,7 +26,7 @@ function PopEditIncome(props) {
     async function updateRemote() {
         let data = {itmId: props.editId, incomeName: props.nameEdit, hourlyRate: props.rateEdit, hoursPerWeek: props.hoursEdit, taxRate: props.taxEdit, retirement: props.retireEdit };
         console.log("Updating the server");
-        let url = "/income";
+        let url = "/service/income";
         let opts = {
             method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

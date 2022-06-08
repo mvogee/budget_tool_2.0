@@ -1,7 +1,7 @@
 
 async function checkAuth(setUser) {
     // make call to server to authenticate and return false if no user otherwise return user
-    let url = "/authenticate"
+    let url = "/service/authenticate";
     let opts = {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin

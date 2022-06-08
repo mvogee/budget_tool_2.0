@@ -38,7 +38,7 @@ function Profile(props) {
         let auth = await checkAuth(props.setUser);
         if (auth) {
             const data = {newEmail: newEmail};
-            let url = "/updateEmail";
+            let url = "/service/updateEmail";
             let opts = {
                 method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
@@ -72,7 +72,7 @@ function Profile(props) {
         let auth = await checkAuth(props.setUser);
         if (auth) {
             const data = {newPw: newPw};
-            let url = "/updatePassword";
+            let url = "/service/updatePassword";
             let opts = {
                 method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
@@ -145,11 +145,11 @@ function Profile(props) {
             <form className="pwChangeForm form_div">
                 <div className="input_div">
                     <label htmlFor="newPW">New password</label>
-                    <input id="newPW" type="password" placeholder="New password" value={newPw} onChange={newPwInput}></input>
+                    <input id="newPW" type="password" placeholder="New password" value={newPw} onChange={newPwInput} autoComplete="true"></input>
                 </div>
                 <div className="input_div">
                     <label htmlFor="confirmPW">Confirm new password</label>
-                    <input id="confirmPW" type="password" placeholder="Retype new password" value={confPw} onChange={confPwInput}></input>
+                    <input id="confirmPW" type="password" placeholder="Retype new password" value={confPw} onChange={confPwInput} autoComplete="true" ></input>
                 </div>
                 <button type="button" onClick={passwordChangeButton}>Update</button>
             </form>

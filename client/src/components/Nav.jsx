@@ -6,8 +6,7 @@ function Nav(props) {
     const navigate = useNavigate();
 
     function logoutbtn() {
-        // make user log out
-        alert("logout btn was pressed");
+        let url = "/service/logout";
         let opts = {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -21,7 +20,7 @@ function Nav(props) {
             referrerPolicy: 'no-referrer',
             // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         };
-        fetch("/logout", opts);
+        fetch(url, opts);
         props.setUser(null);
         navigate("/login");
 

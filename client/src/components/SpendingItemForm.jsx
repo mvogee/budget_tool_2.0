@@ -54,7 +54,7 @@ function SpendingItemForm(props) {
 
     async function sendData() {
         let data = {itemName: name, amount: amount, category: category, date: date};
-        let url = "/monthSpending";
+        let url = "/service/monthSpending";
         let opts = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

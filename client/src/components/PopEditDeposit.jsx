@@ -5,7 +5,7 @@ function PopEditDeposit(props) {
     async function updateServer() {
         let data = {itmId: props.depositList[props.idxEdit].id, itemName: props.nameEdit, amount: props.amountEdit, date: props.dateEdit};
         console.log("Updating the server");
-        let url = "/monthIncome";
+        let url = "/service/monthIncome";
         let opts = {
             method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
