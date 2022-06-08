@@ -10,7 +10,7 @@ function BudgetsDisplay(props) {
 
     async function deleteRequest(itemId) {
         let data = {categoryId: itemId};
-        let url = "/budgets";
+        let url = "/service/budgets";
         let opts = {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

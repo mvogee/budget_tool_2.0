@@ -48,7 +48,7 @@ function DepositForm(props) {
 
     async function sendData() {
         let data = {itemName: name, amount: amount, date: date};
-        let url = "/monthIncome";
+        let url = "/service/monthIncome";
         let opts = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

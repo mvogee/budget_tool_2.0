@@ -26,7 +26,7 @@ function Income(props) {
     }
 
     async function getData() {
-        let url = "/income"
+        let url = "/service/income"
         let opts = {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -51,7 +51,7 @@ function Income(props) {
 
     async function sendData() {
         let data = {incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: taxRate, retirement: retirement };
-        let url = "/income"
+        let url = "/service/income"
         let opts = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

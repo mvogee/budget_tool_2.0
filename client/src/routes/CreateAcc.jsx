@@ -20,7 +20,7 @@ function CreateAcc(props) {
             email: email,
             userName: userName
         };
-        const url = "/createAcc";
+        const url = "/service/createAcc";
         let opts = {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

@@ -13,7 +13,7 @@ function IncomeDisplay(props) {
 
     async function deleteRequest(itemId) {
         let data = {deleteIncome: itemId};
-        let url = "/income";
+        let url = "/service/income";
         let opts = {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
