@@ -1,13 +1,9 @@
 import {React, useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import checkAuth from "../checkAuth";
+import { sendData } from "../components/serverCommunications";
 import "../styles/profile.css";
 
-/* TODO:
-*   - State handlers for forms
-*   - Handler for submit button to update password.
-*   - Use login route to verify password is correct. should get it back in response.success
-*/
 
 function Profile(props) {
     const [newPw, setNewPw] = useState("");
@@ -24,7 +20,7 @@ function Profile(props) {
             }
         }
         authenticate();
-    }, []);
+    }, [navigate, props.setUser]);
 
     function changeEmailButton(event) {
         event.preventDefault();
@@ -39,21 +35,7 @@ function Profile(props) {
         if (auth) {
             const data = {newEmail: newEmail};
             let url = "/service/updateEmail";
-            let opts = {
-                method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer',
-                body: JSON.stringify(data) // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            };
-            const response = await fetch(url, opts);
-            const reData = await response.json();
+            const reData = await sendData(url, "PATCH", data);
             if (reData.success) {
                 setMessage("Email updated!");
             }
@@ -73,21 +55,7 @@ function Profile(props) {
         if (auth) {
             const data = {newPw: newPw};
             let url = "/service/updatePassword";
-            let opts = {
-                method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer',
-                body: JSON.stringify(data) // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            };
-            const response = await fetch(url, opts);
-            const reData = await response.json();
+            const reData = await sendData(url, "PATCH", data);
             if (reData.success) {
                 setMessage("Password updated!");
             }

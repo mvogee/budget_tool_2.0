@@ -1,4 +1,4 @@
-import { React, useState, useEffect} from "react";
+import { React, useState, useEffect, useRef} from "react";
 import { useNavigate } from "react-router-dom"
 import SpendingItemForm from "../components/SpendingItemForm";
 import SpendingItemDisplay from "../components/SpendingItemDisplay";
@@ -7,6 +7,7 @@ import DepositsDisplay from "../components/DepositsDisplay";
 import BudgetProgress from "../components/BudgetProgress";
 import checkAuth from "../checkAuth";
 import { getDateYearMonth } from "../components/utils";
+import { requestData } from "../components/serverCommunications";
 import "../styles/thisMonth.css";
 
 /**
@@ -27,6 +28,7 @@ function ThisMonth(props) {
   const [totalSpending, setTotalSpending] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [categorySpendingMap, setCategorySpendingMap] = useState(new Map());
+  const runEffect = useRef(true);
 
 
   const navigate = useNavigate();
@@ -43,20 +45,7 @@ function ThisMonth(props) {
   async function getPurchaseData(yearMonth) {
     console.log("requesting purchaseData");
     let url = "/service/monthSpending/" + yearMonth;
-    let opts = {
-        method: 'GET', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer',
-    // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    };
-    const response = await fetch(url, opts);
-    const reData = await response.json();
+    const reData = await requestData(url);
     console.log(reData);
     if (reData.success) {
         setPurchaseList(reData.obj);
@@ -72,20 +61,7 @@ function ThisMonth(props) {
   async function getDepositData(yearMonth) {
     console.log("requesting Deposit data");
     let url = "/service/monthIncome/" + yearMonth;
-    let opts = {
-        method: 'GET', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer',
-    // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    };
-    const response = await fetch(url, opts);
-    const reData = await response.json();
+    const reData = await requestData(url);
     console.log(reData);
     if (reData.success) {
         setDepositList(reData.obj);
@@ -97,21 +73,7 @@ function ThisMonth(props) {
 
   async function getBudgetData() {
     let url = "/service/budgets"
-    let opts = {
-        method: 'GET', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer',
-    // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    };
-    const response = await fetch(url, opts);
-    const reData = await response.json();
-    console.log(reData);
+    const reData = await requestData(url);
     if (reData.success) {
         setBudgetList(reData.obj);
     }
@@ -120,17 +82,18 @@ function ThisMonth(props) {
   useEffect(() => {
     const authenticate = async () => {
         let auth = await checkAuth(props.setUser);
-        if (auth) {
+        if (auth && runEffect.current) {
           await getPurchaseData(yearMonth);
           await getDepositData(yearMonth);
           await getBudgetData();
+          runEffect.current = false;
         }
         else {
           navigate("/login");
         }
     }
     authenticate();
-  }, []);
+  }, [navigate, props.setUser]);
 
 
   function changeMonth(event) {

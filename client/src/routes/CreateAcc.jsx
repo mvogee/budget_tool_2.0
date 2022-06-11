@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { sendData } from "../components/serverCommunications";
 
 
 /* TODO:
@@ -12,6 +13,7 @@ function CreateAcc(props) {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPw, setConfirmPw] = useState("");
+    const [msgText, setMsgText] = useState(null)
     const navigate = useNavigate();
     
     async function createAccRequest() {
@@ -21,32 +23,13 @@ function CreateAcc(props) {
             userName: userName
         };
         const url = "/service/createAcc";
-        let opts = {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data) // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        };
-        const response = await fetch(url, opts);
-        const resData = await response.json();
+        const resData = await sendData(url, "POST", data);
         if (await resData.success) {
-            // if successful go ahead and make login request to server
-            // for now just redirect user to the login page.
-            navigate("/login");
+            navigate("/Login");
         }
         else {
-            // if failed to create account display message to user.
+            setMsgText("failed to create user. the username or email may already be taken.");
         }
-        console.log(resData);
-        // if logged in go ahead and set user to returned user.
-        // if failed display message
     }
 
     function submitBtn(event) {
@@ -72,6 +55,7 @@ function CreateAcc(props) {
         <div className="createAcc">
             <h1>Create Account</h1>
             <p className="infoText secondary-text">Create your account</p>
+            {msgText ? <p>{msgText}</p> : null}
             <div className="new-acc">
                 <form className="new-acc-form" id="newAccountForm" name="createAcc">
 

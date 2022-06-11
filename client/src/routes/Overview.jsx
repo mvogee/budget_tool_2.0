@@ -1,5 +1,7 @@
-import {React, useState, useEffect} from "react";
+import {React, useState, useEffect, useRef} from "react";
 import {getBudgetData, getPurchaseData, getDepositData} from "../components/overviewServerRequests";
+import { useNavigate } from "react-router-dom";
+import checkAuth from "../checkAuth.js";
 import MonthToMonthGraph from "../components/MonthToMonthGraph";
 import SpendingPieChart from "../components/SpendingPieChart";
 import "../styles/overview.css";
@@ -14,10 +16,48 @@ function Overview(props) {
     const [yearSpendingMap, setYearSpendingMap] = useState();
     const [catSpendMap, setCatSpendMap] = useState();
     const [budgets, setBudgets] = useState();
+    const runEffect = useRef(true);
+
+    let navigate = useNavigate();
 
     useEffect(() => {
-        getInitialData();
-    }, []);
+
+        const authenticate = async () => {
+            let auth = await checkAuth(props.setUser);
+            console.log(auth);
+            if (auth && runEffect.current) {
+                getInitialData();
+                runEffect.current = false;
+            }
+            else {
+                navigate("/login");
+            }
+        }
+        authenticate();
+
+        async function getInitialData() {
+            getMonthData();
+            let pastYearSpending = await getPastYearSpendingData();
+            let pastYearDeposits = await getPastYearDepositData();
+            setTwelveMonthSaving(getTwelveMonthSavings(pastYearSpending, pastYearDeposits));
+            setYearIncomeMap(pastYearDeposits);
+            setYearSpendingMap(pastYearSpending);
+        };
+
+        async function getMonthData(yearMonth = (new Date())) {
+            let purchaseData = await getPurchaseData(yearMonth);
+            let depositData = await getDepositData(yearMonth);
+    
+            setTotalSpending(getListTotal(purchaseData));
+            setTotalIncome(getListTotal(depositData));
+            let budgets = await getBudgetData();
+            setBudgets(budgets);
+            let categorySpendingMap = getCategorySpendMap(purchaseData);
+            let criticalBudgetItems = getCriticalBudgetItems(budgets, categorySpendingMap);
+            setCriticalBudgetItems(criticalBudgetItems);
+            setCatSpendMap(categorySpendingMap);
+        }
+    }, [navigate, props.setUser]);
 
     function getListTotal(list) {
         let total = 0;
@@ -108,28 +148,7 @@ function Overview(props) {
         return (income - spending);
     }
 
-    async function getMonthData(yearMonth = (new Date())) {
-        let purchaseData = await getPurchaseData(yearMonth);
-        let depositData = await getDepositData(yearMonth);
 
-        setTotalSpending(getListTotal(purchaseData));
-        setTotalIncome(getListTotal(depositData));
-        let budgets = await getBudgetData();
-        setBudgets(budgets);
-        let categorySpendingMap = getCategorySpendMap(purchaseData);
-        let criticalBudgetItems = getCriticalBudgetItems(budgets, categorySpendingMap);
-        setCriticalBudgetItems(criticalBudgetItems);
-        setCatSpendMap(categorySpendingMap);
-    }
-
-    async function getInitialData() {
-        getMonthData();
-        let pastYearSpending = await getPastYearSpendingData();
-        let pastYearDeposits = await getPastYearDepositData();
-        setTwelveMonthSaving(getTwelveMonthSavings(pastYearSpending, pastYearDeposits));
-        setYearIncomeMap(pastYearDeposits);
-        setYearSpendingMap(pastYearSpending);
-    };
 
     function critBudgetItemDisplay(item) {
         return(
