@@ -1,14 +1,9 @@
-import { React, useState, useEffect} from "react";
+import { React, useState, useEffect, useRef} from "react";
 import {useNavigate} from "react-router-dom";
-import PopEditIncome from "../components/PopEditIncome.jsx";
 import IncomeDisplay from "../components/IncomeDisplay.jsx";
+import { requestData, sendData } from "../components/serverCommunications";
 import checkAuth from "../checkAuth";
-/* TODO:
-*   - state handlers for all inputs.
-*   - state handlers for variables needed.
-*   - Form submit button link to database.
-*   - display functions for income table.
-*/
+
 
 function Income(props) {
     const [incomeList, setIncomeList] = useState();
@@ -19,80 +14,51 @@ function Income(props) {
     const [retirement, setRetirement] = useState(0);
     const [grossIncome, setGrossIncome] = useState(0);
     const [netIncome, setNetIncome] = useState(0);
+    const runEffect = useRef(true);
     const navigate = useNavigate();
-
-    function setInput(e, inputSetter) {
-        inputSetter(e.target.value);
-    }
-
-    async function getData() {
-        let url = "/service/income"
-        let opts = {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer',
-        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        };
-        const response = await fetch(url, opts);
-        const reData = await response.json();
-        console.log(reData);
-        if (reData.success) {
-            setIncomeList(reData.obj);
-            calculateMonthIncome(reData.obj);
-        }
-        
-    }
-
-    async function sendData() {
-        let data = {incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: taxRate, retirement: retirement };
-        let url = "/service/income"
-        let opts = {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data) // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        };
-
-        const response = await fetch(url, opts);
-        const reData = await response.json();
-        setListData(reData.obj.insertId);
-        console.log(reData);
-    }
-
-    function setListData(id) {
-        let newIncomeItem = {id: id, incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: (taxRate / 100), retirement: (retirement / 100) };
-        console.log(newIncomeItem);
-        //setIncomeList(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
-        setIncomeList((prevVal) => {return (prevVal ? prevVal.concat(newIncomeItem) : [newIncomeItem])});
-        calculateMonthIncome(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
-    }
 
     useEffect(() => {
         const authenticate = async () => {
             let auth = await checkAuth(props.setUser);
             console.log(auth);
-            if (auth) {
+            if (auth && runEffect.current) {
                 getData();
+                runEffect.current = false;
             }
             else {
                 navigate("/login");
             }
         }
         authenticate();
-    }, []);
+
+        async function getData() {
+            let url = "/service/income"
+            const reData = await requestData(url);
+            console.log(reData);
+            if (reData.success) {
+                setIncomeList(reData.obj);
+                calculateMonthIncome(reData.obj);
+            }
+        }
+    }, [navigate, props.setUser]);
+
+    function setInput(e, inputSetter) {
+        inputSetter(e.target.value);
+    }
+
+    async function postData() {
+        let data = {incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: taxRate, retirement: retirement };
+        let url = "/service/income"
+        const reData = await sendData(url, "POST", data);
+        setListData(reData.obj.insertId);
+        console.log(reData);
+    }
+
+    function setListData(id) {
+        let newIncomeItem = {id: id, incomeName: name, hourlyRate: hourlyRate, hoursPerWeek: hoursPerWeek, taxRate: (taxRate / 100), retirement: (retirement / 100) };
+        setIncomeList((prevVal) => {return (prevVal ? prevVal.concat(newIncomeItem) : [newIncomeItem])});
+        calculateMonthIncome(incomeList ? incomeList.concat(newIncomeItem) : [newIncomeItem]);
+    }
 
     function calculateMonthIncome(incomesList) {
         let gross = 0;
@@ -108,7 +74,7 @@ function Income(props) {
 
     function submitBtn(event) {
         event.preventDefault();
-        sendData()
+        postData()
     }
 
     return (

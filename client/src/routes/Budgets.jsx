@@ -1,6 +1,7 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import BudgetsDisplay from "../components/BudgetsDisplay.jsx";
+import { requestData, sendData } from "../components/serverCommunications";
 import checkAuth from "../checkAuth.js";
 
 function Budgets(props) {
@@ -10,8 +11,46 @@ function Budgets(props) {
     const [budgetList, setBudgetList] = useState(null);
     const [totalBudgeted, setTotalBudgeted] = useState(0);
     const [projectedIncome, setProjectedIncome] = useState(0);
+    const runEffect = useRef(true);
 
     let navigate = useNavigate();
+
+    useEffect(() => {
+        const authenticate = async () => {
+            let auth = await checkAuth(props.setUser);
+            console.log(auth);
+            if (auth && runEffect.current) {
+                getData();
+                getProjectedIncomeData();
+                runEffect.current = false;
+            }
+            else {
+                navigate("/login");
+            }
+        }
+        authenticate();
+        
+
+        async function getData() {
+            let url = "/service/budgets"
+            const reData = await requestData(url);
+            console.log(reData);
+            if (reData.success) {
+                setBudgetList(reData.obj);
+                setTotalBudgeted(getTotalBudgeted(reData.obj));
+            }
+        }
+
+        async function getProjectedIncomeData() {
+            let url = "/service/income"
+            const reData = await requestData(url);
+            console.log(reData);
+            if (reData.success) {
+                setProjectedIncome(calculateProjectedIncome(reData.obj));
+            }
+        }
+
+    }, [navigate, props.setUser]);
 
     function getTotalBudgeted(budgetList) {
         let total = 0;
@@ -35,91 +74,17 @@ function Budgets(props) {
         return (total);
     }
 
-    async function getProjectedIncomeData() {
-        let url = "/service/income"
-        let opts = {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer',
-        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        };
-        const response = await fetch(url, opts);
-        const reData = await response.json();
-        console.log(reData);
-        if (reData.success) {
-            setProjectedIncome(calculateProjectedIncome(reData.obj));
-        }
-    }
 
-    async function getData() {
-        let url = "/service/budgets"
-        let opts = {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer',
-        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        };
-        const response = await fetch(url, opts);
-        const reData = await response.json();
-        console.log(reData);
-        if (reData.success) {
-            setBudgetList(reData.obj);
-            setTotalBudgeted(getTotalBudgeted(reData.obj));
-        }
-    }
     function resetInputs() {
         setBudgetInput("");
         setCategoryInput("");
     }
-    async function sendData() {
+    async function postData() {
         let data = {category: categoryInput, budgeted: parseInt(budgetInput)};
         let url = "/service/budgets"
-        let opts = {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data) // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        };
-
-        const response = await fetch(url, opts);
-        const reData = await response.json();
+        const reData = await sendData(url, "POST", data);
         setListData(reData.obj.insertId);
-        console.log(reData);
     }
-
-    useEffect(() => {
-        const authenticate = async () => {
-            let auth = await checkAuth(props.setUser);
-            console.log(auth);
-            if (auth) {
-                getData();
-                getProjectedIncomeData();
-            }
-            else {
-                navigate("/login");
-            }
-        }
-        authenticate();
-    }, []);
 
     function setListData(id) {
         let newBudgetItem = {id: id, category: categoryInput, budget: parseInt(budgetInput) };
@@ -133,7 +98,7 @@ function Budgets(props) {
 
     function submitBtn(event) {
         event.preventDefault();
-        sendData();
+        postData();
         resetInputs();
     }
 
