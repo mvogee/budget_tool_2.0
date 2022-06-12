@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import PopEditSpending from "./PopEditSpending";
 import {getCategoryName, getStandardDateFormat, getDateEdit} from "./utils.js";
+import {sendData} from "./serverCommunications.js";
 /*
 * Props: spending item list, budget categorys
 */
@@ -18,22 +19,7 @@ function SpendingItemDisplay(props) {
     async function deleteRequest(itemId) {
         let data = {deleteSpendingItm: itemId};
         let url = "/service/monthSpending";
-        let opts = {
-            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data)
-        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        };
-        const response = await fetch(url, opts);
-        const reData = await response.json();
-        console.log(reData);
+        const reData = await sendData(url, "DELETE", data);
         if (reData.success) {
             console.log("item was deleted");
         }

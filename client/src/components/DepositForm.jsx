@@ -1,4 +1,5 @@
-import {React, useState} from "react"
+import {React, useState} from "react";
+import {sendData} from "./serverCommunications.js";
 
 function DepositForm(props) {
     let day = new Date().getDate();
@@ -15,7 +16,7 @@ function DepositForm(props) {
 
     function submitBtn(event) {
         event.preventDefault();
-        sendData();
+        postData();
         clearForm();
     }
 
@@ -46,25 +47,10 @@ function DepositForm(props) {
         }
     }
 
-    async function sendData() {
+    async function postData() {
         let data = {itemName: name, amount: amount, date: date};
         let url = "/service/monthIncome";
-        let opts = {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data) // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        };
-
-        const response = await fetch(url, opts);
-        const reData = await response.json();
+        const reData = await sendData(url, "POST", data);
         setListData(reData.obj.insertId);
         console.log(reData);
     }
