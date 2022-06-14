@@ -42,7 +42,6 @@ function SpendingItemForm(props) {
             props.setPurchaseList((prevList) => {
                 return (prevList ? Array.from(prevList).concat(newSpendItem) : [newSpendItem]);
             });
-            props.setTotalSpending((prevVal) => (parseFloat(prevVal) + parseFloat(amount)));
         }
     }
 
