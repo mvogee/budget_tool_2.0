@@ -1,9 +1,10 @@
 import {React} from "react";
+import manageBudgetSpentList from "./manageBudgetSpentList";
 
 function BudgetProgress(props) {
 
     function tableItem(item) {
-        let spent = props.categorySpendingMap.get(item.id) ? parseFloat(props.categorySpendingMap.get(item.id)) : 0.00;
+        let spent = manageBudgetSpentList.getValueByCategoryId(props.budgetSpentList, item.id);
         return (
             <tr key={item.id}>
                 <td>{item.category}</td>

@@ -8,6 +8,7 @@ import BudgetProgress from "../components/BudgetProgress";
 import checkAuth from "../checkAuth";
 import { getDateYearMonth } from "../components/utils";
 import { requestData } from "../components/serverCommunications";
+import manageBudgetSpentList from "../components/manageBudgetSpentList";
 import "../styles/thisMonth.css";
 
 /**
@@ -27,20 +28,28 @@ function ThisMonth(props) {
   const [depositList, setDepositList] = useState(null); // when retrieving data use month as search filter. 
   const [totalSpending, setTotalSpending] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
-  const [categorySpendingMap, setCategorySpendingMap] = useState(new Map());
-  const runEffect = useRef(true);
+  const [budgetSpentList, setBudgetSpentList] = useState([]);
+  const firstRun = useRef(true);
 
 
   const navigate = useNavigate();
 
+  // this will only run after the other useEffect is run
+  // that way it will only run once the purchaseList has been set.
+  useEffect(() => {
+    if (!firstRun.current) {
+      setBudgetSpentList(manageBudgetSpentList.createBudgetSpentListFromSpendingList(purchaseList));
+    }
+  }, [purchaseList]);
+
   useEffect(() => {
     const authenticate = async () => {
         let auth = await checkAuth(props.setUser);
-        if (auth && runEffect.current) {
+        if (auth && firstRun.current) {
+          firstRun.current = false;
           await getPurchaseData(yearMonth);
           await getDepositData(yearMonth);
           await getBudgetData();
-          runEffect.current = false;
         }
         else if (!auth){
           navigate("/login");
@@ -49,15 +58,6 @@ function ThisMonth(props) {
     authenticate();
   }, [navigate, props.setUser, yearMonth]);
 
-  function addToCategoryMap(item) {
-    if (categorySpendingMap.has(item.category)) {
-      setCategorySpendingMap(map => new Map(map.set(item.category, map.get(item.category) + parseFloat(item.amount))));
-    }
-    else {
-      setCategorySpendingMap(map => new Map(map.set(item.category, parseFloat(item.amount))));
-    }
-  }
-
   async function getPurchaseData(yearMonth) {
     console.log("requesting purchaseData");
     let url = "/service/monthSpending/" + yearMonth;
@@ -65,10 +65,6 @@ function ThisMonth(props) {
     if (reData.success) {
         setPurchaseList(reData.obj);
         let total = 0;
-        reData.obj.forEach((item) => {
-          total += parseFloat(item.amount);
-          addToCategoryMap(item);
-        });
         setTotalSpending(total.toFixed(2));
     }
   }
@@ -94,8 +90,6 @@ function ThisMonth(props) {
   }
 
   function changeMonth(event) {
-    categorySpendingMap.clear(); // this breaks react state 
-    // setCategorySpendingMap(new Map());
     setYearMonth("" + event.target.value);
     getPurchaseData(event.target.value);
     getDepositData(event.target.value);
@@ -130,13 +124,11 @@ function ThisMonth(props) {
                 <div id="spendingDiv" className="spending">
                   <h3>Spending</h3>
                   <SpendingItemForm
-                    yearMonth={yearMonth} categorySpendingMap={categorySpendingMap}
-                    setCategorySpendingMap={setCategorySpendingMap} budgets={budgetList}
+                    yearMonth={yearMonth} budgets={budgetList}
                     purchaseList={purchaseList} setPurchaseList={setPurchaseList}
                     totalSpending={totalSpending} setTotalSpending={setTotalSpending}
                   />
                   <SpendingItemDisplay
-                    categorySpendingMap={categorySpendingMap} setCategorySpendingMap={setCategorySpendingMap}
                     purchaseList={purchaseList} setPurchaseList={setPurchaseList}
                     budgets={budgetList} totalSpending={totalSpending}
                     setTotalSpending={setTotalSpending}
@@ -160,7 +152,7 @@ function ThisMonth(props) {
 
                 <div id="budgetProgressDiv" className="budgetProgress">
                     <h3>Budgets</h3>
-                    <BudgetProgress budgetList={budgetList} categorySpendingMap={categorySpendingMap}/>
+                    <BudgetProgress budgetList={budgetList} budgetSpentList={budgetSpentList}/>
                 </div>
 
         </div>

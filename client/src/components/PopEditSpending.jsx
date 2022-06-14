@@ -4,8 +4,6 @@ import "../styles/popup.css";
 function PopEditSpending(props) {
 
     function updateLocalItem() {
-        console.log("updating local purchaseList");
-        //props.setTotalSpending(parseFloat(props.totalSpending) + (parseFloat(props.amountEdit) - parseFloat(props.purchaseList[props.idxEdit].amount)));
         props.setTotalSpending((prevVal) => {
             return (parseFloat(prevVal) + (parseFloat(props.amountEdit) - parseFloat(props.purchaseList[props.idxEdit].amount)));
         });
@@ -13,7 +11,6 @@ function PopEditSpending(props) {
         let purchaseListCopy = Array.from(props.purchaseList);
         purchaseListCopy[props.idxEdit] = newItem;
         props.setPurchaseList(purchaseListCopy);
-        props.setCategorySpendingMap(new Map(props.categorySpendingMap.set(newItem.category, parseFloat(props.categorySpendingMap.get(newItem.category)) + (parseFloat(props.amountEdit) - parseFloat(props.purchaseList[props.idxEdit].amount)))));
     }
 
     async function updateServer() {

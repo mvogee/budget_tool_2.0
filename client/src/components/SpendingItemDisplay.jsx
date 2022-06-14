@@ -32,7 +32,6 @@ function SpendingItemDisplay(props) {
             let newPurchaseList = Array.from(props.purchaseList);
             newPurchaseList.splice(event.target.dataset.idx, 1);
             props.setPurchaseList(newPurchaseList);
-            props.setCategorySpendingMap(map => new Map(map.set(parseInt(event.target.dataset.category), parseFloat(map.get(parseInt(event.target.dataset.category))) - parseFloat(event.target.dataset.amount))));
         }
     }
 
@@ -66,7 +65,6 @@ function SpendingItemDisplay(props) {
         <div className="spendingItemDisplay">
             <PopEditSpending 
                 budgets={props.budgets} displayPopup={displayPopup} setDisplayPopup={setDisplayPopup}
-                categorySpendingMap={props.categorySpendingMap} setCategorySpendingMap={props.setCategorySpendingMap}
                 purchaseList={props.purchaseList} setPurchaseList={props.setPurchaseList}
                 totalSpending={props.totalSpending} setTotalSpending={props.setTotalSpending}
                 nameEdit={nameEdit} setNameEdit={setNameEdit}
