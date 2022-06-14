@@ -1,7 +1,8 @@
-import {React, useState} from "react";
+import {React, useState, useRef} from "react";
 import {sendData} from "./serverCommunications.js";
 
 function DepositForm(props) {
+    const depositInputRef = useRef(null); 
     let day = new Date().getDate();
     day = props.yearMonth + "-" + (day < 10 ? "0" + day.toString() : day.toString());
     const [name, setName] = useState("");
@@ -18,6 +19,7 @@ function DepositForm(props) {
         event.preventDefault();
         postData();
         clearForm();
+        depositInputRef.current.focus();
     }
 
     function checkDateMatch(date) {
@@ -35,7 +37,6 @@ function DepositForm(props) {
 
     function setListData(id) {
         let newDepositItem = {id: id, inDescription: name, amount: amount, depositDate: date + ":10:00"};
-        console.log(new Date(date + ":10:00"));
         if (checkDateMatch(date)) {
             props.setDepositList((prevList) => {
                 let newList = prevList ? Array.from(prevList) : [];
@@ -52,7 +53,6 @@ function DepositForm(props) {
         let url = "/service/monthIncome";
         const reData = await sendData(url, "POST", data);
         setListData(reData.obj.insertId);
-        console.log(reData);
     }
 
     function nameChange(event) {
@@ -69,7 +69,7 @@ function DepositForm(props) {
             <form className="income-form">
                 <div className="input_div">
                     <label htmlFor="depositItemName">Name</label>
-                    <input id="depositItemName" type="text" value={name} onChange={nameChange} placeholder="name"></input>
+                    <input id="depositItemName" type="text" ref={depositInputRef} value={name} onChange={nameChange} placeholder="name"></input>
                 </div>
                 <div className="input_div">
                     <label htmlFor="depositItemAmount">Amount</label>

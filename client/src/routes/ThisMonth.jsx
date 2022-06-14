@@ -64,18 +64,14 @@ function ThisMonth(props) {
   }, [navigate, props.setUser, yearMonth]);
 
   async function getPurchaseData(yearMonth) {
-    console.log("requesting purchaseData");
     let url = "/service/monthSpending/" + yearMonth;
     const reData = await requestData(url);
     if (reData.success) {
         setPurchaseList(reData.obj);
-        let total = 0;
-        setTotalSpending(total.toFixed(2));
     }
   }
 
   async function getDepositData(yearMonth) {
-    console.log("requesting Deposit data");
     let url = "/service/monthIncome/" + yearMonth;
     const reData = await requestData(url);
     if (reData.success) {
@@ -131,12 +127,10 @@ function ThisMonth(props) {
                   <SpendingItemForm
                     yearMonth={yearMonth} budgets={budgetList}
                     purchaseList={purchaseList} setPurchaseList={setPurchaseList}
-                    totalSpending={totalSpending} setTotalSpending={setTotalSpending}
                   />
                   <SpendingItemDisplay
                     purchaseList={purchaseList} setPurchaseList={setPurchaseList}
                     budgets={budgetList} totalSpending={totalSpending}
-                    setTotalSpending={setTotalSpending}
                   />
                 </div>
                   <hr />

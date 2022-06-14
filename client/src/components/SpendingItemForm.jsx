@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import {React, useState, useRef} from "react";
 import {sendData} from "./serverCommunications.js";
 
 
@@ -9,6 +9,8 @@ function selectOptions(item) {
 }
 
 function SpendingItemForm(props) {
+    const spendInputRef = useRef(null);
+
     let day = new Date().getDate();
     day = props.yearMonth + "-" + (day < 10 ? "0" + day.toString() : day.toString());
     const [name, setName] = useState("");
@@ -56,6 +58,7 @@ function SpendingItemForm(props) {
         event.preventDefault();
         postData();
         clearForm();
+        spendInputRef.current.focus();
     }
     
     function nameChange(event) {
@@ -68,7 +71,6 @@ function SpendingItemForm(props) {
         setCategory(event.target.value); // this will actually need to take the category name instead of the option value.
     }
     function dateChange(event) {
-        console.log(event.target.value);
         setDate(event.target.value);
     }
 
@@ -77,7 +79,7 @@ function SpendingItemForm(props) {
             <form id="spendingItem" className="SpendingForm">
                 <div className="input_div">
                     <label htmlFor="itemName">Description</label>
-                    <input type="text" name="itemName" value={name} onChange={nameChange} placeholder="name" required autoFocus />
+                    <input type="text" name="itemName" ref={spendInputRef} value={name} onChange={nameChange} placeholder="name" required autoFocus />
                 </div>
                 <div className="input_div">
                     <label htmlFor="amount">Amount</label>

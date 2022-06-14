@@ -21,7 +21,7 @@ function SpendingItemDisplay(props) {
         let url = "/service/monthSpending";
         const reData = await sendData(url, "DELETE", data);
         if (reData.success) {
-            console.log("item was deleted");
+            console.info("item was deleted");
         }
     }
 

@@ -15,9 +15,8 @@ function DepositsDisplay(props) {
         let data = {deleteIncomeItm: itemId};
         let url = "/service/monthIncome";
         const reData = await sendData(url, "DELETE", data);
-        console.log(reData);
         if (reData.success) {
-            console.log("item was deleted");
+            console.info("item was deleted");
         }
     }
 

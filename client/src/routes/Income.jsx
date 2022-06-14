@@ -16,6 +16,7 @@ function Income(props) {
     const [netIncome, setNetIncome] = useState(0);
     const runEffect = useRef(true);
     const navigate = useNavigate();
+    const refocusInput = useRef(null);
 
     useEffect(() => {
         const authenticate = async () => {
@@ -72,9 +73,19 @@ function Income(props) {
         setNetIncome(net);
     }
 
+    function clearInputs() {
+        setName("");
+        setHourlyRate(0);
+        setHoursPerWeek(40);
+        setTaxRate(0);
+        setRetirement(0);
+    }
+
     function submitBtn(event) {
         event.preventDefault();
-        postData()
+        postData();
+        clearInputs();
+        refocusInput.current.focus();
     }
 
     return (

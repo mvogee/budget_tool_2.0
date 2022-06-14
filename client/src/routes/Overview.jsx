@@ -24,7 +24,6 @@ function Overview(props) {
 
         const authenticate = async () => {
             let auth = await checkAuth(props.setUser);
-            console.log(auth);
             if (auth && runEffect.current) {
                 getInitialData();
                 runEffect.current = false;

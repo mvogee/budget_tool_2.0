@@ -14,7 +14,9 @@ function PopEditSpending(props) {
         let data = {itemName: props.nameEdit, amount: props.amountEdit, category: props.categoryEdit, date: props.dateEdit, itmId: props.purchaseList[props.idxEdit].id};
         let url = "/service/monthSpending";
         const reData = await sendData(url, "PATCH", data);
-        console.log(reData);
+        if (!reData.success) {
+            console.error(reData.message);
+        }
         closePopup();
     }
     function submitBtn(event) {

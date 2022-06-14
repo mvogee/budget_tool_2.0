@@ -7,13 +7,13 @@ function PopEditDeposit(props) {
         let data = {itmId: props.depositList[props.idxEdit].id, itemName: props.nameEdit, amount: props.amountEdit, date: props.dateEdit};
         let url = "/service/monthIncome";
         const reData = await sendData(url, "PATCH", data);
-        console.log(reData);
+        if (!reData.success) {
+            console.error(reData.message);
+        }
         closePopup();
     }
 
     function updateLocalItem() {
-        console.log("updating local deposit");
-        //props.setTotalIncome((parseFloat(props.totalIncome)) + (parseFloat(props.amountEdit)) - (parseFloat(props.depositList[props.idxEdit].amount)));
         props.setTotalIncome((prevVal) => {
             return (parseFloat(prevVal) + parseFloat(props.amountEdit) - (parseFloat(props.depositList[props.idxEdit].amount)));
         });

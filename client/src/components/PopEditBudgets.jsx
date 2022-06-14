@@ -26,7 +26,9 @@ function PopEditBudgets(props) {
         let data = {category: props.editCategoryInput, budgeted: props.editBudgetInput, itemId: props.budgetList[props.idxEdit].id};
         let url = "/service/budgets";
         const reData = await sendData(url, "PATCH", data);
-        console.log(reData);
+        if (!reData.success) {
+            console.error(reData.message);
+        }
         closePopup();
     }
 
@@ -39,7 +41,6 @@ function PopEditBudgets(props) {
 
     function cancelBtn(event) {
         closePopup();
-        // close the popup
     }
 
     function updateCatInput(event) {
