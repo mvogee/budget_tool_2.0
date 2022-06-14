@@ -43,7 +43,6 @@ function SpendingItemForm(props) {
                 return (prevList ? Array.from(prevList).concat(newSpendItem) : [newSpendItem]);
             });
             props.setTotalSpending((prevVal) => (parseFloat(prevVal) + parseFloat(amount)));
-            props.setCategorySpendingMap(map => new Map(map.set(newSpendItem.category, parseFloat(map.get(newSpendItem.category)) + parseFloat(newSpendItem.amount))));
         }
     }
 
