@@ -28,7 +28,6 @@ function SpendingItemDisplay(props) {
     function deleteItem(event) {
         if (window.confirm("Are you sure you want to delete " + event.target.dataset.name) === true) {
             deleteRequest(event.target.dataset.id);
-            props.setTotalSpending((prevVal) => prevVal - event.target.dataset.amount);
             let newPurchaseList = Array.from(props.purchaseList);
             newPurchaseList.splice(event.target.dataset.idx, 1);
             props.setPurchaseList(newPurchaseList);
@@ -66,7 +65,6 @@ function SpendingItemDisplay(props) {
             <PopEditSpending 
                 budgets={props.budgets} displayPopup={displayPopup} setDisplayPopup={setDisplayPopup}
                 purchaseList={props.purchaseList} setPurchaseList={props.setPurchaseList}
-                totalSpending={props.totalSpending} setTotalSpending={props.setTotalSpending}
                 nameEdit={nameEdit} setNameEdit={setNameEdit}
                 amountEdit={amountEdit} setAmountEdit={setAmountEdit}
                 categoryEdit={categoryEdit} setCategoryEdit={setCategoryEdit}

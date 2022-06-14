@@ -39,6 +39,11 @@ function ThisMonth(props) {
   useEffect(() => {
     if (!firstRun.current) {
       setBudgetSpentList(manageBudgetSpentList.createBudgetSpentListFromSpendingList(purchaseList));
+      setTotalSpending(() => {
+        let total = 0.00;
+        purchaseList.forEach((item) => {total += parseFloat(item.amount)});
+        return (total);
+      });
     }
   }, [purchaseList]);
 
