@@ -25,7 +25,7 @@ function Income(props) {
                 getData();
                 runEffect.current = false;
             }
-            else {
+            else if (!auth){
                 navigate("/login");
             }
         }

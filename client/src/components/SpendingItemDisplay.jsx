@@ -29,10 +29,10 @@ function SpendingItemDisplay(props) {
         if (window.confirm("Are you sure you want to delete " + event.target.dataset.name) === true) {
             deleteRequest(event.target.dataset.id);
             props.setTotalSpending((prevVal) => prevVal - event.target.dataset.amount);
-            let newPurchaseList = props.purchaseList;
+            let newPurchaseList = Array.from(props.purchaseList);
             newPurchaseList.splice(event.target.dataset.idx, 1);
             props.setPurchaseList(newPurchaseList);
-            props.setCategorySpendingMap(new Map(props.categorySpendingMap.set(parseInt(event.target.dataset.category), parseFloat(props.categorySpendingMap.get(parseInt(event.target.dataset.category))) - parseFloat(event.target.dataset.amount))));
+            props.setCategorySpendingMap(map => new Map(map.set(parseInt(event.target.dataset.category), parseFloat(map.get(parseInt(event.target.dataset.category))) - parseFloat(event.target.dataset.amount))));
         }
     }
 
