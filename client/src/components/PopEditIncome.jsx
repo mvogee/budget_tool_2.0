@@ -28,7 +28,9 @@ function PopEditIncome(props) {
         let data = {itmId: props.editId, incomeName: props.nameEdit, hourlyRate: props.rateEdit, hoursPerWeek: props.hoursEdit, taxRate: props.taxEdit, retirement: props.retireEdit };
         let url = "/service/income";
         const reData = await sendData(url, "PATCH", data);
-        console.log(reData);
+        if (!reData.success) {
+            console.error(reData.message);
+        }
         closePopup();
     }
 

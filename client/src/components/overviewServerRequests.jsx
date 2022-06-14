@@ -12,7 +12,6 @@ import { requestData } from "./serverCommunications";
  * @returns {Object}
  */
 export const getPurchaseData = async(yearMonth) => {
-    console.log("requesting purchaseData");
     let url = "/service/monthSpending/" + yearMonth;
     const reData = await requestData(url);
     if (reData.success) {
@@ -30,7 +29,6 @@ export const getPurchaseData = async(yearMonth) => {
  * @returns {Object}
  */
 export const getDepositData = async (yearMonth) => {
-    console.log("requesting depositData");
     let url = "/service/monthIncome/" + yearMonth;
     const reData = await requestData(url);
     if (reData.success) {
@@ -43,7 +41,6 @@ export const getDepositData = async (yearMonth) => {
 }
 
 export const getBudgetData = async () => {
-    console.log("requesting budget data");
     let url = "/service/budgets";
     const reData = await requestData(url);
     if (reData.success) {

@@ -12,6 +12,7 @@ function Budgets(props) {
     const [totalBudgeted, setTotalBudgeted] = useState(0);
     const [projectedIncome, setProjectedIncome] = useState(0);
     const runEffect = useRef(true);
+    const refocusInput = useRef(null);
 
     let navigate = useNavigate();
 
@@ -98,6 +99,7 @@ function Budgets(props) {
         event.preventDefault();
         postData();
         resetInputs();
+        refocusInput.current.focus();
     }
 
     function categoryInputChange(e) {
@@ -121,7 +123,7 @@ function Budgets(props) {
             <form className="budget-item-form" name="newBudgetItm">
                 <div className="input_div">
                     <label htmlFor="category">Category</label>
-                    <input type="text" autoComplete="off" name="category" placeholder="Category Name" autoFocus required value={categoryInput} onChange={categoryInputChange}/>
+                    <input type="text" autoComplete="off" ref={refocusInput}name="category" placeholder="Category Name" autoFocus required value={categoryInput} onChange={categoryInputChange}/>
                 </div>
                 <div className="input_div">
                     <label htmlFor="budgeted">Budget</label>

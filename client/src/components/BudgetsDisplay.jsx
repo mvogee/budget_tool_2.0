@@ -13,9 +13,8 @@ function BudgetsDisplay(props) {
         let data = {categoryId: itemId};
         let url = "/service/budgets";
         const reData = await sendData(url, "DELETE", data);
-        console.log(reData);
         if (reData.success) {
-            console.log("item was deleted");
+            console.info("item was deleted");
         }
     }
 
@@ -28,7 +27,6 @@ function BudgetsDisplay(props) {
                 return (newBudgetList);
             });
             props.setTotalBudgeted((prevVal) => {
-                console.log(prevVal);
                 return (prevVal - event.target.dataset.amount);
             });
         }

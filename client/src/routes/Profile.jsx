@@ -42,7 +42,6 @@ function Profile(props) {
             else {
                 setMessage("Oops! Something went wrong. Please try again.")
             }
-            console.log(reData);
             clearForm();
         }
         else {
@@ -62,7 +61,6 @@ function Profile(props) {
             else {
                 setMessage("Oops! Something went wrong. Please try again.")
             }
-            console.log(reData);
             clearForm();
         }
         else {
