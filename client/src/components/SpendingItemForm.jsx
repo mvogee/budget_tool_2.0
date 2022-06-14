@@ -39,14 +39,12 @@ function SpendingItemForm(props) {
     function setListData(id) {
         let newSpendItem = {id: id, itmDescription: name, amount: amount, category: parseInt(category), purchaseDate: date + ":10:00"};
         if (checkDateMatch(date)) {
-            //props.setPurchaseList(props.purchaseList ? props.purchaseList.concat(newSpendItem) : [newSpendItem]);
             props.setPurchaseList((prevList) => {
                 return (prevList ? Array.from(prevList).concat(newSpendItem) : [newSpendItem]);
             });
             props.setTotalSpending((prevVal) => (parseFloat(prevVal) + parseFloat(amount)));
-            props.setCategorySpendingMap(new Map(props.categorySpendingMap.set(newSpendItem.category, parseFloat(props.categorySpendingMap.get(newSpendItem.category)) + parseFloat(newSpendItem.amount))));
+            props.setCategorySpendingMap(map => new Map(map.set(newSpendItem.category, parseFloat(map.get(newSpendItem.category)) + parseFloat(newSpendItem.amount))));
         }
-        
     }
 
     async function postData() {

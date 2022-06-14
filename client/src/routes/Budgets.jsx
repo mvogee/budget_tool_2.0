@@ -18,19 +18,17 @@ function Budgets(props) {
     useEffect(() => {
         const authenticate = async () => {
             let auth = await checkAuth(props.setUser);
-            console.log(auth);
             if (auth && runEffect.current) {
                 getData();
                 getProjectedIncomeData();
                 runEffect.current = false;
             }
-            else {
+            else if (!auth) {
                 navigate("/login");
             }
         }
         authenticate();
         
-
         async function getData() {
             let url = "/service/budgets"
             const reData = await requestData(url);

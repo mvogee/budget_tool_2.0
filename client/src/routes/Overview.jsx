@@ -29,7 +29,7 @@ function Overview(props) {
                 getInitialData();
                 runEffect.current = false;
             }
-            else {
+            else if (!auth) {
                 navigate("/login");
             }
         }

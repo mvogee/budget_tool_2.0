@@ -33,52 +33,6 @@ function ThisMonth(props) {
 
   const navigate = useNavigate();
 
-  function addToCategoryMap(item) {
-    if (categorySpendingMap.has(item.category)) {
-      setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, categorySpendingMap.get(item.category) + parseFloat(item.amount))));
-    }
-    else {
-      setCategorySpendingMap(new Map(categorySpendingMap.set(item.category, parseFloat(item.amount))));
-    }
-  }
-
-  async function getPurchaseData(yearMonth) {
-    console.log("requesting purchaseData");
-    let url = "/service/monthSpending/" + yearMonth;
-    const reData = await requestData(url);
-    console.log(reData);
-    if (reData.success) {
-        setPurchaseList(reData.obj);
-        let total = 0;
-        reData.obj.forEach((item) => {
-          total += parseFloat(item.amount);
-          addToCategoryMap(item);
-        });
-        setTotalSpending(total.toFixed(2));
-    }
-}
-
-  async function getDepositData(yearMonth) {
-    console.log("requesting Deposit data");
-    let url = "/service/monthIncome/" + yearMonth;
-    const reData = await requestData(url);
-    console.log(reData);
-    if (reData.success) {
-        setDepositList(reData.obj);
-        let total = 0;
-        reData.obj.forEach((item) => {total += parseFloat(item.amount)});
-        setTotalIncome(total.toFixed(2));
-    }
-}
-
-  async function getBudgetData() {
-    let url = "/service/budgets"
-    const reData = await requestData(url);
-    if (reData.success) {
-        setBudgetList(reData.obj);
-    }
-}
-
   useEffect(() => {
     const authenticate = async () => {
         let auth = await checkAuth(props.setUser);
@@ -88,13 +42,56 @@ function ThisMonth(props) {
           await getBudgetData();
           runEffect.current = false;
         }
-        else {
+        else if (!auth){
           navigate("/login");
         }
     }
     authenticate();
-  }, [navigate, props.setUser]);
+  }, [navigate, props.setUser, yearMonth]);
 
+  function addToCategoryMap(item) {
+    if (categorySpendingMap.has(item.category)) {
+      setCategorySpendingMap(map => new Map(map.set(item.category, map.get(item.category) + parseFloat(item.amount))));
+    }
+    else {
+      setCategorySpendingMap(map => new Map(map.set(item.category, parseFloat(item.amount))));
+    }
+  }
+
+  async function getPurchaseData(yearMonth) {
+    console.log("requesting purchaseData");
+    let url = "/service/monthSpending/" + yearMonth;
+    const reData = await requestData(url);
+    if (reData.success) {
+        setPurchaseList(reData.obj);
+        let total = 0;
+        reData.obj.forEach((item) => {
+          total += parseFloat(item.amount);
+          addToCategoryMap(item);
+        });
+        setTotalSpending(total.toFixed(2));
+    }
+  }
+
+  async function getDepositData(yearMonth) {
+    console.log("requesting Deposit data");
+    let url = "/service/monthIncome/" + yearMonth;
+    const reData = await requestData(url);
+    if (reData.success) {
+        setDepositList(reData.obj);
+        let total = 0;
+        reData.obj.forEach((item) => {total += parseFloat(item.amount)});
+        setTotalIncome(total.toFixed(2));
+    }
+  }
+
+  async function getBudgetData() {
+    let url = "/service/budgets"
+    const reData = await requestData(url);
+    if (reData.success) {
+        setBudgetList(reData.obj);
+    }
+  }
 
   function changeMonth(event) {
     categorySpendingMap.clear(); // this breaks react state 
