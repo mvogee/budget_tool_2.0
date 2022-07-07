@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import '../styles/landingPage.css';
 
 function LandingPage(props) {
     return (
@@ -14,18 +15,18 @@ function LandingPage(props) {
                 <ul>
                     <li className="secondary-text">Easy to understand overview of your budget.</li>
                     <li className="secondary-text">Create spending categories.</li>
-                    <li className="secondary-text">Monthly income caclulations.</li>
+                    <li className="secondary-text">Monthly income calculations.</li>
                     <li className="secondary-text">Track your monthly income and spending.</li>
                 </ul>
             </div>
             <h3>Overview and stats</h3>
-            <img src="./img/OverviewScreenshot.png" alt="Screenshot of overview page." />
+            <img src={require("../img/OverviewScreenshot.png")} alt="Screenshot of overview page." />
             <hr/>
             <h3>Monthly tracking</h3>
-            <img src="./img/ThisMonthScreenshot.png" alt="Screenshot of Monthly tracking." />
+            <img src={require("../img/ThisMonthScreenshot.png")} alt="Screenshot of Monthly tracking." />
             <hr/>
             <h3>Easy budget building</h3>
-            <img src="./img/BudgetScreenshot.png" alt="Screenshot of budget building." />
+            <img src={require("../img/BudgetScreenshot.png")} alt="Screenshot of budget building." />
             <Link className="create-acc-btn" to="/createAcc">Start Your Budget!</Link>
         </div>
     );

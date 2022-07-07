@@ -1,0 +1,41 @@
+img {
+    width: 95%;
+    max-width: 800px;
+    border-width: 3px;
+    border-radius: 2px;
+    border-style: solid;
+    border-color: var(--main-green);
+    margin: 10px 0;
+}
+
+.description_wrapper {
+    margin: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.description_wrapper p {
+    margin-bottom: 8px;
+}
+
+.description_wrapper ul{
+    list-style: disc;
+    text-align: left;
+}
+
+.description_wrapper ul li {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.create-acc-btn {
+    width: 200px;
+    display: block;
+    text-align: center;
+    margin: 70px auto;
+    border-radius: 5px;
+    padding: 10px 15px;
+    background-color: var(--second-blue);
+    color: var(--main-text-white);
+}
