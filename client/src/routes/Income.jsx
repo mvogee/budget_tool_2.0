@@ -21,7 +21,6 @@ function Income(props) {
     useEffect(() => {
         const authenticate = async () => {
             let auth = await checkAuth(props.setUser);
-            console.log(auth);
             if (auth && runEffect.current) {
                 getData();
                 runEffect.current = false;
@@ -35,7 +34,6 @@ function Income(props) {
         async function getData() {
             let url = "/service/income"
             const reData = await requestData(url);
-            console.log(reData);
             if (reData.success) {
                 setIncomeList(reData.obj);
                 calculateMonthIncome(reData.obj);
@@ -52,7 +50,6 @@ function Income(props) {
         let url = "/service/income"
         const reData = await sendData(url, "POST", data);
         setListData(reData.obj.insertId);
-        console.log(reData);
     }
 
     function setListData(id) {
