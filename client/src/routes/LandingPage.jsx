@@ -20,13 +20,15 @@ function LandingPage(props) {
                 </ul>
             </div>
             <h3>Overview and stats</h3>
-            <img src={require("../img/OverviewScreenshot.png")} alt="Screenshot of overview page." />
+            <img src={require("../img/overviewScreenshot-alt.png")} alt="Screenshot of overview page." />
             <hr/>
             <h3>Monthly tracking</h3>
-            <img src={require("../img/ThisMonthScreenshot.png")} alt="Screenshot of Monthly tracking." />
+            <img src={require("../img/expenseTrackingScreenshot.png")} alt="Screenshot of Monthly tracking." />
             <hr/>
             <h3>Easy budget building</h3>
-            <img src={require("../img/BudgetScreenshot.png")} alt="Screenshot of budget building." />
+            <img src={require("../img/budgetScreenshot-alt.png")} alt="Screenshot of budget building." />
+            <h3>Income projection</h3>
+            <img src={require("../img/incomeScreenshot.png")} alt="Screenshot of income projection"></img>
             <Link className="create-acc-btn" to="/createAcc">Start Your Budget!</Link>
         </div>
     );
