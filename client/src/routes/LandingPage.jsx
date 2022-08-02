@@ -19,12 +19,11 @@ function LandingPage(props) {
                     <li className="secondary-text">Track your monthly income and spending.</li>
                 </ul>
             </div>
+            <hr />
             <h3>Overview and stats</h3>
             <img src={require("../img/overviewScreenshot-alt.png")} alt="Screenshot of overview page." />
-            <hr/>
             <h3>Monthly tracking</h3>
             <img src={require("../img/expenseTrackingScreenshot.png")} alt="Screenshot of Monthly tracking." />
-            <hr/>
             <h3>Easy budget building</h3>
             <img src={require("../img/budgetScreenshot-alt.png")} alt="Screenshot of budget building." />
             <h3>Income projection</h3>
