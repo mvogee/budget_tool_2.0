@@ -38,4 +38,11 @@ img {
     padding: 10px 15px;
     background-color: var(--second-blue);
     color: var(--main-text-white);
+    transition: 200ms ease-in-out;
+}
+.create-acc-btn:hover {
+    box-shadow: 0 0 1em var(--main-blue);
+}
+hr {
+    margin-top: 1em;
 }

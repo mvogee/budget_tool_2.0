@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { sendData } from "../components/serverCommunications";
-
+import "../styles/createAcc.css";
 
 /* TODO:
 *   - create state handlers for each input field.

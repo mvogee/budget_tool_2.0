@@ -47,7 +47,7 @@ function SpendingPieChart(props) {
     };
     return (
         <div className="spendingPieChart">
-            {dataset ? <Pie options={options} data={dataset} /> : <p>Loading ...</p>}
+            {dataset ? <Pie options={options} data={dataset}/> : <p>Loading ...</p>}
         </div>
     );
 }
